@@ -1,0 +1,14 @@
+{
+  "name": "admin.api",
+  "version": "1.0.0",
+  "scripts": {
+    "init": "dotnet run --project init/database/database.csproj",
+    "dev": "dotnet watch run --project src/api/api.csproj",
+    "build": "dotnet build",
+    "build:release": "dotnet build -c Release",
+    "test": "dotnet test",
+    "format": "dotnet format --include",
+    "lint": "dotnet format --verify-no-changes",
+    "clean": "dotnet clean"
+  }
+}

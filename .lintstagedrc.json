@@ -1,0 +1,9 @@
+{
+  "Admin.Vue/**/*.{ts,tsx,js,jsx,vue,json}": [
+    "pnpm --filter admin-vue lint",
+    "pnpm --filter admin-vue format"
+  ],
+  "Admin.API/**/*.cs": [
+    "pnpm --filter admin.api format"
+  ]
+}

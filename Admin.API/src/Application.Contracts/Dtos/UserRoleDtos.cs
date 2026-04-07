@@ -1,0 +1,164 @@
+﻿/*
+ * 文件名称: UserRoleDtos.cs
+ * 功能描述: 用户角色关联关系DTO类，用于用户角色关系的数据传输
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-01
+ */
+
+using Domain.Entities;
+
+namespace Application.Contracts.Dtos;
+
+/// <summary>
+/// 用户角色关联创建 DTO
+/// <para>用于创建用户角色关联关系的数据传输</para>
+/// </summary>
+public class UserRoleCreateDto : DomainCreateDto {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    /// <value>用户的唯一标识符，不能为空</value>
+    public Guid UserId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符，不能为空</value>
+    public Guid RoleId {
+        get; set;
+    }
+}
+
+/// <summary>
+/// 用户角色关联操作 DTO
+/// <para>用于用户角色关联关系的操作（如删除）</para>
+/// </summary>
+public class UserRoleActionDto : DomainActionDto {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    /// <value>用户的唯一标识符，不能为空</value>
+    public Guid UserId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符，不能为空</value>
+    public Guid RoleId {
+        get; set;
+    }
+}
+
+/// <summary>
+/// 用户角色关联列表 DTO
+/// <para>用于用户角色关联关系的列表展示</para>
+/// </summary>
+public class UserRoleListDto : DomainListDto {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    /// <value>用户的唯一标识符</value>
+    public Guid UserId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符</value>
+    public Guid RoleId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 用户名称
+    /// </summary>
+    /// <value>用户的名称，可能为空</value>
+    public string? UserName {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色名称
+    /// </summary>
+    /// <value>角色的名称，可能为空</value>
+    public string? RoleName {
+        get; set;
+    }
+}
+
+/// <summary>
+/// 用户角色关联分页 DTO
+/// <para>用于用户角色关联关系的分页展示</para>
+/// </summary>
+public class UserRolePagedDto : DomainPagedDto {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    /// <value>用户的唯一标识符</value>
+    public Guid UserId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符</value>
+    public Guid RoleId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 用户名称
+    /// </summary>
+    /// <value>用户的名称，可能为空</value>
+    public string? UserName {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色名称
+    /// </summary>
+    /// <value>角色的名称，可能为空</value>
+    public string? RoleName {
+        get; set;
+    }
+}
+
+/// <summary>
+/// 用户角色关联查询参数
+/// <para>用于用户角色关联关系的查询</para>
+/// </summary>
+public class UserRoleQueryParameters : DomainQueryParameters<UserRole> {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    public Guid? UserId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    public Guid? RoleId {
+        get; set;
+    }
+
+    /// <summary>
+    /// 查询条件列表
+    /// </summary>
+    public override List<System.Linq.Expressions.Expression<System.Func<UserRole, bool>>> Predicates() {
+        var predicates = base.Predicates();
+        if (UserId.HasValue) {
+            predicates.Add(t => t.UserId == UserId.Value);
+        }
+        if (RoleId.HasValue) {
+            predicates.Add(t => t.RoleId == RoleId.Value);
+        }
+        return predicates;
+    }
+}
