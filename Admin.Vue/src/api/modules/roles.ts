@@ -1,6 +1,6 @@
-import { ModuleApi } from "../nswags";
-import { RolesSwagApi } from "../nswags/auto";
-import type { RoleCreateDTO, RoleDetailDTO, RoleListDTO, RolePagedDTO, RoleUpdateDTO } from "../nswags/auto";
+import { ModuleApi } from '../nswags'
+import { RolesSwagApi } from '../nswags/auto'
+import type { RoleCreateDTO, RoleDetailDTO, RoleListDTO, RolePagedDTO, RoleUpdateDTO } from '../nswags/auto'
 
 /**
  * 角色管理 API
@@ -15,36 +15,36 @@ export class RolesApi extends ModuleApi<
   RoleUpdateDTO
 > {
   constructor() {
-    super(RolesSwagApi);
+    super(RolesSwagApi)
   }
 
   /** 获取角色树形结构 */
   async getTree() {
-    return this.api.getTree();
+    return this.api.getTree()
   }
 
   /** 根据编码查找角色 */
   async findByCode(code: string) {
-    return this.api.findByCode(code);
+    return this.api.findByCode(code)
   }
 
   /** 获取角色及其所有权限 */
   async getRoleWithAllPermissions(roleId: string) {
-    return this.api.getRoleWithAllPermissions(roleId);
+    return this.api.getRoleWithAllPermissions(roleId)
   }
 
   /** 为角色分配权限 */
   async assignPermissions(roleId: string, permissions: string[]) {
-    return this.api.assignPermissions(roleId, permissions);
+    return this.api.assignPermissions(roleId, permissions)
   }
 
   /** 获取所有子角色 */
   async getAllChildren(roleId: string) {
-    return this.api.getAllChildren(roleId);
+    return this.api.getAllChildren(roleId)
   }
 
   /** 获取角色继承链 */
   async getInheritanceChain(roleId: string) {
-    return this.api.getInheritanceChain(roleId);
+    return this.api.getInheritanceChain(roleId)
   }
 }

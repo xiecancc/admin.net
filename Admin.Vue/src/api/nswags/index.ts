@@ -1,11 +1,11 @@
-import type { AxiosInstance } from "axios";
-import { createAxios } from "@/utils/request.util";
-import type { StandardSwagApi } from "./type";
+import type { AxiosInstance } from 'axios'
+import { createAxios } from '@/utils/request.util'
+import type { StandardSwagApi } from './type'
 
 /** NSwag 专用 Axios 实例 */
 const nswagAxios = createAxios({
   transformResponse: [],
-});
+})
 
 /**
  * SWAG API 基类
@@ -13,15 +13,15 @@ const nswagAxios = createAxios({
  * @template T API 客户端类型
  */
 export class SwagApi<T> {
-  protected _api: T;
+  protected _api: T
 
   constructor(Swag: new (baseUrl?: string, instance?: AxiosInstance) => T) {
-    this._api = new Swag(undefined, nswagAxios);
+    this._api = new Swag(undefined, nswagAxios)
   }
 
   /** 获取底层 API 客户端实例 */
   get api(): T {
-    return this._api;
+    return this._api
   }
 }
 
@@ -45,56 +45,56 @@ export class ModuleApi<
 > extends SwagApi<T> {
   /** 获取列表 */
   async getList() {
-    return this._api.getList();
+    return this._api.getList()
   }
 
   /** 获取分页数据 */
   async getPaged(page: number, size: number) {
-    return this._api.getPaged(page, size);
+    return this._api.getPaged(page, size)
   }
 
   /** 获取详情 */
   async get(id: string) {
-    return this._api.get(id);
+    return this._api.get(id)
   }
 
   /** 创建 */
   async create(body: CreateDTO) {
-    return this._api.create(body);
+    return this._api.create(body)
   }
 
   /** 更新 */
   async update(id: string, body: UpdateDTO) {
-    return this._api.update(id, body);
+    return this._api.update(id, body)
   }
 
   /** 删除 */
   async delete(id: string) {
-    return this._api.delete(id);
+    return this._api.delete(id)
   }
 
   /** 恢复 */
   async restore(id: string) {
-    return this._api.restore(id);
+    return this._api.restore(id)
   }
 
   /** 批量创建 */
   async batchCreate(body: CreateDTO[]) {
-    return this._api.create2(body);
+    return this._api.create2(body)
   }
 
   /** 批量更新 */
   async batchUpdate(body: UpdateDTO[]) {
-    return this._api.update2(body);
+    return this._api.update2(body)
   }
 
   /** 批量删除 */
   async batchDelete(ids: string[]) {
-    return this._api.delete2(ids);
+    return this._api.delete2(ids)
   }
 
   /** 批量恢复 */
   async batchRestore(ids: string[]) {
-    return this._api.restore2(ids);
+    return this._api.restore2(ids)
   }
 }

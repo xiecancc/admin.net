@@ -9,10 +9,10 @@
  */
 export function toBoolean(value: string | undefined): boolean {
   if (value === undefined) {
-    return false;
+    return false
   }
-  const lowerValue = value.toLowerCase().trim();
-  return lowerValue === "true" || lowerValue === "1" || lowerValue === "yes" || lowerValue === "y";
+  const lowerValue = value.toLowerCase().trim()
+  return lowerValue === 'true' || lowerValue === '1' || lowerValue === 'yes' || lowerValue === 'y'
 }
 
 /**
@@ -23,10 +23,10 @@ export function toBoolean(value: string | undefined): boolean {
  */
 export function toNumber(value: string | undefined, defaultValue: number): number {
   if (value === undefined) {
-    return defaultValue;
+    return defaultValue
   }
-  const num = Number(value);
-  return isNaN(num) ? defaultValue : num;
+  const num = Number(value)
+  return isNaN(num) ? defaultValue : num
 }
 
 /**
@@ -36,5 +36,5 @@ export function toNumber(value: string | undefined, defaultValue: number): numbe
  * @returns 字符串
  */
 export function toString(value: string | undefined, defaultValue: string): string {
-  return value || defaultValue;
+  return value || defaultValue
 }

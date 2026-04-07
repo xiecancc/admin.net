@@ -1,4 +1,4 @@
-import type { App } from "vue";
+import type { App } from 'vue'
 import {
   ArrowDown,
   Delete,
@@ -17,7 +17,7 @@ import {
   SwitchButton,
   User,
   UserFilled,
-} from "@element-plus/icons-vue";
+} from '@element-plus/icons-vue'
 
 // 图标组件对象
 const iconComponents = {
@@ -38,7 +38,7 @@ const iconComponents = {
   SwitchButton,
   User,
   UserFilled,
-};
+}
 
 // 导出所有图标组件
 export {
@@ -59,14 +59,14 @@ export {
   House,
   Shop,
   SwitchButton,
-};
+}
 
 // 直接导出插件对象
 export default {
   install(app: App) {
     // 注册需要的图标为全局组件
     Object.entries(iconComponents).forEach(([name, component]) => {
-      app.component(name, component);
-    });
+      app.component(name, component)
+    })
   },
-};
+}

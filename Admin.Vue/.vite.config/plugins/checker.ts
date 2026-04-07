@@ -1,5 +1,5 @@
-import type { PluginOption } from "vite";
-import checker from "vite-plugin-checker";
+import type { PluginOption } from 'vite'
+import checker from 'vite-plugin-checker'
 
 /**
  * 代码质量检查插件配置
@@ -12,4 +12,4 @@ export const createCheckerPlugin = (): PluginOption =>
     terminal: true,
     typescript: true,
     vueTsc: false,
-  });
+  })

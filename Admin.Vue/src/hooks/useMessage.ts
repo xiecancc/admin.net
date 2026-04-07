@@ -1,15 +1,15 @@
-import type { MessageParams } from "element-plus";
+import type { MessageParams } from 'element-plus'
 
 export function useMessage() {
-  const showMessage = (options: MessageParams) => ElMessage(options);
+  const showMessage = (options: MessageParams) => ElMessage(options)
 
-  const success = (message: string) => ElMessage.success(message);
+  const success = (message: string) => ElMessage.success(message)
 
-  const error = (message: string) => ElMessage.error(message);
+  const error = (message: string) => ElMessage.error(message)
 
-  const warning = (message: string) => ElMessage.warning(message);
+  const warning = (message: string) => ElMessage.warning(message)
 
-  const info = (message: string) => ElMessage.info(message);
+  const info = (message: string) => ElMessage.info(message)
 
   return {
     error,
@@ -17,5 +17,5 @@ export function useMessage() {
     showMessage,
     success,
     warning,
-  };
+  }
 }

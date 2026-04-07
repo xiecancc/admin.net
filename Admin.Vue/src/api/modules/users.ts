@@ -1,6 +1,6 @@
-import { ModuleApi } from "../nswags";
-import { UsersSwagApi } from "../nswags/auto";
-import type { UserCreateDTO, UserDetailDTO, UserListDTO, UserPagedDTO, UserUpdateDTO } from "../nswags/auto";
+import { ModuleApi } from '../nswags'
+import { UsersSwagApi } from '../nswags/auto'
+import type { UserCreateDTO, UserDetailDTO, UserListDTO, UserPagedDTO, UserUpdateDTO } from '../nswags/auto'
 
 /**
  * 用户管理 API
@@ -15,6 +15,6 @@ export class UsersApi extends ModuleApi<
   UserUpdateDTO
 > {
   constructor() {
-    super(UsersSwagApi);
+    super(UsersSwagApi)
   }
 }

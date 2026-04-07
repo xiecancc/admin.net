@@ -1,5 +1,5 @@
-import type { PluginOption } from "vite";
-import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import type { PluginOption } from 'vite'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 /**
  * 图片优化插件配置
@@ -12,7 +12,7 @@ export const createImageOptimizerPlugin = (): PluginOption =>
       speed: 10,
     },
     cache: true,
-    cacheLocation: "./node_modules/.cache/vite-image-optimizer",
+    cacheLocation: './node_modules/.cache/vite-image-optimizer',
     include: /\.(png|jpe?g|webp|avif|svg)$/i,
     includePublic: true,
     jpeg: {
@@ -31,4 +31,4 @@ export const createImageOptimizerPlugin = (): PluginOption =>
       lossless: false,
       quality: 85,
     },
-  });
+  })

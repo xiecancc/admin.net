@@ -1,5 +1,5 @@
-import type { PluginOption } from "vite";
-import compression from "vite-plugin-compression";
+import type { PluginOption } from 'vite'
+import compression from 'vite-plugin-compression'
 
 /**
  * 压缩插件配置
@@ -7,10 +7,10 @@ import compression from "vite-plugin-compression";
 export const createCompressionPlugins = (): PluginOption[] => [
   // Gzip压缩插件
   compression({
-    algorithm: "gzip",
+    algorithm: 'gzip',
     compressionOptions: { level: 5 },
     deleteOriginFile: false,
-    ext: ".gz",
+    ext: '.gz',
     filter: /\.(js|mjs|json|css|html)$/i,
     threshold: 10_240,
     verbose: false,
@@ -18,12 +18,12 @@ export const createCompressionPlugins = (): PluginOption[] => [
 
   // Brotli压缩插件
   compression({
-    algorithm: "brotliCompress",
+    algorithm: 'brotliCompress',
     compressionOptions: { level: 5 },
     deleteOriginFile: false,
-    ext: ".br",
+    ext: '.br',
     filter: /\.(js|mjs|json|css|html)$/i,
     threshold: 10_240,
     verbose: false,
   }),
-];
+]

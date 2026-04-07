@@ -1,5 +1,5 @@
-import type { PluginOption } from "vite";
-import { visualizer } from "rollup-plugin-visualizer";
+import type { PluginOption } from 'vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 /**
  * 构建分析插件配置
@@ -7,7 +7,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 export const createVisualizerPlugin = (): PluginOption =>
   visualizer({
     brotliSize: true,
-    filename: "dist/stats.html",
+    filename: 'dist/stats.html',
     gzipSize: true,
     open: true,
-  });
+  })

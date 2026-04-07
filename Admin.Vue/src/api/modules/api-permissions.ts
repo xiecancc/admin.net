@@ -1,12 +1,12 @@
-import { ModuleApi } from "../nswags";
-import { ApiPermissionsSwagApi } from "../nswags/auto";
+import { ModuleApi } from '../nswags'
+import { ApiPermissionsSwagApi } from '../nswags/auto'
 import type {
   ApiPermissionCreateDTO,
   ApiPermissionDetailDTO,
   ApiPermissionListDTO,
   ApiPermissionPagedDTO,
   ApiPermissionUpdateDTO,
-} from "../nswags/auto";
+} from '../nswags/auto'
 
 /**
  * API权限管理 API
@@ -21,16 +21,16 @@ export class ApiPermissionsApi extends ModuleApi<
   ApiPermissionUpdateDTO
 > {
   constructor() {
-    super(ApiPermissionsSwagApi);
+    super(ApiPermissionsSwagApi)
   }
 
   /** 获取权限树形结构 */
   async getTree() {
-    return this.api.getTree();
+    return this.api.getTree()
   }
 
   /** 获取所有子权限 */
   async getAllChildren(permissionId: string) {
-    return this.api.getAllChildren(permissionId);
+    return this.api.getAllChildren(permissionId)
   }
 }

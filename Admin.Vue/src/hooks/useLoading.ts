@@ -1,29 +1,29 @@
-import { ref } from "vue";
+import { ref } from 'vue'
 
 export function useLoading(initLoading = false) {
-  const loading = ref(initLoading);
+  const loading = ref(initLoading)
 
   const startLoading = () => {
-    loading.value = true;
-  };
+    loading.value = true
+  }
 
   const stopLoading = () => {
-    loading.value = false;
-  };
+    loading.value = false
+  }
 
   const withLoading = async <T>(fn: () => Promise<T>): Promise<T> => {
-    startLoading();
+    startLoading()
     try {
-      return await fn();
+      return await fn()
     } finally {
-      stopLoading();
+      stopLoading()
     }
-  };
+  }
 
   return {
     loading,
     startLoading,
     stopLoading,
     withLoading,
-  };
+  }
 }

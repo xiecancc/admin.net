@@ -1,12 +1,12 @@
-import { ModuleApi } from "../nswags";
-import { ButtonPermissionsSwagApi } from "../nswags/auto";
+import { ModuleApi } from '../nswags'
+import { ButtonPermissionsSwagApi } from '../nswags/auto'
 import type {
   ButtonPermissionCreateDTO,
   ButtonPermissionDetailDTO,
   ButtonPermissionListDTO,
   ButtonPermissionPagedDTO,
   ButtonPermissionUpdateDTO,
-} from "../nswags/auto";
+} from '../nswags/auto'
 
 /**
  * 按钮权限管理 API
@@ -21,16 +21,16 @@ export class ButtonPermissionsApi extends ModuleApi<
   ButtonPermissionUpdateDTO
 > {
   constructor() {
-    super(ButtonPermissionsSwagApi);
+    super(ButtonPermissionsSwagApi)
   }
 
   /** 获取权限树形结构 */
   async getTree() {
-    return this.api.getTree();
+    return this.api.getTree()
   }
 
   /** 获取所有子权限 */
   async getAllChildren(permissionId: string) {
-    return this.api.getAllChildren(permissionId);
+    return this.api.getAllChildren(permissionId)
   }
 }

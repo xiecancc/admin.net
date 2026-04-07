@@ -1,7 +1,7 @@
-import { CancelToken } from "axios";
-import { SwagApi } from "../nswags";
-import { AuthSwagApi } from "../nswags/auto";
-import type { LoginRequestDTO } from "../nswags/auto";
+import type { CancelToken } from 'axios'
+import { SwagApi } from '../nswags'
+import { AuthSwagApi } from '../nswags/auto'
+import type { LoginRequestDTO } from '../nswags/auto'
 
 /**
  * 认证 API
@@ -9,21 +9,21 @@ import type { LoginRequestDTO } from "../nswags/auto";
  */
 export class AuthApi extends SwagApi<AuthSwagApi> {
   constructor() {
-    super(AuthSwagApi);
+    super(AuthSwagApi)
   }
 
   /** 用户登录 */
   login(credentials: LoginRequestDTO, cancelToken?: CancelToken) {
-    return this.api.login(credentials, cancelToken);
+    return this.api.login(credentials, cancelToken)
   }
 
   /** 用户登出 */
   logout(cancelToken?: CancelToken) {
-    return this.api.logout(cancelToken);
+    return this.api.logout(cancelToken)
   }
 
   /** 获取当前登录用户信息 */
   getCurrentUser(cancelToken?: CancelToken) {
-    return this.api.getCurrentUser(cancelToken);
+    return this.api.getCurrentUser(cancelToken)
   }
 }

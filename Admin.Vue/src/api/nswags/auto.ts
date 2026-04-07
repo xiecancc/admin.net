@@ -7,78 +7,78 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, { AxiosError } from "axios";
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from "axios";
+import axios, { AxiosError } from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios'
 
 export class SwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
    * @return OK
    */
   anonymous(cancelToken?: CancelToken): Promise<void> {
-    let url_ = this.baseUrl + "/";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {},
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processAnonymous(_response);
-      });
+        return this.processAnonymous(_response)
+      })
   }
 
   protected processAnonymous(response: AxiosResponse): Promise<void> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      return Promise.resolve<void>(null as any);
+      const _responseText = response.data
+      return Promise.resolve<void>(null as any)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<void>(null as any);
+    return Promise.resolve<void>(null as any)
   }
 }
 
 export class ApiPermissionsSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -86,53 +86,53 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   getList(cancelToken?: CancelToken): Promise<ApiPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetList(_response);
-      });
+        return this.processGetList(_response)
+      })
   }
 
   protected processGetList(response: AxiosResponse): Promise<ApiPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ApiPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ApiPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ApiPermissionListDTOListResult>(null as any);
+    return Promise.resolve<ApiPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -141,57 +141,57 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   create(body: ApiPermissionCreateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate(_response);
-      });
+        return this.processCreate(_response)
+      })
   }
 
   protected processCreate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -200,55 +200,55 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   get(id: string, cancelToken?: CancelToken): Promise<ApiPermissionDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+        return this.processGet(_response)
+      })
   }
 
   protected processGet(response: AxiosResponse): Promise<ApiPermissionDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ApiPermissionDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ApiPermissionDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ApiPermissionDetailDTOResult>(null as any);
+    return Promise.resolve<ApiPermissionDetailDTOResult>(null as any)
   }
 
   /**
@@ -258,59 +258,59 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   update(id: string, body: ApiPermissionUpdateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate(_response);
-      });
+        return this.processUpdate(_response)
+      })
   }
 
   protected processUpdate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -319,55 +319,55 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   delete(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete(_response);
-      });
+        return this.processDelete(_response)
+      })
   }
 
   protected processDelete(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -376,55 +376,55 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   restore(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{id}/restore";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/{id}/restore'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore(_response);
-      });
+        return this.processRestore(_response)
+      })
   }
 
   protected processRestore(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -432,56 +432,56 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   getAllChildren(permissionId: string, cancelToken?: CancelToken): Promise<ApiPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{permissionId}/children";
+    let url_ = this.baseUrl + '/api/ApiPermissions/{permissionId}/children'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetAllChildren(_response);
-      });
+        return this.processGetAllChildren(_response)
+      })
   }
 
   protected processGetAllChildren(response: AxiosResponse): Promise<ApiPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ApiPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ApiPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ApiPermissionListDTOListResult>(null as any);
+    return Promise.resolve<ApiPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -492,62 +492,62 @@ export class ApiPermissionsSwagApi {
   movePermission(
     permissionId: string,
     body: MoveNodeDTO | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/{permissionId}/move";
+    let url_ = this.baseUrl + '/api/ApiPermissions/{permissionId}/move'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processMovePermission(_response);
-      });
+        return this.processMovePermission(_response)
+      })
   }
 
   protected processMovePermission(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -556,57 +556,57 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   create2(body: ApiPermissionCreateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate2(_response);
-      });
+        return this.processCreate2(_response)
+      })
   }
 
   protected processCreate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -615,57 +615,57 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   update2(body: ApiPermissionUpdateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate2(_response);
-      });
+        return this.processUpdate2(_response)
+      })
   }
 
   protected processUpdate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -674,57 +674,57 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   delete2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete2(_response);
-      });
+        return this.processDelete2(_response)
+      })
   }
 
   protected processDelete2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -733,57 +733,57 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   restore2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/batch/restore";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/batch/restore'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore2(_response);
-      });
+        return this.processRestore2(_response)
+      })
   }
 
   protected processRestore2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -795,59 +795,59 @@ export class ApiPermissionsSwagApi {
   getPaged(
     page: number | undefined,
     size: number | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<ApiPermissionPagedDTOPagedResponseResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/paged?";
-    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.");
-    else if (page !== undefined) url_ += "page=" + encodeURIComponent("" + page) + "&";
-    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.");
-    else if (size !== undefined) url_ += "size=" + encodeURIComponent("" + size) + "&";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/paged?'
+    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.")
+    else if (page !== undefined) url_ += 'page=' + encodeURIComponent('' + page) + '&'
+    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.")
+    else if (size !== undefined) url_ += 'size=' + encodeURIComponent('' + size) + '&'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetPaged(_response);
-      });
+        return this.processGetPaged(_response)
+      })
   }
 
   protected processGetPaged(response: AxiosResponse): Promise<ApiPermissionPagedDTOPagedResponseResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ApiPermissionPagedDTOPagedResponseResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ApiPermissionPagedDTOPagedResponseResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ApiPermissionPagedDTOPagedResponseResult>(null as any);
+    return Promise.resolve<ApiPermissionPagedDTOPagedResponseResult>(null as any)
   }
 
   /**
@@ -855,65 +855,65 @@ export class ApiPermissionsSwagApi {
    * @return OK
    */
   getTree(cancelToken?: CancelToken): Promise<ApiPermissionTreeNodeDTOListResult> {
-    let url_ = this.baseUrl + "/api/ApiPermissions/tree";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ApiPermissions/tree'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetTree(_response);
-      });
+        return this.processGetTree(_response)
+      })
   }
 
   protected processGetTree(response: AxiosResponse): Promise<ApiPermissionTreeNodeDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ApiPermissionTreeNodeDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ApiPermissionTreeNodeDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ApiPermissionTreeNodeDTOListResult>(null as any);
+    return Promise.resolve<ApiPermissionTreeNodeDTOListResult>(null as any)
   }
 }
 
 export class AuthSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -922,57 +922,57 @@ export class AuthSwagApi {
    * @return OK
    */
   login(body: LoginRequestDTO | undefined, cancelToken?: CancelToken): Promise<LoginResponseDTOResult> {
-    let url_ = this.baseUrl + "/api/Auth/login";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Auth/login'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processLogin(_response);
-      });
+        return this.processLogin(_response)
+      })
   }
 
   protected processLogin(response: AxiosResponse): Promise<LoginResponseDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<LoginResponseDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<LoginResponseDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<LoginResponseDTOResult>(null as any);
+    return Promise.resolve<LoginResponseDTOResult>(null as any)
   }
 
   /**
@@ -980,53 +980,53 @@ export class AuthSwagApi {
    * @return OK
    */
   logout(cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Auth/logout";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Auth/logout'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processLogout(_response);
-      });
+        return this.processLogout(_response)
+      })
   }
 
   protected processLogout(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1034,53 +1034,53 @@ export class AuthSwagApi {
    * @return OK
    */
   getCurrentUser(cancelToken?: CancelToken): Promise<UserInfoDTOResult> {
-    let url_ = this.baseUrl + "/api/Auth/me";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Auth/me'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetCurrentUser(_response);
-      });
+        return this.processGetCurrentUser(_response)
+      })
   }
 
   protected processGetCurrentUser(response: AxiosResponse): Promise<UserInfoDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<UserInfoDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<UserInfoDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<UserInfoDTOResult>(null as any);
+    return Promise.resolve<UserInfoDTOResult>(null as any)
   }
 
   /**
@@ -1089,57 +1089,57 @@ export class AuthSwagApi {
    * @return OK
    */
   refreshToken(body: RefreshTokenRequestDTO | undefined, cancelToken?: CancelToken): Promise<LoginResponseDTOResult> {
-    let url_ = this.baseUrl + "/api/Auth/refresh";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Auth/refresh'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRefreshToken(_response);
-      });
+        return this.processRefreshToken(_response)
+      })
   }
 
   protected processRefreshToken(response: AxiosResponse): Promise<LoginResponseDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<LoginResponseDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<LoginResponseDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<LoginResponseDTOResult>(null as any);
+    return Promise.resolve<LoginResponseDTOResult>(null as any)
   }
 
   /**
@@ -1148,69 +1148,69 @@ export class AuthSwagApi {
    * @return OK
    */
   register(body: RegisterRequestDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Auth/register";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Auth/register'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRegister(_response);
-      });
+        return this.processRegister(_response)
+      })
   }
 
   protected processRegister(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 }
 
 export class ButtonPermissionsSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -1218,53 +1218,53 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   getList(cancelToken?: CancelToken): Promise<ButtonPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetList(_response);
-      });
+        return this.processGetList(_response)
+      })
   }
 
   protected processGetList(response: AxiosResponse): Promise<ButtonPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ButtonPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ButtonPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ButtonPermissionListDTOListResult>(null as any);
+    return Promise.resolve<ButtonPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -1273,57 +1273,57 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   create(body: ButtonPermissionCreateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate(_response);
-      });
+        return this.processCreate(_response)
+      })
   }
 
   protected processCreate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1332,55 +1332,55 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   get(id: string, cancelToken?: CancelToken): Promise<ButtonPermissionDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+        return this.processGet(_response)
+      })
   }
 
   protected processGet(response: AxiosResponse): Promise<ButtonPermissionDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ButtonPermissionDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ButtonPermissionDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ButtonPermissionDetailDTOResult>(null as any);
+    return Promise.resolve<ButtonPermissionDetailDTOResult>(null as any)
   }
 
   /**
@@ -1390,59 +1390,59 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   update(id: string, body: ButtonPermissionUpdateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate(_response);
-      });
+        return this.processUpdate(_response)
+      })
   }
 
   protected processUpdate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1451,55 +1451,55 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   delete(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete(_response);
-      });
+        return this.processDelete(_response)
+      })
   }
 
   protected processDelete(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1508,55 +1508,55 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   restore(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{id}/restore";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{id}/restore'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore(_response);
-      });
+        return this.processRestore(_response)
+      })
   }
 
   protected processRestore(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1564,56 +1564,56 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   getAllChildren(permissionId: string, cancelToken?: CancelToken): Promise<ButtonPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{permissionId}/children";
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{permissionId}/children'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetAllChildren(_response);
-      });
+        return this.processGetAllChildren(_response)
+      })
   }
 
   protected processGetAllChildren(response: AxiosResponse): Promise<ButtonPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ButtonPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ButtonPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ButtonPermissionListDTOListResult>(null as any);
+    return Promise.resolve<ButtonPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -1624,62 +1624,62 @@ export class ButtonPermissionsSwagApi {
   movePermission(
     permissionId: string,
     body: MoveNodeDTO | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/{permissionId}/move";
+    let url_ = this.baseUrl + '/api/ButtonPermissions/{permissionId}/move'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processMovePermission(_response);
-      });
+        return this.processMovePermission(_response)
+      })
   }
 
   protected processMovePermission(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1688,57 +1688,57 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   create2(body: ButtonPermissionCreateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate2(_response);
-      });
+        return this.processCreate2(_response)
+      })
   }
 
   protected processCreate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1747,57 +1747,57 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   update2(body: ButtonPermissionUpdateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate2(_response);
-      });
+        return this.processUpdate2(_response)
+      })
   }
 
   protected processUpdate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1806,57 +1806,57 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   delete2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete2(_response);
-      });
+        return this.processDelete2(_response)
+      })
   }
 
   protected processDelete2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1865,57 +1865,57 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   restore2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/batch/restore";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/batch/restore'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore2(_response);
-      });
+        return this.processRestore2(_response)
+      })
   }
 
   protected processRestore2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -1927,59 +1927,59 @@ export class ButtonPermissionsSwagApi {
   getPaged(
     page: number | undefined,
     size: number | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<ButtonPermissionPagedDTOPagedResponseResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/paged?";
-    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.");
-    else if (page !== undefined) url_ += "page=" + encodeURIComponent("" + page) + "&";
-    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.");
-    else if (size !== undefined) url_ += "size=" + encodeURIComponent("" + size) + "&";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/paged?'
+    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.")
+    else if (page !== undefined) url_ += 'page=' + encodeURIComponent('' + page) + '&'
+    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.")
+    else if (size !== undefined) url_ += 'size=' + encodeURIComponent('' + size) + '&'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetPaged(_response);
-      });
+        return this.processGetPaged(_response)
+      })
   }
 
   protected processGetPaged(response: AxiosResponse): Promise<ButtonPermissionPagedDTOPagedResponseResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ButtonPermissionPagedDTOPagedResponseResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ButtonPermissionPagedDTOPagedResponseResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ButtonPermissionPagedDTOPagedResponseResult>(null as any);
+    return Promise.resolve<ButtonPermissionPagedDTOPagedResponseResult>(null as any)
   }
 
   /**
@@ -1987,65 +1987,65 @@ export class ButtonPermissionsSwagApi {
    * @return OK
    */
   getTree(cancelToken?: CancelToken): Promise<ButtonPermissionTreeNodeDTOListResult> {
-    let url_ = this.baseUrl + "/api/ButtonPermissions/tree";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/ButtonPermissions/tree'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetTree(_response);
-      });
+        return this.processGetTree(_response)
+      })
   }
 
   protected processGetTree(response: AxiosResponse): Promise<ButtonPermissionTreeNodeDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<ButtonPermissionTreeNodeDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<ButtonPermissionTreeNodeDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<ButtonPermissionTreeNodeDTOListResult>(null as any);
+    return Promise.resolve<ButtonPermissionTreeNodeDTOListResult>(null as any)
   }
 }
 
 export class MenuPermissionsSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -2053,53 +2053,53 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   getList(cancelToken?: CancelToken): Promise<MenuPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetList(_response);
-      });
+        return this.processGetList(_response)
+      })
   }
 
   protected processGetList(response: AxiosResponse): Promise<MenuPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionListDTOListResult>(null as any);
+    return Promise.resolve<MenuPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -2108,57 +2108,57 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   create(body: MenuPermissionCreateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate(_response);
-      });
+        return this.processCreate(_response)
+      })
   }
 
   protected processCreate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2167,55 +2167,55 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   get(id: string, cancelToken?: CancelToken): Promise<MenuPermissionDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+        return this.processGet(_response)
+      })
   }
 
   protected processGet(response: AxiosResponse): Promise<MenuPermissionDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionDetailDTOResult>(null as any);
+    return Promise.resolve<MenuPermissionDetailDTOResult>(null as any)
   }
 
   /**
@@ -2225,59 +2225,59 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   update(id: string, body: MenuPermissionUpdateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate(_response);
-      });
+        return this.processUpdate(_response)
+      })
   }
 
   protected processUpdate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2286,55 +2286,55 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   delete(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete(_response);
-      });
+        return this.processDelete(_response)
+      })
   }
 
   protected processDelete(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2343,55 +2343,55 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   restore(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{id}/restore";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/{id}/restore'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore(_response);
-      });
+        return this.processRestore(_response)
+      })
   }
 
   protected processRestore(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2399,56 +2399,56 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   getAllChildren(permissionId: string, cancelToken?: CancelToken): Promise<MenuPermissionListDTOListResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{permissionId}/children";
+    let url_ = this.baseUrl + '/api/MenuPermissions/{permissionId}/children'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetAllChildren(_response);
-      });
+        return this.processGetAllChildren(_response)
+      })
   }
 
   protected processGetAllChildren(response: AxiosResponse): Promise<MenuPermissionListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionListDTOListResult>(null as any);
+    return Promise.resolve<MenuPermissionListDTOListResult>(null as any)
   }
 
   /**
@@ -2459,62 +2459,62 @@ export class MenuPermissionsSwagApi {
   movePermission(
     permissionId: string,
     body: MoveNodeDTO | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/{permissionId}/move";
+    let url_ = this.baseUrl + '/api/MenuPermissions/{permissionId}/move'
     if (permissionId === undefined || permissionId === null)
-      throw new globalThis.Error("The parameter 'permissionId' must be defined.");
-    url_ = url_.replace("{permissionId}", encodeURIComponent("" + permissionId));
-    url_ = url_.replace(/[?&]$/, "");
+      throw new globalThis.Error("The parameter 'permissionId' must be defined.")
+    url_ = url_.replace('{permissionId}', encodeURIComponent('' + permissionId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processMovePermission(_response);
-      });
+        return this.processMovePermission(_response)
+      })
   }
 
   protected processMovePermission(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2523,57 +2523,57 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   create2(body: MenuPermissionCreateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate2(_response);
-      });
+        return this.processCreate2(_response)
+      })
   }
 
   protected processCreate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2582,57 +2582,57 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   update2(body: MenuPermissionUpdateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate2(_response);
-      });
+        return this.processUpdate2(_response)
+      })
   }
 
   protected processUpdate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2641,57 +2641,57 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   delete2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete2(_response);
-      });
+        return this.processDelete2(_response)
+      })
   }
 
   protected processDelete2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2700,57 +2700,57 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   restore2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/batch/restore";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/batch/restore'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore2(_response);
-      });
+        return this.processRestore2(_response)
+      })
   }
 
   protected processRestore2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -2762,59 +2762,59 @@ export class MenuPermissionsSwagApi {
   getPaged(
     page: number | undefined,
     size: number | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<MenuPermissionPagedDTOPagedResponseResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/paged?";
-    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.");
-    else if (page !== undefined) url_ += "page=" + encodeURIComponent("" + page) + "&";
-    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.");
-    else if (size !== undefined) url_ += "size=" + encodeURIComponent("" + size) + "&";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/paged?'
+    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.")
+    else if (page !== undefined) url_ += 'page=' + encodeURIComponent('' + page) + '&'
+    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.")
+    else if (size !== undefined) url_ += 'size=' + encodeURIComponent('' + size) + '&'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetPaged(_response);
-      });
+        return this.processGetPaged(_response)
+      })
   }
 
   protected processGetPaged(response: AxiosResponse): Promise<MenuPermissionPagedDTOPagedResponseResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionPagedDTOPagedResponseResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionPagedDTOPagedResponseResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionPagedDTOPagedResponseResult>(null as any);
+    return Promise.resolve<MenuPermissionPagedDTOPagedResponseResult>(null as any)
   }
 
   /**
@@ -2822,65 +2822,65 @@ export class MenuPermissionsSwagApi {
    * @return OK
    */
   getTree(cancelToken?: CancelToken): Promise<MenuPermissionTreeNodeDTOListResult> {
-    let url_ = this.baseUrl + "/api/MenuPermissions/tree";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/MenuPermissions/tree'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetTree(_response);
-      });
+        return this.processGetTree(_response)
+      })
   }
 
   protected processGetTree(response: AxiosResponse): Promise<MenuPermissionTreeNodeDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionTreeNodeDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionTreeNodeDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionTreeNodeDTOListResult>(null as any);
+    return Promise.resolve<MenuPermissionTreeNodeDTOListResult>(null as any)
   }
 }
 
 export class RolesSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -2888,53 +2888,53 @@ export class RolesSwagApi {
    * @return OK
    */
   getList(cancelToken?: CancelToken): Promise<RoleListDTOListResult> {
-    let url_ = this.baseUrl + "/api/Roles";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetList(_response);
-      });
+        return this.processGetList(_response)
+      })
   }
 
   protected processGetList(response: AxiosResponse): Promise<RoleListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleListDTOListResult>(null as any);
+    return Promise.resolve<RoleListDTOListResult>(null as any)
   }
 
   /**
@@ -2943,57 +2943,57 @@ export class RolesSwagApi {
    * @return OK
    */
   create(body: RoleCreateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate(_response);
-      });
+        return this.processCreate(_response)
+      })
   }
 
   protected processCreate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3002,55 +3002,55 @@ export class RolesSwagApi {
    * @return OK
    */
   get(id: string, cancelToken?: CancelToken): Promise<RoleDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/Roles/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+        return this.processGet(_response)
+      })
   }
 
   protected processGet(response: AxiosResponse): Promise<RoleDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleDetailDTOResult>(null as any);
+    return Promise.resolve<RoleDetailDTOResult>(null as any)
   }
 
   /**
@@ -3060,59 +3060,59 @@ export class RolesSwagApi {
    * @return OK
    */
   update(id: string, body: RoleUpdateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate(_response);
-      });
+        return this.processUpdate(_response)
+      })
   }
 
   protected processUpdate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3121,55 +3121,55 @@ export class RolesSwagApi {
    * @return OK
    */
   delete(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete(_response);
-      });
+        return this.processDelete(_response)
+      })
   }
 
   protected processDelete(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3178,55 +3178,55 @@ export class RolesSwagApi {
    * @return OK
    */
   restore(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{id}/restore";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{id}/restore'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore(_response);
-      });
+        return this.processRestore(_response)
+      })
   }
 
   protected processRestore(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3235,55 +3235,55 @@ export class RolesSwagApi {
    * @return OK
    */
   getAllChildren(roleId: string, cancelToken?: CancelToken): Promise<RoleListDTOListResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/children";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/children'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetAllChildren(_response);
-      });
+        return this.processGetAllChildren(_response)
+      })
   }
 
   protected processGetAllChildren(response: AxiosResponse): Promise<RoleListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleListDTOListResult>(null as any);
+    return Promise.resolve<RoleListDTOListResult>(null as any)
   }
 
   /**
@@ -3292,55 +3292,55 @@ export class RolesSwagApi {
    * @return OK
    */
   getInheritanceChain(roleId: string, cancelToken?: CancelToken): Promise<RoleDetailDTOListResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/inheritance-chain";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/inheritance-chain'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetInheritanceChain(_response);
-      });
+        return this.processGetInheritanceChain(_response)
+      })
   }
 
   protected processGetInheritanceChain(response: AxiosResponse): Promise<RoleDetailDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleDetailDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleDetailDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleDetailDTOListResult>(null as any);
+    return Promise.resolve<RoleDetailDTOListResult>(null as any)
   }
 
   /**
@@ -3350,59 +3350,59 @@ export class RolesSwagApi {
    * @return OK
    */
   moveRole(roleId: string, body: MoveNodeDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/move";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/move'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processMoveRole(_response);
-      });
+        return this.processMoveRole(_response)
+      })
   }
 
   protected processMoveRole(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3412,59 +3412,59 @@ export class RolesSwagApi {
    * @return OK
    */
   setParentRole(roleId: string, body: string | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/parent";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/parent'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processSetParentRole(_response);
-      });
+        return this.processSetParentRole(_response)
+      })
   }
 
   protected processSetParentRole(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3473,55 +3473,55 @@ export class RolesSwagApi {
    * @return OK
    */
   getRoleWithAllPermissions(roleId: string, cancelToken?: CancelToken): Promise<RoleDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/permissions";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/permissions'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetRoleWithAllPermissions(_response);
-      });
+        return this.processGetRoleWithAllPermissions(_response)
+      })
   }
 
   protected processGetRoleWithAllPermissions(response: AxiosResponse): Promise<RoleDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleDetailDTOResult>(null as any);
+    return Promise.resolve<RoleDetailDTOResult>(null as any)
   }
 
   /**
@@ -3531,59 +3531,59 @@ export class RolesSwagApi {
    * @return OK
    */
   assignPermissions(roleId: string, body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/{roleId}/permissions";
-    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.");
-    url_ = url_.replace("{roleId}", encodeURIComponent("" + roleId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/{roleId}/permissions'
+    if (roleId === undefined || roleId === null) throw new globalThis.Error("The parameter 'roleId' must be defined.")
+    url_ = url_.replace('{roleId}', encodeURIComponent('' + roleId))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processAssignPermissions(_response);
-      });
+        return this.processAssignPermissions(_response)
+      })
   }
 
   protected processAssignPermissions(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3592,57 +3592,57 @@ export class RolesSwagApi {
    * @return OK
    */
   create2(body: RoleCreateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate2(_response);
-      });
+        return this.processCreate2(_response)
+      })
   }
 
   protected processCreate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3651,57 +3651,57 @@ export class RolesSwagApi {
    * @return OK
    */
   update2(body: RoleUpdateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate2(_response);
-      });
+        return this.processUpdate2(_response)
+      })
   }
 
   protected processUpdate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3710,57 +3710,57 @@ export class RolesSwagApi {
    * @return OK
    */
   delete2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete2(_response);
-      });
+        return this.processDelete2(_response)
+      })
   }
 
   protected processDelete2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3769,57 +3769,57 @@ export class RolesSwagApi {
    * @return OK
    */
   restore2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/batch/restore";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/batch/restore'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore2(_response);
-      });
+        return this.processRestore2(_response)
+      })
   }
 
   protected processRestore2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3828,55 +3828,55 @@ export class RolesSwagApi {
    * @return OK
    */
   findByCode(code: string, cancelToken?: CancelToken): Promise<RoleDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/Roles/code/{code}";
-    if (code === undefined || code === null) throw new globalThis.Error("The parameter 'code' must be defined.");
-    url_ = url_.replace("{code}", encodeURIComponent("" + code));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/code/{code}'
+    if (code === undefined || code === null) throw new globalThis.Error("The parameter 'code' must be defined.")
+    url_ = url_.replace('{code}', encodeURIComponent('' + code))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processFindByCode(_response);
-      });
+        return this.processFindByCode(_response)
+      })
   }
 
   protected processFindByCode(response: AxiosResponse): Promise<RoleDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleDetailDTOResult>(null as any);
+    return Promise.resolve<RoleDetailDTOResult>(null as any)
   }
 
   /**
@@ -3885,55 +3885,55 @@ export class RolesSwagApi {
    * @return OK
    */
   isCodeExists(code: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Roles/code/{code}/exists";
-    if (code === undefined || code === null) throw new globalThis.Error("The parameter 'code' must be defined.");
-    url_ = url_.replace("{code}", encodeURIComponent("" + code));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/code/{code}/exists'
+    if (code === undefined || code === null) throw new globalThis.Error("The parameter 'code' must be defined.")
+    url_ = url_.replace('{code}', encodeURIComponent('' + code))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processIsCodeExists(_response);
-      });
+        return this.processIsCodeExists(_response)
+      })
   }
 
   protected processIsCodeExists(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -3945,59 +3945,59 @@ export class RolesSwagApi {
   getPaged(
     page: number | undefined,
     size: number | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<RolePagedDTOPagedResponseResult> {
-    let url_ = this.baseUrl + "/api/Roles/paged?";
-    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.");
-    else if (page !== undefined) url_ += "page=" + encodeURIComponent("" + page) + "&";
-    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.");
-    else if (size !== undefined) url_ += "size=" + encodeURIComponent("" + size) + "&";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/paged?'
+    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.")
+    else if (page !== undefined) url_ += 'page=' + encodeURIComponent('' + page) + '&'
+    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.")
+    else if (size !== undefined) url_ += 'size=' + encodeURIComponent('' + size) + '&'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetPaged(_response);
-      });
+        return this.processGetPaged(_response)
+      })
   }
 
   protected processGetPaged(response: AxiosResponse): Promise<RolePagedDTOPagedResponseResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RolePagedDTOPagedResponseResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RolePagedDTOPagedResponseResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RolePagedDTOPagedResponseResult>(null as any);
+    return Promise.resolve<RolePagedDTOPagedResponseResult>(null as any)
   }
 
   /**
@@ -4005,65 +4005,65 @@ export class RolesSwagApi {
    * @return OK
    */
   getTree(cancelToken?: CancelToken): Promise<RoleTreeNodeDTOListResult> {
-    let url_ = this.baseUrl + "/api/Roles/tree";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Roles/tree'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetTree(_response);
-      });
+        return this.processGetTree(_response)
+      })
   }
 
   protected processGetTree(response: AxiosResponse): Promise<RoleTreeNodeDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<RoleTreeNodeDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<RoleTreeNodeDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<RoleTreeNodeDTOListResult>(null as any);
+    return Promise.resolve<RoleTreeNodeDTOListResult>(null as any)
   }
 }
 
 export class UserPermissionsSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -4071,53 +4071,53 @@ export class UserPermissionsSwagApi {
    * @return OK
    */
   getUserPermissions(cancelToken?: CancelToken): Promise<UserPermissionInfoDTOResult> {
-    let url_ = this.baseUrl + "/api/UserPermissions/all";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/UserPermissions/all'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetUserPermissions(_response);
-      });
+        return this.processGetUserPermissions(_response)
+      })
   }
 
   protected processGetUserPermissions(response: AxiosResponse): Promise<UserPermissionInfoDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<UserPermissionInfoDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<UserPermissionInfoDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<UserPermissionInfoDTOResult>(null as any);
+    return Promise.resolve<UserPermissionInfoDTOResult>(null as any)
   }
 
   /**
@@ -4125,53 +4125,53 @@ export class UserPermissionsSwagApi {
    * @return OK
    */
   getUserButtons(cancelToken?: CancelToken): Promise<StringListResult> {
-    let url_ = this.baseUrl + "/api/UserPermissions/buttons";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/UserPermissions/buttons'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetUserButtons(_response);
-      });
+        return this.processGetUserButtons(_response)
+      })
   }
 
   protected processGetUserButtons(response: AxiosResponse): Promise<StringListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<StringListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<StringListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<StringListResult>(null as any);
+    return Promise.resolve<StringListResult>(null as any)
   }
 
   /**
@@ -4180,55 +4180,55 @@ export class UserPermissionsSwagApi {
    * @return OK
    */
   getUserButtonsById(userId: string, cancelToken?: CancelToken): Promise<StringListResult> {
-    let url_ = this.baseUrl + "/api/UserPermissions/buttons/{userId}";
-    if (userId === undefined || userId === null) throw new globalThis.Error("The parameter 'userId' must be defined.");
-    url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/UserPermissions/buttons/{userId}'
+    if (userId === undefined || userId === null) throw new globalThis.Error("The parameter 'userId' must be defined.")
+    url_ = url_.replace('{userId}', encodeURIComponent('' + userId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetUserButtonsById(_response);
-      });
+        return this.processGetUserButtonsById(_response)
+      })
   }
 
   protected processGetUserButtonsById(response: AxiosResponse): Promise<StringListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<StringListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<StringListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<StringListResult>(null as any);
+    return Promise.resolve<StringListResult>(null as any)
   }
 
   /**
@@ -4236,53 +4236,53 @@ export class UserPermissionsSwagApi {
    * @return OK
    */
   getUserMenus(cancelToken?: CancelToken): Promise<MenuPermissionDTOListResult> {
-    let url_ = this.baseUrl + "/api/UserPermissions/menus";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/UserPermissions/menus'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetUserMenus(_response);
-      });
+        return this.processGetUserMenus(_response)
+      })
   }
 
   protected processGetUserMenus(response: AxiosResponse): Promise<MenuPermissionDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionDTOListResult>(null as any);
+    return Promise.resolve<MenuPermissionDTOListResult>(null as any)
   }
 
   /**
@@ -4291,67 +4291,67 @@ export class UserPermissionsSwagApi {
    * @return OK
    */
   getUserMenusById(userId: string, cancelToken?: CancelToken): Promise<MenuPermissionDTOListResult> {
-    let url_ = this.baseUrl + "/api/UserPermissions/menus/{userId}";
-    if (userId === undefined || userId === null) throw new globalThis.Error("The parameter 'userId' must be defined.");
-    url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/UserPermissions/menus/{userId}'
+    if (userId === undefined || userId === null) throw new globalThis.Error("The parameter 'userId' must be defined.")
+    url_ = url_.replace('{userId}', encodeURIComponent('' + userId))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetUserMenusById(_response);
-      });
+        return this.processGetUserMenusById(_response)
+      })
   }
 
   protected processGetUserMenusById(response: AxiosResponse): Promise<MenuPermissionDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<MenuPermissionDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<MenuPermissionDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<MenuPermissionDTOListResult>(null as any);
+    return Promise.resolve<MenuPermissionDTOListResult>(null as any)
   }
 }
 
 export class UsersSwagApi {
-  protected instance: AxiosInstance;
-  protected baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  protected instance: AxiosInstance
+  protected baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
   constructor(baseUrl?: string, instance?: AxiosInstance) {
-    this.instance = instance || axios.create();
+    this.instance = instance || axios.create()
 
-    this.baseUrl = baseUrl ?? "";
+    this.baseUrl = baseUrl ?? ''
   }
 
   /**
@@ -4359,53 +4359,53 @@ export class UsersSwagApi {
    * @return OK
    */
   getList(cancelToken?: CancelToken): Promise<UserListDTOListResult> {
-    let url_ = this.baseUrl + "/api/Users";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetList(_response);
-      });
+        return this.processGetList(_response)
+      })
   }
 
   protected processGetList(response: AxiosResponse): Promise<UserListDTOListResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<UserListDTOListResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<UserListDTOListResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<UserListDTOListResult>(null as any);
+    return Promise.resolve<UserListDTOListResult>(null as any)
   }
 
   /**
@@ -4414,57 +4414,57 @@ export class UsersSwagApi {
    * @return OK
    */
   create(body: UserCreateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate(_response);
-      });
+        return this.processCreate(_response)
+      })
   }
 
   protected processCreate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4473,55 +4473,55 @@ export class UsersSwagApi {
    * @return OK
    */
   get(id: string, cancelToken?: CancelToken): Promise<UserDetailDTOResult> {
-    let url_ = this.baseUrl + "/api/Users/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+        return this.processGet(_response)
+      })
   }
 
   protected processGet(response: AxiosResponse): Promise<UserDetailDTOResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<UserDetailDTOResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<UserDetailDTOResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<UserDetailDTOResult>(null as any);
+    return Promise.resolve<UserDetailDTOResult>(null as any)
   }
 
   /**
@@ -4531,59 +4531,59 @@ export class UsersSwagApi {
    * @return OK
    */
   update(id: string, body: UserUpdateDTO | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate(_response);
-      });
+        return this.processUpdate(_response)
+      })
   }
 
   protected processUpdate(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4592,55 +4592,55 @@ export class UsersSwagApi {
    * @return OK
    */
   delete(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/{id}";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/{id}'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete(_response);
-      });
+        return this.processDelete(_response)
+      })
   }
 
   protected processDelete(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4649,55 +4649,55 @@ export class UsersSwagApi {
    * @return OK
    */
   restore(id: string, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/{id}/restore";
-    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/{id}/restore'
+    if (id === undefined || id === null) throw new globalThis.Error("The parameter 'id' must be defined.")
+    url_ = url_.replace('{id}', encodeURIComponent('' + id))
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore(_response);
-      });
+        return this.processRestore(_response)
+      })
   }
 
   protected processRestore(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4706,57 +4706,57 @@ export class UsersSwagApi {
    * @return OK
    */
   create2(body: UserCreateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "POST",
+      method: 'POST',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processCreate2(_response);
-      });
+        return this.processCreate2(_response)
+      })
   }
 
   protected processCreate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4765,57 +4765,57 @@ export class UsersSwagApi {
    * @return OK
    */
   update2(body: UserUpdateDTO[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processUpdate2(_response);
-      });
+        return this.processUpdate2(_response)
+      })
   }
 
   protected processUpdate2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4824,57 +4824,57 @@ export class UsersSwagApi {
    * @return OK
    */
   delete2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/batch";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/batch'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "DELETE",
+      method: 'DELETE',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDelete2(_response);
-      });
+        return this.processDelete2(_response)
+      })
   }
 
   protected processDelete2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4883,57 +4883,57 @@ export class UsersSwagApi {
    * @return OK
    */
   restore2(body: string[] | undefined, cancelToken?: CancelToken): Promise<BooleanResult> {
-    let url_ = this.baseUrl + "/api/Users/batch/restore";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/batch/restore'
+    url_ = url_.replace(/[?&]$/, '')
 
-    const content_ = JSON.stringify(body);
+    const content_ = JSON.stringify(body)
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: "PUT",
+      method: 'PUT',
       url: url_,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processRestore2(_response);
-      });
+        return this.processRestore2(_response)
+      })
   }
 
   protected processRestore2(response: AxiosResponse): Promise<BooleanResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<BooleanResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<BooleanResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<BooleanResult>(null as any);
+    return Promise.resolve<BooleanResult>(null as any)
   }
 
   /**
@@ -4945,1475 +4945,1475 @@ export class UsersSwagApi {
   getPaged(
     page: number | undefined,
     size: number | undefined,
-    cancelToken?: CancelToken,
+    cancelToken?: CancelToken
   ): Promise<UserPagedDTOPagedResponseResult> {
-    let url_ = this.baseUrl + "/api/Users/paged?";
-    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.");
-    else if (page !== undefined) url_ += "page=" + encodeURIComponent("" + page) + "&";
-    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.");
-    else if (size !== undefined) url_ += "size=" + encodeURIComponent("" + size) + "&";
-    url_ = url_.replace(/[?&]$/, "");
+    let url_ = this.baseUrl + '/api/Users/paged?'
+    if (page === null) throw new globalThis.Error("The parameter 'page' cannot be null.")
+    else if (page !== undefined) url_ += 'page=' + encodeURIComponent('' + page) + '&'
+    if (size === null) throw new globalThis.Error("The parameter 'size' cannot be null.")
+    else if (size !== undefined) url_ += 'size=' + encodeURIComponent('' + size) + '&'
+    url_ = url_.replace(/[?&]$/, '')
 
     let options_: AxiosRequestConfig = {
-      method: "GET",
+      method: 'GET',
       url: url_,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
       cancelToken,
-    };
+    }
 
     return this.instance
       .request(options_)
       .catch((_error: any) => {
         if (isAxiosError(_error) && _error.response) {
-          return _error.response;
+          return _error.response
         } else {
-          throw _error;
+          throw _error
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processGetPaged(_response);
-      });
+        return this.processGetPaged(_response)
+      })
   }
 
   protected processGetPaged(response: AxiosResponse): Promise<UserPagedDTOPagedResponseResult> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && typeof response.headers === 'object') {
       for (const k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
+          _headers[k] = response.headers[k]
         }
       }
     }
     if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = JSON.parse(resultData200);
-      return Promise.resolve<UserPagedDTOPagedResponseResult>(result200);
+      const _responseText = response.data
+      let result200: any = null
+      let resultData200 = _responseText
+      result200 = JSON.parse(resultData200)
+      return Promise.resolve<UserPagedDTOPagedResponseResult>(result200)
     } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+      const _responseText = response.data
+      return throwException('An unexpected server error occurred.', status, _responseText, _headers)
     }
-    return Promise.resolve<UserPagedDTOPagedResponseResult>(null as any);
+    return Promise.resolve<UserPagedDTOPagedResponseResult>(null as any)
   }
 }
 
 /** API 权限创建 DTO */
 export interface ApiPermissionCreateDTO {
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法（GET/POST/PUT/DELETE） */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** API 权限详情 DTO */
 export interface ApiPermissionDetailDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法 */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface ApiPermissionDetailDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ApiPermissionDetailDTO | null;
+  data: ApiPermissionDetailDTO | null
 }
 
 /** API 权限列表 DTO */
 export interface ApiPermissionListDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法 */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface ApiPermissionListDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ApiPermissionListDTO[] | null;
+  data: ApiPermissionListDTO[] | null
 }
 
 /** API 权限分页 DTO */
 export interface ApiPermissionPagedDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法 */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 分页响应类 */
 export interface ApiPermissionPagedDTOPagedResponse {
   /** 数据列表 */
-  items: ApiPermissionPagedDTO[];
+  items: ApiPermissionPagedDTO[]
   /** 总记录数 */
-  total: number;
+  total: number
   /** 当前页码 */
-  page: number;
+  page: number
   /** 每页大小 */
-  size: number;
+  size: number
   /** 总页数 */
-  readonly pages: number;
+  readonly pages: number
   /** 是否有上一页 */
-  readonly hasPrevious: boolean;
+  readonly hasPrevious: boolean
   /** 是否有下一页 */
-  readonly hasNext: boolean;
+  readonly hasNext: boolean
 }
 
 /** 统一返回结果类（泛型） */
 export interface ApiPermissionPagedDTOPagedResponseResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 分页响应类 */
-  data: ApiPermissionPagedDTOPagedResponse | null;
+  data: ApiPermissionPagedDTOPagedResponse | null
 }
 
 /** API 权限树形节点 DTO */
 export interface ApiPermissionTreeNodeDTO {
   /** 节点 ID */
-  id: string;
+  id: string
   /** 节点名称 */
-  name: string;
+  name: string
   /** 节点编码 */
-  code: string;
+  code: string
   /** 父节点 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 子节点列表 */
-  children: ApiPermissionTreeNodeDTO[];
+  children: ApiPermissionTreeNodeDTO[]
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法 */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
 }
 
 /** 统一返回结果类（泛型） */
 export interface ApiPermissionTreeNodeDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ApiPermissionTreeNodeDTO[] | null;
+  data: ApiPermissionTreeNodeDTO[] | null
 }
 
 /** API 权限更新 DTO */
 export interface ApiPermissionUpdateDTO {
   /** ID */
-  id: string;
+  id: string
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** API 路径 */
-  apiPath: string;
+  apiPath: string
   /** HTTP 方法（GET/POST/PUT/DELETE） */
-  httpMethod: string;
+  httpMethod: string
   /** 模块名称 */
-  moduleName: string | null;
+  moduleName: string | null
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface BooleanResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: boolean;
+  data: boolean
 }
 
 /** 按钮权限创建 DTO */
 export interface ButtonPermissionCreateDTO {
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 按钮权限详情 DTO */
 export interface ButtonPermissionDetailDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface ButtonPermissionDetailDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ButtonPermissionDetailDTO | null;
+  data: ButtonPermissionDetailDTO | null
 }
 
 /** 按钮权限列表 DTO */
 export interface ButtonPermissionListDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface ButtonPermissionListDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ButtonPermissionListDTO[] | null;
+  data: ButtonPermissionListDTO[] | null
 }
 
 /** 按钮权限分页 DTO */
 export interface ButtonPermissionPagedDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 分页响应类 */
 export interface ButtonPermissionPagedDTOPagedResponse {
   /** 数据列表 */
-  items: ButtonPermissionPagedDTO[];
+  items: ButtonPermissionPagedDTO[]
   /** 总记录数 */
-  total: number;
+  total: number
   /** 当前页码 */
-  page: number;
+  page: number
   /** 每页大小 */
-  size: number;
+  size: number
   /** 总页数 */
-  readonly pages: number;
+  readonly pages: number
   /** 是否有上一页 */
-  readonly hasPrevious: boolean;
+  readonly hasPrevious: boolean
   /** 是否有下一页 */
-  readonly hasNext: boolean;
+  readonly hasNext: boolean
 }
 
 /** 统一返回结果类（泛型） */
 export interface ButtonPermissionPagedDTOPagedResponseResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 分页响应类 */
-  data: ButtonPermissionPagedDTOPagedResponse | null;
+  data: ButtonPermissionPagedDTOPagedResponse | null
 }
 
 /** 按钮权限树形节点 DTO */
 export interface ButtonPermissionTreeNodeDTO {
   /** 节点 ID */
-  id: string;
+  id: string
   /** 节点名称 */
-  name: string;
+  name: string
   /** 节点编码 */
-  code: string;
+  code: string
   /** 父节点 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 子节点列表 */
-  children: ButtonPermissionTreeNodeDTO[];
+  children: ButtonPermissionTreeNodeDTO[]
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
 }
 
 /** 统一返回结果类（泛型） */
 export interface ButtonPermissionTreeNodeDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: ButtonPermissionTreeNodeDTO[] | null;
+  data: ButtonPermissionTreeNodeDTO[] | null
 }
 
 /** 按钮权限更新 DTO */
 export interface ButtonPermissionUpdateDTO {
   /** ID */
-  id: string;
+  id: string
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** 操作类型 */
-  actionType: string;
+  actionType: string
   /** 关联的菜单权限 ID */
-  menuId: string | null;
+  menuId: string | null
 }
 
 /** 登录请求 DTO */
 export interface LoginRequestDTO {
   /** 邮箱（登录账号） */
-  email: string;
+  email: string
   /** 密码 */
-  password: string;
+  password: string
   /** 记住我 */
-  rememberMe: boolean;
+  rememberMe: boolean
 }
 
 /** 登录响应 DTO */
 export interface LoginResponseDTO {
   /** 访问令牌 */
-  accessToken: string;
+  accessToken: string
   /** 刷新令牌 */
-  refreshToken: string;
+  refreshToken: string
   /** 令牌类型（通常为 Bearer） */
-  tokenType: string;
+  tokenType: string
   /** 过期时间（秒） */
-  expiresIn: number;
+  expiresIn: number
   /** 用户信息 */
-  user: UserInfoDTO;
+  user: UserInfoDTO
 }
 
 /** 统一返回结果类（泛型） */
 export interface LoginResponseDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: LoginResponseDTO | null;
+  data: LoginResponseDTO | null
 }
 
 /** 菜单权限创建 DTO */
 export interface MenuPermissionCreateDTO {
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 菜单图标 */
-  icon: string | null;
+  icon: string | null
   /** 重定向地址 */
-  redirect: string | null;
+  redirect: string | null
   /** 元信息（JSON格式，用于存储菜单的额外配置） */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 菜单权限 DTO */
 export interface MenuPermissionDTO {
   /** 权限 ID */
-  id: string;
+  id: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 权限名称 */
-  name: string;
+  name: string
   /** 菜单路径 */
-  path: string | null;
+  path: string | null
   /** 图标 */
-  icon: string | null;
+  icon: string | null
   /** 组件 */
-  component: string | null;
+  component: string | null
   /** 父权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 是否可见 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 排序 */
-  sort: number;
+  sort: number
   /** 重定向地址 */
-  redirect: string | null;
+  redirect: string | null
   /** 是否缓存 */
-  keepAlive: boolean | null;
+  keepAlive: boolean | null
   /** 是否外部链接 */
-  isExternal: boolean | null;
+  isExternal: boolean | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface MenuPermissionDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: MenuPermissionDTO[] | null;
+  data: MenuPermissionDTO[] | null
 }
 
 /** 菜单权限详情 DTO */
 export interface MenuPermissionDetailDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否缓存 */
-  isCache: boolean;
+  isCache: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 元信息（JSON格式，用于存储菜单的额外配置） */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface MenuPermissionDetailDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: MenuPermissionDetailDTO | null;
+  data: MenuPermissionDetailDTO | null
 }
 
 /** 菜单权限列表 DTO */
 export interface MenuPermissionListDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否缓存 */
-  isCache: boolean;
+  isCache: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 元信息（JSON格式，用于存储菜单的额外配置） */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface MenuPermissionListDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: MenuPermissionListDTO[] | null;
+  data: MenuPermissionListDTO[] | null
 }
 
 /** 菜单权限分页 DTO */
 export interface MenuPermissionPagedDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父级权限名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  type: number;
+  type: number
   /** 排序 */
-  sort: number;
+  sort: number
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否缓存 */
-  isCache: boolean;
+  isCache: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 元信息（JSON格式，用于存储菜单的额外配置） */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 分页响应类 */
 export interface MenuPermissionPagedDTOPagedResponse {
   /** 数据列表 */
-  items: MenuPermissionPagedDTO[];
+  items: MenuPermissionPagedDTO[]
   /** 总记录数 */
-  total: number;
+  total: number
   /** 当前页码 */
-  page: number;
+  page: number
   /** 每页大小 */
-  size: number;
+  size: number
   /** 总页数 */
-  readonly pages: number;
+  readonly pages: number
   /** 是否有上一页 */
-  readonly hasPrevious: boolean;
+  readonly hasPrevious: boolean
   /** 是否有下一页 */
-  readonly hasNext: boolean;
+  readonly hasNext: boolean
 }
 
 /** 统一返回结果类（泛型） */
 export interface MenuPermissionPagedDTOPagedResponseResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 分页响应类 */
-  data: MenuPermissionPagedDTOPagedResponse | null;
+  data: MenuPermissionPagedDTOPagedResponse | null
 }
 
 /** 菜单权限树形节点 DTO */
 export interface MenuPermissionTreeNodeDTO {
   /** 节点 ID */
-  id: string;
+  id: string
   /** 节点名称 */
-  name: string;
+  name: string
   /** 节点编码 */
-  code: string;
+  code: string
   /** 父节点 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 子节点列表 */
-  children: MenuPermissionTreeNodeDTO[];
+  children: MenuPermissionTreeNodeDTO[]
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 菜单图标 */
-  icon: string | null;
+  icon: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 排序 */
-  sort: number;
+  sort: number
   /** 重定向地址 */
-  redirect: string | null;
+  redirect: string | null
   /** 元信息 */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface MenuPermissionTreeNodeDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: MenuPermissionTreeNodeDTO[] | null;
+  data: MenuPermissionTreeNodeDTO[] | null
 }
 
 /** 菜单权限更新 DTO */
 export interface MenuPermissionUpdateDTO {
   /** ID */
-  id: string;
+  id: string
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 权限名称 */
-  name: string;
+  name: string
   /** 权限编码 */
-  code: string;
+  code: string
   /** 父级权限 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 排序 */
-  sort: number;
+  sort: number
   /** 路由地址 */
-  path: string | null;
+  path: string | null
   /** 组件路径 */
-  component: string | null;
+  component: string | null
   /** 是否外链 */
-  isExternal: boolean;
+  isExternal: boolean
   /** 是否显示 */
-  isVisible: boolean;
+  isVisible: boolean
   /** 菜单图标 */
-  icon: string | null;
+  icon: string | null
   /** 重定向地址 */
-  redirect: string | null;
+  redirect: string | null
   /** 元信息（JSON格式，用于存储菜单的额外配置） */
-  meta: string | null;
+  meta: string | null
 }
 
 /** 移动节点请求 DTO */
 export interface MoveNodeDTO {
   /** 节点 ID */
-  nodeId: string;
+  nodeId: string
   /** 新的父节点 ID（null 表示移动到根级别） */
-  newParentId: string | null;
+  newParentId: string | null
 }
 
 /** 刷新令牌请求 DTO */
 export interface RefreshTokenRequestDTO {
   /** 访问令牌 */
-  accessToken: string;
+  accessToken: string
   /** 刷新令牌 */
-  refreshToken: string;
+  refreshToken: string
 }
 
 /** 注册请求 DTO */
 export interface RegisterRequestDTO {
   /** 邮箱 */
-  email: string;
+  email: string
   /** 密码 */
-  password: string;
+  password: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
 }
 
 /** 角色创建 DTO */
 export interface RoleCreateDTO {
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 父角色 ID（用于角色继承） */
-  parentId: string | null;
+  parentId: string | null
 }
 
 /** 角色详情 DTO（用于详细信息展示） */
 export interface RoleDetailDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 父角色 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父角色名称 */
-  parentName: string | null;
+  parentName: string | null
   /** 角色权限列表 */
-  permissions: RolePermissionResponseDTO[];
+  permissions: RolePermissionResponseDTO[]
   /** 继承链中的角色列表 */
-  inheritanceChain: RoleInheritanceDTO[];
+  inheritanceChain: RoleInheritanceDTO[]
 }
 
 /** 统一返回结果类（泛型） */
 export interface RoleDetailDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: RoleDetailDTO[] | null;
+  data: RoleDetailDTO[] | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface RoleDetailDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: RoleDetailDTO | null;
+  data: RoleDetailDTO | null
 }
 
 /** 角色继承信息 DTO */
 export interface RoleInheritanceDTO {
   /** 角色 ID */
-  id: string;
+  id: string
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 在继承链中的层级（0 表示当前角色，1 表示父角色，以此类推） */
-  level: number;
+  level: number
 }
 
 /** 角色列表 DTO（用于列表展示） */
 export interface RoleListDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 父角色 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父角色名称 */
-  parentName: string | null;
+  parentName: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface RoleListDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: RoleListDTO[] | null;
+  data: RoleListDTO[] | null
 }
 
 /** 角色分页 DTO（用于分页响应中的列表数据） */
 export interface RolePagedDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 父角色 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 父角色名称 */
-  parentName: string | null;
+  parentName: string | null
 }
 
 /** 分页响应类 */
 export interface RolePagedDTOPagedResponse {
   /** 数据列表 */
-  items: RolePagedDTO[];
+  items: RolePagedDTO[]
   /** 总记录数 */
-  total: number;
+  total: number
   /** 当前页码 */
-  page: number;
+  page: number
   /** 每页大小 */
-  size: number;
+  size: number
   /** 总页数 */
-  readonly pages: number;
+  readonly pages: number
   /** 是否有上一页 */
-  readonly hasPrevious: boolean;
+  readonly hasPrevious: boolean
   /** 是否有下一页 */
-  readonly hasNext: boolean;
+  readonly hasNext: boolean
 }
 
 /** 统一返回结果类（泛型） */
 export interface RolePagedDTOPagedResponseResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 分页响应类 */
-  data: RolePagedDTOPagedResponse | null;
+  data: RolePagedDTOPagedResponse | null
 }
 
 /** 角色权限响应 DTO（用于详情） */
 export interface RolePermissionResponseDTO {
   /** 关联 ID */
-  id: string;
+  id: string
   /** 角色 ID */
-  roleId: string;
+  roleId: string
   /** 角色名称 */
-  roleName: string;
+  roleName: string
   /** 角色编码 */
-  roleCode: string;
+  roleCode: string
   /** 权限 ID */
-  permissionId: string;
+  permissionId: string
   /** 权限名称 */
-  permissionName: string;
+  permissionName: string
   /** 权限编码 */
-  permissionCode: string;
+  permissionCode: string
   /** 权限类型（0=菜单，1=API，2=按钮） */
-  permissionType: number;
+  permissionType: number
 }
 
 /** 角色树形节点 DTO */
 export interface RoleTreeNodeDTO {
   /** 节点 ID */
-  id: string;
+  id: string
   /** 节点名称 */
-  name: string;
+  name: string
   /** 节点编码 */
-  code: string;
+  code: string
   /** 父节点 ID */
-  parentId: string | null;
+  parentId: string | null
   /** 子节点列表 */
-  children: RoleTreeNodeDTO[];
+  children: RoleTreeNodeDTO[]
   /** 角色拥有的权限数量 */
-  permissionCount: number;
+  permissionCount: number
   /** 角色关联的用户数量 */
-  userCount: number;
+  userCount: number
 }
 
 /** 统一返回结果类（泛型） */
 export interface RoleTreeNodeDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: RoleTreeNodeDTO[] | null;
+  data: RoleTreeNodeDTO[] | null
 }
 
 /** 角色更新 DTO */
 export interface RoleUpdateDTO {
   /** ID */
-  id: string;
+  id: string
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 角色编码 */
-  code: string;
+  code: string
   /** 角色名称 */
-  name: string;
+  name: string
   /** 父角色 ID（用于角色继承） */
-  parentId: string | null;
+  parentId: string | null
 }
 
 /** 统一返回结果类（泛型） */
 export interface StringListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: string[] | null;
+  data: string[] | null
 }
 
 /** 用户创建 DTO */
 export interface UserCreateDTO {
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 密码 */
-  password: string;
+  password: string
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
   /** 头像 URL */
-  avatarUrl: string | null;
+  avatarUrl: string | null
 }
 
 /** 用户详情 DTO（用于详细信息展示） */
 export interface UserDetailDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
   /** 头像 URL */
-  avatarUrl: string | null;
+  avatarUrl: string | null
   /** 用户状态 */
-  status: number;
+  status: number
   /** 用户角色列表 */
-  roles: UserRoleResponseDTO[];
+  roles: UserRoleResponseDTO[]
 }
 
 /** 统一返回结果类（泛型） */
 export interface UserDetailDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: UserDetailDTO | null;
+  data: UserDetailDTO | null
 }
 
 /** 用户信息 DTO */
 export interface UserInfoDTO {
   /** 用户 ID */
-  id: string;
+  id: string
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 头像 URL */
-  avatar: string | null;
+  avatar: string | null
   /** 角色列表 */
-  roles: string[];
+  roles: string[]
 }
 
 /** 统一返回结果类（泛型） */
 export interface UserInfoDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: UserInfoDTO | null;
+  data: UserInfoDTO | null
 }
 
 /** 用户列表 DTO（用于列表展示） */
 export interface UserListDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
   /** 用户状态 */
-  status: number;
+  status: number
 }
 
 /** 统一返回结果类（泛型） */
 export interface UserListDTOListResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: UserListDTO[] | null;
+  data: UserListDTO[] | null
 }
 
 /** 用户分页 DTO（用于分页响应中的列表数据） */
 export interface UserPagedDTO {
   /** ID */
-  id: string;
+  id: string
   /** 是否已删除（软删除标记） */
-  isDeleted: boolean;
+  isDeleted: boolean
   /** 创建时间（UTC） */
-  createdAt: Date;
+  createdAt: Date
   /** 创建人 ID */
-  createdBy: string | null;
+  createdBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 更新时间（UTC） */
-  updatedAt: Date | null;
+  updatedAt: Date | null
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 删除时间（UTC，仅软删除时填充） */
-  deletedAt: Date | null;
+  deletedAt: Date | null
   /** 删除人 ID */
-  deletedBy: string | null;
+  deletedBy: string | null
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
   /** 用户状态 */
-  status: number;
+  status: number
 }
 
 /** 分页响应类 */
 export interface UserPagedDTOPagedResponse {
   /** 数据列表 */
-  items: UserPagedDTO[];
+  items: UserPagedDTO[]
   /** 总记录数 */
-  total: number;
+  total: number
   /** 当前页码 */
-  page: number;
+  page: number
   /** 每页大小 */
-  size: number;
+  size: number
   /** 总页数 */
-  readonly pages: number;
+  readonly pages: number
   /** 是否有上一页 */
-  readonly hasPrevious: boolean;
+  readonly hasPrevious: boolean
   /** 是否有下一页 */
-  readonly hasNext: boolean;
+  readonly hasNext: boolean
 }
 
 /** 统一返回结果类（泛型） */
 export interface UserPagedDTOPagedResponseResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 分页响应类 */
-  data: UserPagedDTOPagedResponse | null;
+  data: UserPagedDTOPagedResponse | null
 }
 
 /** 用户权限信息 DTO */
 export interface UserPermissionInfoDTO {
   /** 菜单权限列表 */
-  menus: MenuPermissionDTO[];
+  menus: MenuPermissionDTO[]
   /** 按钮权限编码列表 */
-  buttons: string[];
+  buttons: string[]
   /** API 权限编码列表 */
-  apis: string[];
+  apis: string[]
 }
 
 /** 统一返回结果类（泛型） */
 export interface UserPermissionInfoDTOResult {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: UserPermissionInfoDTO | null;
+  data: UserPermissionInfoDTO | null
 }
 
 /** 用户角色响应 DTO */
 export interface UserRoleResponseDTO {
   /** 关联 ID */
-  id: string;
+  id: string
   /** 用户 ID */
-  userId: string;
+  userId: string
   /** 角色 ID */
-  roleId: string;
+  roleId: string
   /** 角色名称 */
-  roleName: string;
+  roleName: string
   /** 角色编码 */
-  roleCode: string;
+  roleCode: string
 }
 
 /** 用户更新 DTO */
 export interface UserUpdateDTO {
   /** ID */
-  id: string;
+  id: string
   /** 更新人 ID */
-  updatedBy: string | null;
+  updatedBy: string | null
   /** 描述 */
-  description: string | null;
+  description: string | null
   /** 邮箱 */
-  email: string;
+  email: string
   /** 昵称 */
-  nickName: string | null;
+  nickName: string | null
   /** 手机号 */
-  phone: string | null;
+  phone: string | null
   /** 头像 URL */
-  avatarUrl: string | null;
+  avatarUrl: string | null
   /** 用户状态 */
-  status: number;
+  status: number
 }
 
 export class ApiException extends Error {
-  override message: string;
-  status: number;
-  response: string;
-  headers: { [key: string]: any };
-  result: any;
+  override message: string
+  status: number
+  response: string
+  headers: { [key: string]: any }
+  result: any
 
   constructor(message: string, status: number, response: string, headers: { [key: string]: any }, result: any) {
-    super();
+    super()
 
-    this.message = message;
-    this.status = status;
-    this.response = response;
-    this.headers = headers;
-    this.result = result;
+    this.message = message
+    this.status = status
+    this.response = response
+    this.headers = headers
+    this.result = result
   }
 
-  protected isApiException = true;
+  protected isApiException = true
 
   static isApiException(obj: any): obj is ApiException {
-    return obj.isApiException === true;
+    return obj.isApiException === true
   }
 }
 
@@ -6422,12 +6422,12 @@ function throwException(
   status: number,
   response: string,
   headers: { [key: string]: any },
-  result?: any,
+  result?: any
 ): any {
-  if (result !== null && result !== undefined) throw result;
-  else throw new ApiException(message, status, response, headers, null);
+  if (result !== null && result !== undefined) throw result
+  else throw new ApiException(message, status, response, headers, null)
 }
 
 function isAxiosError(obj: any): obj is AxiosError {
-  return obj && obj.isAxiosError === true;
+  return obj && obj.isAxiosError === true
 }

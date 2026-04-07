@@ -1,12 +1,12 @@
-import { ModuleApi } from "../nswags";
-import { MenuPermissionsSwagApi } from "../nswags/auto";
+import { ModuleApi } from '../nswags'
+import { MenuPermissionsSwagApi } from '../nswags/auto'
 import type {
   MenuPermissionCreateDTO,
   MenuPermissionDetailDTO,
   MenuPermissionListDTO,
   MenuPermissionPagedDTO,
   MenuPermissionUpdateDTO,
-} from "../nswags/auto";
+} from '../nswags/auto'
 
 /**
  * 菜单权限管理 API
@@ -21,16 +21,16 @@ export class MenuPermissionsApi extends ModuleApi<
   MenuPermissionUpdateDTO
 > {
   constructor() {
-    super(MenuPermissionsSwagApi);
+    super(MenuPermissionsSwagApi)
   }
 
   /** 获取菜单树形结构 */
   async getTree() {
-    return this.api.getTree();
+    return this.api.getTree()
   }
 
   /** 获取所有子菜单 */
   async getAllChildren(permissionId: string) {
-    return this.api.getAllChildren(permissionId);
+    return this.api.getAllChildren(permissionId)
   }
 }

@@ -1,4 +1,4 @@
-import type { BooleanResult } from "./auto";
+import type { BooleanResult } from './auto'
 
 /**
  * API结果接口，包含成功、数据和消息字段。
@@ -7,13 +7,13 @@ import type { BooleanResult } from "./auto";
  */
 export interface Result<T> {
   /** 是否成功 */
-  success: boolean;
+  success: boolean
   /** 错误代码 */
-  code: string | null;
+  code: string | null
   /** 消息 */
-  message: string | null;
+  message: string | null
   /** 数据 */
-  data: T | null;
+  data: T | null
 }
 
 /**
@@ -22,13 +22,13 @@ export interface Result<T> {
  * @template T 数据类型
  */
 export interface PagedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  size: number;
-  readonly pages: number;
-  readonly hasPrevious: boolean;
-  readonly hasNext: boolean;
+  items: T[]
+  total: number
+  page: number
+  size: number
+  readonly pages: number
+  readonly hasPrevious: boolean
+  readonly hasNext: boolean
 }
 
 /**
@@ -40,15 +40,15 @@ export interface PagedResponse<T> {
  * @template UpdateDTO 更新数据类型
  */
 export interface StandardSwagApi<ListDTO, PagedDTO, DetailDTO, CreateDTO, UpdateDTO> {
-  getList(): Promise<Result<ListDTO[]>>;
-  getPaged(page: number, size: number): Promise<Result<PagedResponse<PagedDTO>>>;
-  get(id: string): Promise<Result<DetailDTO>>;
-  create(body: CreateDTO): Promise<BooleanResult>;
-  update(id: string, body: UpdateDTO): Promise<BooleanResult>;
-  delete(id: string): Promise<BooleanResult>;
-  restore(id: string): Promise<BooleanResult>;
-  create2(body: CreateDTO[]): Promise<BooleanResult>;
-  update2(body: UpdateDTO[]): Promise<BooleanResult>;
-  delete2(ids: string[]): Promise<BooleanResult>;
-  restore2(ids: string[]): Promise<BooleanResult>;
+  getList(): Promise<Result<ListDTO[]>>
+  getPaged(page: number, size: number): Promise<Result<PagedResponse<PagedDTO>>>
+  get(id: string): Promise<Result<DetailDTO>>
+  create(body: CreateDTO): Promise<BooleanResult>
+  update(id: string, body: UpdateDTO): Promise<BooleanResult>
+  delete(id: string): Promise<BooleanResult>
+  restore(id: string): Promise<BooleanResult>
+  create2(body: CreateDTO[]): Promise<BooleanResult>
+  update2(body: UpdateDTO[]): Promise<BooleanResult>
+  delete2(ids: string[]): Promise<BooleanResult>
+  restore2(ids: string[]): Promise<BooleanResult>
 }

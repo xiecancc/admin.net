@@ -1,5 +1,5 @@
-import { SwagApi } from "../nswags";
-import { UserPermissionsSwagApi } from "../nswags/auto";
+import { SwagApi } from '../nswags'
+import { UserPermissionsSwagApi } from '../nswags/auto'
 
 /**
  * 用户权限 API
@@ -7,31 +7,31 @@ import { UserPermissionsSwagApi } from "../nswags/auto";
  */
 export class UserPermissionsApi extends SwagApi<UserPermissionsSwagApi> {
   constructor() {
-    super(UserPermissionsSwagApi);
+    super(UserPermissionsSwagApi)
   }
 
   /** 获取当前用户的所有权限（菜单、按钮、API） */
   async getUserPermissions() {
-    return this.api.getUserPermissions();
+    return this.api.getUserPermissions()
   }
 
   /** 获取当前用户的按钮权限编码列表 */
   async getUserButtons() {
-    return this.api.getUserButtons();
+    return this.api.getUserButtons()
   }
 
   /** 获取指定用户的按钮权限编码列表 */
   async getUserButtonsById(userId: string) {
-    return this.api.getUserButtonsById(userId);
+    return this.api.getUserButtonsById(userId)
   }
 
   /** 获取当前用户的菜单权限列表 */
   async getUserMenus() {
-    return this.api.getUserMenus();
+    return this.api.getUserMenus()
   }
 
   /** 获取指定用户的菜单权限列表 */
   async getUserMenusById(userId: string) {
-    return this.api.getUserMenusById(userId);
+    return this.api.getUserMenusById(userId)
   }
 }
