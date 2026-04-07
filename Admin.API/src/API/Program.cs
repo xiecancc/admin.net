@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Program.cs
  * 功能描述: 应用程序入口类，负责配置和启动 Web API 服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,7 +9,10 @@ using API.Extensions;
 using API.Filters;
 using Application;
 using Asp.Versioning;
+using Domain.Services;
 using Infrastructure;
+using Infrastructure.Services;
+using Infrastructure.Shared.Services;
 using Infrastructure.Shared.Utils;
 
 namespace API;
@@ -54,6 +57,15 @@ public class Program {
 
         // JWT 认证服务
         _ = builder.Services.AddJwtAuthentication();
+
+        // 权限校验服务
+        _ = builder.Services.AddHttpContextAccessor();
+        _ = builder.Services.AddScoped<IPermissionCacheService, PermissionCacheService>();
+        _ = builder.Services.AddScoped<IPermissionDomainService, PermissionDomainService>();
+        _ = builder.Services.AddScoped<PermissionAuthorizationHandler>();
+
+        // 授权服务
+        _ = builder.Services.AddAuthorization();
 
         // Swagger 文档服务
         _ = builder.Services.AddSwaggerServices();

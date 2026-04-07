@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Role.cs
  * 功能描述: 角色实体类，定义角色的基本属性和关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,6 +7,7 @@
 
 using SqlSugar;
 using Domain.Shared.Entities;
+using Domain.Shared.Enums;
 
 namespace Domain.Entities;
 
@@ -46,6 +47,13 @@ public class Role : AggregateBase, IAggregateTree<Role> {
     /// <value>角色的名称，长度不超过100个字符，不能为空</value>
     [SugarColumn(ColumnDescription = "角色名称", Length = 100, IsNullable = false)]
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 继承类型
+    /// </summary>
+    /// <value>角色权限的继承方式，默认为不继承</value>
+    [SugarColumn(ColumnDescription = "继承类型", IsNullable = false, DefaultValue = "0")]
+    public InheritanceType InheritanceType { get; set; } = InheritanceType.None;
 
     /// <inheritdoc/>
     /// <summary>

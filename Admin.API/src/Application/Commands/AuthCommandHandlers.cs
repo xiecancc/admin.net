@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AuthCommandHandlers.cs
  * 功能描述: 认证相关的命令处理器，包含登录、注册、刷新令牌、登出等命令的处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,6 +9,7 @@ using Application.Contracts.Commands;
 using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
+using Domain.Services;
 using Domain.Shared.Enums;
 using Infrastructure.Shared.Services;
 using Infrastructure.Shared.Units;
@@ -26,10 +27,19 @@ namespace Application.Commands;
 /// </summary>
 /// <param name="unitOfWork">工作单元</param>
 /// <param name="jwtService">JWT 服务</param>
+/// <param name="permissionDomainService">权限领域服务</param>
+/// <param name="permissionCacheService">权限缓存服务</param>
 /// <param name="logger">日志记录器</param>
-public class LoginCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService, ILogger<LoginCommandHandler> logger) : IRequestHandler<LoginCommand, LoginResponseDTO> {
+public class LoginCommandHandler(
+    IUnitOfWork unitOfWork, 
+    IJwtService jwtService, 
+    IPermissionDomainService permissionDomainService,
+    IPermissionCacheService permissionCacheService,
+    ILogger<LoginCommandHandler> logger) : IRequestHandler<LoginCommand, LoginResponseDTO> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     private readonly IJwtService _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+    private readonly IPermissionDomainService _permissionDomainService = permissionDomainService ?? throw new ArgumentNullException(nameof(permissionDomainService));
+    private readonly IPermissionCacheService _permissionCacheService = permissionCacheService ?? throw new ArgumentNullException(nameof(permissionCacheService));
     private readonly ILogger<LoginCommandHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
@@ -54,6 +64,13 @@ public class LoginCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService,
 
         var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
         var roleCodes = await userRoleRepository.GetUserRoleCodesAsync(user.Id, cancellationToken);
+
+        // 预加载用户权限到缓存
+        var permissionCodes = await _permissionDomainService.GetUserPermissionCodesAsync(user.Id, cancellationToken);
+        if (permissionCodes.Count > 0) {
+            await _permissionCacheService.SetUserPermissionsAsync(user.Id, new HashSet<string>(permissionCodes));
+            _logger.LogInformation("用户权限预加载成功 | UserId: {UserId} | PermissionCount: {Count}", user.Id, permissionCodes.Count);
+        }
 
         var claims = new List<Claim>
         {

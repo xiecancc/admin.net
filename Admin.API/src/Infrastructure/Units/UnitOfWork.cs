@@ -1,4 +1,4 @@
-﻿using Domain.Shared.Entities;
+using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Units;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,11 +35,13 @@ public class UnitOfWork(ISqlSugarClient client, IServiceProvider serviceProvider
 
         var result = await client.Ado.UseTranAsync(action);
 
-        return result.IsSuccess
-            ? result.Data
-            : throw result.ErrorException is not null
-            ? new InvalidOperationException($"事务执行失败: {result.ErrorException.Message}", result.ErrorException)
-            : new InvalidOperationException("事务执行失败，未知错误");
+        if (!result.IsSuccess) {
+            throw result.ErrorException is not null
+                ? new InvalidOperationException($"事务执行失败: {result.ErrorException.Message}", result.ErrorException)
+                : new InvalidOperationException("事务执行失败，未知错误");
+        }
+
+        return result.Data;
     }
 
     /// <summary>

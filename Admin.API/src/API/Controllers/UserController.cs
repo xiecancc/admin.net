@@ -1,10 +1,11 @@
-﻿/*
+/*
  * 文件名称: UserController.cs
  * 功能描述: 用户控制器，处理用户相关的CRUD操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
  * 最近修订: 2026-04-06
  */
 
+using API.Filters;
 using Application.Contracts.Commands;
 using Application.Contracts.Dtos;
 using Application.Contracts.Queries;
@@ -36,6 +37,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>用户列表</returns>
     [HttpGet]
+    [Permission("user:view")]
     public async Task<ActionResult<List<User>>> GetListAsync(CancellationToken cancellationToken = default) {
         var query = new UserListQuery(new UserQueryParameters());
         return Ok(await _mediator.Send(query, cancellationToken));
@@ -48,6 +50,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>用户详情</returns>
     [HttpGet("{id:guid}")]
+    [Permission("user:view")]
     public async Task<ActionResult<User?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
         var query = new UserByIdQuery(id);
         return Ok(await _mediator.Send(query, cancellationToken));
@@ -60,6 +63,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
+    [Permission("user:view")]
     public async Task<ActionResult<PagedResponse<User>>> GetPagedAsync([FromQuery] UserQueryParameters parameters, CancellationToken cancellationToken = default) {
         var query = new UserPagedQuery(parameters);
         return Ok(await _mediator.Send(query, cancellationToken));
@@ -72,6 +76,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpPost]
+    [Permission("user:create")]
     public async Task<ActionResult<bool>> CreateAsync([FromBody] UserCreateDto dto, CancellationToken cancellationToken = default) {
         var command = new UserCreateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -84,6 +89,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpPut]
+    [Permission("user:update")]
     public async Task<ActionResult<bool>> UpdateAsync([FromBody] UserUpdateDto dto, CancellationToken cancellationToken = default) {
         var command = new UserUpdateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -96,6 +102,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpDelete]
+    [Permission("user:delete")]
     public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
         var command = new UserDeleteCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -108,6 +115,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpPost("restore")]
+    [Permission("user:update")]
     public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
         var command = new UserRestoreCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -120,6 +128,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpPost("{id:guid}/enable")]
+    [Permission("user:update")]
     public async Task<ActionResult<bool>> EnableAsync(Guid id, CancellationToken cancellationToken = default) {
         var command = new UserEnableCommand([id]);
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -132,8 +141,67 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
     [HttpPost("{id:guid}/disable")]
+    [Permission("user:update")]
     public async Task<ActionResult<bool>> DisableAsync(Guid id, CancellationToken cancellationToken = default) {
         var command = new UserDisableCommand([id]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
+
+    #region 用户角色关联操作
+
+    /// <summary>
+    /// 为用户分配角色
+    /// </summary>
+    /// <param name="userId">用户ID</param>
+    /// <param name="roleIds">角色ID列表</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>操作结果</returns>
+    [HttpPost("{userId:guid}/roles")]
+    [Permission("user:update")]
+    public async Task<ActionResult<bool>> AssignRolesAsync(Guid userId, [FromBody] List<Guid> roleIds, CancellationToken cancellationToken = default) {
+        var command = new AssignRolesToUserCommand { UserId = userId, RoleIds = roleIds };
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    /// <summary>
+    /// 移除用户角色
+    /// </summary>
+    /// <param name="userId">用户ID</param>
+    /// <param name="roleIds">角色ID列表</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>操作结果</returns>
+    [HttpDelete("{userId:guid}/roles")]
+    [Permission("user:update")]
+    public async Task<ActionResult<bool>> RemoveRolesAsync(Guid userId, [FromBody] List<Guid> roleIds, CancellationToken cancellationToken = default) {
+        var command = new RemoveRolesFromUserCommand { UserId = userId, RoleIds = roleIds };
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    /// <summary>
+    /// 获取用户的角色列表
+    /// </summary>
+    /// <param name="userId">用户ID</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>角色列表</returns>
+    [HttpGet("{userId:guid}/roles")]
+    [Permission("user:view")]
+    public async Task<ActionResult<List<Role>>> GetUserRolesAsync(Guid userId, CancellationToken cancellationToken = default) {
+        var query = new UserRolesQuery(userId);
+        return Ok(await _mediator.Send(query, cancellationToken));
+    }
+
+    /// <summary>
+    /// 获取用户的角色ID列表
+    /// </summary>
+    /// <param name="userId">用户ID</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>角色ID列表</returns>
+    [HttpGet("{userId:guid}/role-ids")]
+    [Permission("user:view")]
+    public async Task<ActionResult<List<Guid>>> GetUserRoleIdsAsync(Guid userId, CancellationToken cancellationToken = default) {
+        var query = new UserRoleIdsQuery(userId);
+        return Ok(await _mediator.Send(query, cancellationToken));
+    }
+
+    #endregion
 }

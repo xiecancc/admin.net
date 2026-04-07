@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: IRolePermissionRepository.cs
  * 功能描述: 角色权限关联仓储接口，用于处理角色和权限之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -46,6 +46,14 @@ public interface IRolePermissionRepository : IDomainRepository<RolePermission> {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>权限 ID 列表</returns>
     Task<List<Guid>> GetPermissionIdsByRoleIdAsync(Guid roleId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 根据角色 ID 获取权限列表
+    /// </summary>
+    /// <param name="roleId">角色 ID</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>权限列表</returns>
+    Task<List<Permission>> GetPermissionsByRoleIdAsync(Guid roleId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据权限 ID 获取角色 ID 列表
