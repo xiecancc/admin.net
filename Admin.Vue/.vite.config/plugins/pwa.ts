@@ -17,35 +17,35 @@ export const createPwaPlugin = (): PluginOption =>
     includeAssets: ['favicon.ico', 'robots.txt'],
     // 应用清单配置 - 使用完整 PWA manifest
     manifest: {
+      background_color: '#ffffff',
+      categories: ['business', 'productivity'],
       description: 'Fund administration system',
       display: 'standalone',
-      orientation: 'portrait',
       icons: [
         {
+          purpose: 'any',
           sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
           src: 'favicon.ico',
           type: 'image/x-icon',
-          purpose: 'any',
         },
         {
+          purpose: 'maskable',
           sizes: '192x192',
           src: 'favicon.ico',
           type: 'image/x-icon',
-          purpose: 'maskable',
         },
         {
+          purpose: 'any',
           sizes: '512x512',
           src: 'favicon.ico',
           type: 'image/x-icon',
-          purpose: 'any',
         },
       ],
       name: 'Fund Admin',
+      orientation: 'portrait',
       short_name: 'Admin',
-      theme_color: '#ffffff',
-      background_color: '#ffffff',
       start_url: '/',
-      categories: ['business', 'productivity'],
+      theme_color: '#ffffff',
     },
     // Service Worker 配置 - 使用优化的缓存策略
     workbox: {
@@ -61,69 +61,69 @@ export const createPwaPlugin = (): PluginOption =>
       runtimeCaching: [
         {
           // API 缓存策略 - NetworkFirst 优先网络
-          urlPattern: /^https:\/\/.*\/api\/.*/i,
           handler: 'NetworkFirst',
           options: {
             cacheName: 'api-cache',
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
             expiration: {
               maxAgeSeconds: ONE_DAY,
               maxEntries: 100,
             },
             networkTimeoutSeconds: 10,
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
           },
+          urlPattern: /^https:\/\/.*\/api\/.*/i,
         },
         {
           // 图片缓存策略 - CacheFirst 优先缓存
-          urlPattern: /^https?:\/\/.*\.(png|jpg|jpeg|gif|webp|svg|ico)$/i,
           handler: 'CacheFirst',
           options: {
             cacheName: 'images-cache',
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
             expiration: {
               maxAgeSeconds: ONE_WEEK,
               maxEntries: 50,
             },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
           },
+          urlPattern: /^https?:\/\/.*\.(png|jpg|jpeg|gif|webp|svg|ico)$/i,
         },
         {
           // 字体缓存策略 - CacheFirst 长期缓存
-          urlPattern: /^https?:\/\/.*\.(woff|woff2|ttf|otf|eot)$/i,
           handler: 'CacheFirst',
           options: {
             cacheName: 'fonts-cache',
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
             expiration: {
               maxAgeSeconds: ONE_MONTH,
               maxEntries: 20,
             },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
           },
+          urlPattern: /^https?:\/\/.*\.(woff|woff2|ttf|otf|eot)$/i,
         },
         {
           // JS/CSS 文件缓存 - StaleWhileRevalidate
-          urlPattern: /^https?:\/\/.*\.(js|css)$/i,
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'assets-cache',
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
             expiration: {
               maxAgeSeconds: ONE_WEEK,
               maxEntries: 50,
             },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
           },
+          urlPattern: /^https?:\/\/.*\.(js|css)$/i,
         },
       ],
     },
     // 构建优化
-    buildStrategies: 'workbox',
+    strategies: 'generateSW',
     // 自更新配置
     selfDestroying: true,
     // 开发模式配置
@@ -131,6 +131,4 @@ export const createPwaPlugin = (): PluginOption =>
       enabled: true,
       type: 'module',
     },
-    // TypeScript 支持
-    typescript: true,
   })

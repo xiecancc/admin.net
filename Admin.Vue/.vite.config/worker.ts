@@ -1,11 +1,21 @@
 import type { UserConfig } from 'vite'
+import { manualChunks } from './index'
 
 /**
- * Vite Worker 配置 - 仅保留与默认值不一致的配置
+ * Vite Worker 配置 - 使用 Vite 8 新特性优化
  */
 export const createWorkerConfig = (): UserConfig['worker'] => ({
-  // 与默认值不一致的配置：
-
-  // 1. format: 默认 'es'，使用 'iife' 格式
+  // 1. format: 输出格式，使用 'iife' 格式
   format: 'iife',
+
+  // 2. plugins: 应用于 Worker 打包的插件
+  plugins: () => [],
+
+  // 3. rolldownOptions: Worker 打包的 Rolldown 配置
+  rolldownOptions: {
+    output: {
+      // 启用代码分割
+      manualChunks,
+    },
+  },
 })

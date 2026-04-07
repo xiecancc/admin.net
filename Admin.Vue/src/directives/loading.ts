@@ -52,17 +52,17 @@ function updateLoading(el: HTMLElement, value: boolean | LoadingOptions) {
       </svg>
     `
 
-    mask.appendChild(spinner)
+    mask.append(spinner)
 
     if (options.text) {
       const text = document.createElement('p')
       text.className = 'v-loading-text'
       text.textContent = options.text
       text.style.cssText = `margin-top: 8px; color: ${primaryColor};`
-      mask.appendChild(text)
+      mask.append(text)
     }
 
-    el.appendChild(mask)
+    el.append(mask)
   } else {
     const mask = el.querySelector('.v-loading-mask')
     mask?.remove()

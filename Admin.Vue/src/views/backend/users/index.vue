@@ -252,10 +252,10 @@
   const userRules = reactive<FormRules>({
     email: [
       { message: '请输入邮箱', required: true, trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' },
+      { message: '请输入正确的邮箱格式', trigger: 'blur', type: 'email' },
     ],
     nickName: [{ message: '请输入昵称', required: true, trigger: 'blur' }],
-    password: [{ message: '请输入密码', required: true, trigger: 'blur', min: 6 }],
+    password: [{ message: '请输入密码', min: 6, required: true, trigger: 'blur' }],
     status: [{ message: '请选择用户状态', required: true, trigger: 'change' }],
   })
 
