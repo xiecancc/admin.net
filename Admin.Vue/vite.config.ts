@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
   return {
     // 启用 Vite 8 新特性：持久化缓存
     cacheDir: 'node_modules/.vite',
-    
+
     // 1. base: 默认 '/'，使用环境变量配置
     base: toString(env.VITE_BASE_URL, '/'),
 
@@ -57,10 +57,10 @@ export default defineConfig(({ mode }) => {
       renderBuiltUrl: (filename: string) => {
         return {
           relative: true,
-        };
+        }
       },
     },
-    
+
     build: createBuildConfig(env),
     optimizeDeps: createOptimizationConfig(),
     preview: createPreviewConfig(env),

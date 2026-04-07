@@ -4,11 +4,7 @@
  */
 export const manualChunks = (id: string) => {
   // 核心框架
-  if (
-    id.includes('node_modules/vue') ||
-    id.includes('node_modules/vue-router') ||
-    id.includes('node_modules/pinia')
-  ) {
+  if (id.includes('node_modules/vue') || id.includes('node_modules/vue-router') || id.includes('node_modules/pinia')) {
     return 'core'
   }
   // UI 组件库（包括图标库）
@@ -25,7 +21,6 @@ export const manualChunks = (id: string) => {
   }
 }
 
-
 export default {
-    manualChunks
+  manualChunks,
 }
