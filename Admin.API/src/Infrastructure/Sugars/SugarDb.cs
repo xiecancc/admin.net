@@ -1,4 +1,4 @@
-﻿using SqlSugar;
+using SqlSugar;
 using Infrastructure.Shared.Options;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -44,14 +44,7 @@ public class SugarDb {
         var config = new ConnectionConfig {
             ConnectionString = _options.ConnectionString,
             DbType = _options.DbTypeEnum,
-            IsAutoCloseConnection = _options.IsAutoCloseConnection,
-            ConfigureExternalServices = new ConfigureExternalServices {
-                EntityService = (property, column) => {
-                    if (column.IsPrimarykey && property.PropertyType == typeof(Guid)) {
-                        column.DataType = "uniqueidentifier";
-                    }
-                }
-            }
+            IsAutoCloseConnection = _options.IsAutoCloseConnection
         };
 
         if (_options.EnableReadWriteSplit && _options.SlaveConnectionStrings != null && _options.SlaveConnectionStrings.Count > 0) {

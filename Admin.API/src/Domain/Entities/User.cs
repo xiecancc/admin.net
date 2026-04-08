@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: User.cs
  * 功能描述: 用户实体类，定义用户的基本属性和关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -88,4 +88,11 @@ public class User : AggregateBase {
     /// <value>用户所属的角色列表</value>
     [Navigate(typeof(UserRole), nameof(UserRole.UserId), nameof(UserRole.RoleId))]
     public List<Role> Roles { get; set; } = [];
+
+    /// <summary>
+    /// 用户关联的部门角色（多对多）
+    /// </summary>
+    /// <value>用户在各部门中的角色列表</value>
+    [Navigate(typeof(UserDepartmentRole), nameof(UserDepartmentRole.UserId), nameof(UserDepartmentRole.DepartmentId))]
+    public List<Department> Departments { get; set; } = [];
 }

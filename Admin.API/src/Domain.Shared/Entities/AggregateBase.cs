@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateBase.cs
  * 功能描述: 聚合根基类，继承自 DomainBase，包含 Id 和审计字段
  * 作者信息: 谢灿软件 <492384481@qq.com>

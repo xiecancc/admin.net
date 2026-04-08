@@ -25,6 +25,8 @@ public class TableCreator(ISqlSugarClient client) : Creator(client) {
     public override void Create() {
         try {
             LogInfo("正在创建数据表...");
+            
+            // 配置 SqlSugar，为 MySQL 数据库设置 GUID 类型映射
             _client.CodeFirst
                 .SetStringDefaultLength(200)
                 .InitTables(
@@ -35,7 +37,9 @@ public class TableCreator(ISqlSugarClient client) : Creator(client) {
                     typeof(MenuPermission),
                     typeof(ButtonPermission),
                     typeof(UserRole),
-                    typeof(RolePermission)
+                    typeof(RolePermission),
+                    typeof(Department),
+                    typeof(UserDepartmentRole)
                 );
             LogInfo("数据表创建完成");
         }

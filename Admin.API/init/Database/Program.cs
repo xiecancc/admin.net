@@ -47,45 +47,17 @@ internal class Program {
     /// 构建配置
     /// </summary>
     private static IConfigurationRoot BuildConfiguration() {
-        var basePath = Directory.GetCurrentDirectory();
-        var configBuilder = new ConfigurationBuilder().SetBasePath(basePath);
+        // 使用相对路径加载配置文件
+        var configBuilder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+            .AddEnvironmentVariables();
 
-        _ = configBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
-        _ = configBuilder.AddJsonFile(
-            $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-            optional: true,
-            reloadOnChange: false
-        );
-
-        var apiConfigPath = FindApiConfigPath(basePath);
-        if (apiConfigPath != null) {
-            Console.WriteLine($"[INFO] 使用配置文件：{apiConfigPath}\n");
-            _ = configBuilder.AddJsonFile(apiConfigPath, optional: true, reloadOnChange: false);
-        }
-
-        _ = configBuilder.AddEnvironmentVariables();
-
-        return configBuilder.Build();
-    }
-
-    /// <summary>
-    /// 查找 API 项目配置文件路径
-    /// </summary>
-    private static string? FindApiConfigPath(string basePath) {
-        var possiblePaths = new[] {
-            Path.Combine(basePath, "..", "..", "..", "src", "API", "appsettings.json"),
-            Path.Combine(basePath, "..", "src", "API", "appsettings.json"),
-            Path.Combine(basePath, "src", "API", "appsettings.json")
-        };
-
-        foreach (var path in possiblePaths) {
-            var fullPath = Path.GetFullPath(path);
-            if (File.Exists(fullPath)) {
-                return fullPath;
-            }
-        }
-
-        return null;
+        var config = configBuilder.Build();
+        var connectionString = config.GetSection("Database:ConnectionString").Value;
+        Console.WriteLine($"[INFO] 读取到的连接字符串：{connectionString}");
+        
+        return config;
     }
 
     /// <summary>

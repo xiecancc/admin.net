@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: DependencyExtensions.cs
  * 功能描述: Infrastructure 层依赖注入扩展类，注册基础设施层所有服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -155,11 +155,13 @@ public static class DependencyExtensions {
         _ = services.AddScoped<IButtonPermissionRepository, ButtonPermissionRepository>();
         _ = services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         _ = services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+        _ = services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         return services;
     }
 
     private static IServiceCollection AddDomainServices(this IServiceCollection services) {
         _ = services.AddScoped<IPermissionDomainService, PermissionDomainService>();
+        _ = services.AddScoped<IDepartmentPermissionService, DepartmentPermissionService>();
         return services;
     }
 

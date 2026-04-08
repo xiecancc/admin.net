@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Initializer.cs
  * 功能描述: 数据库初始化协调器，负责协调数据库创建、表创建和种子数据初始化
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -76,6 +76,16 @@ public class Initializer {
     private readonly RolePermissionSeeder _rolePermissionSeeder;
 
     /// <summary>
+    /// 部门数据初始化器
+    /// </summary>
+    private readonly DepartmentSeeder _departmentSeeder;
+
+    /// <summary>
+    /// 用户部门角色关联数据初始化器
+    /// </summary>
+    private readonly UserDepartmentRoleSeeder _userDepartmentRoleSeeder;
+
+    /// <summary>
     /// 构造函数（用于 ASP.NET Core）
     /// </summary>
     /// <param name="dbContext">数据库上下文</param>
@@ -102,6 +112,8 @@ public class Initializer {
         _adminUserSeeder = new AdminUserSeeder(client);
         _userRoleSeeder = new UserRoleSeeder(client);
         _rolePermissionSeeder = new RolePermissionSeeder(client);
+        _departmentSeeder = new DepartmentSeeder(client);
+        _userDepartmentRoleSeeder = new UserDepartmentRoleSeeder(client, _adminUserSeeder, _departmentSeeder, _roleSeeder);
     }
 
     /// <summary>
@@ -132,6 +144,12 @@ public class Initializer {
                 if (adminRole != null) {
                     await _rolePermissionSeeder.SeedAsync(RoleConstants.Administrator.Id, allPermissions);
                 }
+
+                // 初始化部门数据
+                await _departmentSeeder.SeedAsync();
+
+                // 初始化用户部门角色关联数据
+                await _userDepartmentRoleSeeder.SeedAsync();
             }
         }
         catch (Exception ex) {

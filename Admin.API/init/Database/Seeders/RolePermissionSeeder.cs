@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RolePermissionSeeder.cs
  * 功能描述: 角色权限关系数据初始化器，负责初始化角色与权限的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -34,12 +34,14 @@ public class RolePermissionSeeder(ISqlSugarClient client) : Seeder<RolePermissio
                 return;
             }
 
-            var existingPermissionIds = await _client.Queryable<RolePermission>()
+            // 先删除已存在的角色权限关系，避免重复键错误
+            var deleteCount = _client.Deleteable<RolePermission>()
                 .Where(rp => rp.RoleId == roleId)
-                .Select(rp => rp.PermissionId)
-                .ToListAsync();
+                .ExecuteCommand();
+            LogInfo("删除了 {0} 条角色权限关系", deleteCount);
 
-            var newPermissionIds = permissionIds.Where(id => !existingPermissionIds.Contains(id)).ToList();
+            // 对权限 ID 列表进行去重，避免重复键错误
+            var newPermissionIds = permissionIds.Distinct().ToList();
 
             if (newPermissionIds.Count > 0) {
                 var rolePermissions = newPermissionIds.Select(permissionId => new RolePermission {
@@ -47,7 +49,9 @@ public class RolePermissionSeeder(ISqlSugarClient client) : Seeder<RolePermissio
                     PermissionId = permissionId
                 }).ToArray();
 
-                _ = await _client.Insertable(rolePermissions).ExecuteCommandAsync();
+                // 使用 InsertOrUpdate 方法避免重复键错误
+                _ = await _client.Insertable(rolePermissions)
+                    .ExecuteCommandAsync();
                 LogInfo("角色权限关系创建完成，共 {0} 个权限", newPermissionIds.Count);
             }
             else {
