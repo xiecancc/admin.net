@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: ApiPermissionQueryHandlers.cs
  * 功能描述: API权限查询处理器，处理API权限相关的查询
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,7 +31,7 @@ public class ApiPermissionByIdQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }
 
 /// <summary>
@@ -48,7 +48,7 @@ public class ApiPermissionListQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }
 
 /// <summary>
@@ -65,5 +65,5 @@ public class ApiPermissionPagedQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }

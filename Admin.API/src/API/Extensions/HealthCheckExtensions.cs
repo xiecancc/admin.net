@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: HealthCheckExtensions.cs
  * 功能描述: 健康检查扩展方法，使用 ASP.NET Core 10 增强的健康检查框架
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -127,9 +127,11 @@ public class DatabaseHealthCheck(SugarDb sugarDb) : IHealthCheck {
 
             return canConnect ? Task.FromResult(HealthCheckResult.Healthy("数据库连接正常")) : Task.FromResult(HealthCheckResult.Unhealthy("数据库连接测试失败"));
         }
+#pragma warning disable CA1031 // 健康检查需要捕获所有异常以返回正确的健康状态
         catch (Exception ex) {
             return Task.FromResult(HealthCheckResult.Unhealthy("数据库健康检查失败", ex));
         }
+#pragma warning restore CA1031
     }
 }
 
@@ -153,9 +155,11 @@ public class RedisHealthCheck(IRedisConnectionManager redisConnection) : IHealth
 
             return HealthCheckResult.Healthy("Redis 连接正常");
         }
+#pragma warning disable CA1031 // 健康检查需要捕获所有异常以返回正确的健康状态
         catch (Exception ex) {
             return HealthCheckResult.Degraded("Redis 连接失败，已降级运行", ex);
         }
+#pragma warning restore CA1031
     }
 }
 
@@ -195,8 +199,10 @@ public class MemoryHealthCheck : IHealthCheck {
                 : Task.FromResult(HealthCheckResult.Healthy(
                 $"内存使用正常: {allocated / (1024 * 1024)}MB", data));
         }
+#pragma warning disable CA1031 // 健康检查需要捕获所有异常以返回正确的健康状态
         catch (Exception ex) {
             return Task.FromResult(HealthCheckResult.Unhealthy("内存健康检查失败", ex));
         }
+#pragma warning restore CA1031
     }
 }

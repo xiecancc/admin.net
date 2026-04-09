@@ -35,7 +35,7 @@ public class LoginCommandHandler(
     IJwtService jwtService, 
     IPermissionDomainService permissionDomainService,
     IPermissionCacheService permissionCacheService,
-    ILogger<LoginCommandHandler> logger) : IRequestHandler<LoginCommand, LoginResponseDTO> {
+    ILogger<LoginCommandHandler> logger) : IRequestHandler<LoginCommand, LoginResponseDto> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     private readonly IJwtService _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
     private readonly IPermissionDomainService _permissionDomainService = permissionDomainService ?? throw new ArgumentNullException(nameof(permissionDomainService));
@@ -45,7 +45,7 @@ public class LoginCommandHandler(
     /// <summary>
     /// 处理登录命令
     /// </summary>
-    public async Task<LoginResponseDTO> Handle(LoginCommand request, CancellationToken cancellationToken) {
+    public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken) {
         ArgumentException.ThrowIfNullOrWhiteSpace(request.Email, "邮箱");
         ArgumentException.ThrowIfNullOrWhiteSpace(request.Password, "密码");
 
@@ -84,11 +84,11 @@ public class LoginCommandHandler(
         _logger.LogInformation("用户登录成功 | UserId: {UserId} | Email: {Email} | Roles: {Roles}",
             user.Id, user.Email, string.Join(",", roleCodes));
 
-        return new LoginResponseDTO {
+        return new LoginResponseDto {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             ExpiresIn = 3600,
-            User = new LoginUserInfoDTO {
+            User = new LoginUserInfoDto {
                 Id = user.Id,
                 Email = user.Email,
                 NickName = user.NickName,
@@ -149,7 +149,7 @@ public class RegisterCommandHandler(IUnitOfWork unitOfWork, ILogger<RegisterComm
 /// <param name="unitOfWork">工作单元</param>
 /// <param name="jwtService">JWT 服务</param>
 /// <param name="logger">日志记录器</param>
-public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService, ILogger<RefreshTokenCommandHandler> logger) : IRequestHandler<RefreshTokenCommand, LoginResponseDTO> {
+public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService, ILogger<RefreshTokenCommandHandler> logger) : IRequestHandler<RefreshTokenCommand, LoginResponseDto> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     private readonly IJwtService _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
     private readonly ILogger<RefreshTokenCommandHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -157,7 +157,7 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtS
     /// <summary>
     /// 处理刷新令牌命令
     /// </summary>
-    public async Task<LoginResponseDTO> Handle(RefreshTokenCommand request, CancellationToken cancellationToken) {
+    public async Task<LoginResponseDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken) {
         ArgumentException.ThrowIfNullOrWhiteSpace(request.AccessToken, "访问令牌");
         ArgumentException.ThrowIfNullOrWhiteSpace(request.RefreshToken, "刷新令牌");
 
@@ -195,11 +195,11 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtS
 
         _logger.LogInformation("令牌刷新成功 | UserId: {UserId} | Email: {Email}", user.Id, user.Email);
 
-        return new LoginResponseDTO {
+        return new LoginResponseDto {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             ExpiresIn = 3600,
-            User = new LoginUserInfoDTO {
+            User = new LoginUserInfoDto {
                 Id = user.Id,
                 Email = user.Email,
                 NickName = user.NickName,

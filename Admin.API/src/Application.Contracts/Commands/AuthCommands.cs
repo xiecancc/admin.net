@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AuthCommands.cs
  * 功能描述: 认证相关的命令类，包含登录、注册、刷新令牌、登出等命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,7 +16,7 @@ namespace Application.Contracts.Commands;
 /// </summary>
 /// <param name="email">邮箱</param>
 /// <param name="password">密码</param>
-public class LoginCommand(string email, string password) : IRequest<LoginResponseDTO> {
+public class LoginCommand(string email, string password) : IRequest<LoginResponseDto> {
     /// <summary>邮箱</summary>
     public string Email { get; set; } = email;
     /// <summary>密码</summary>
@@ -48,7 +48,7 @@ public class RegisterCommand(string email, string password, string? nickName, st
 /// </summary>
 /// <param name="accessToken">访问令牌</param>
 /// <param name="refreshToken">刷新令牌</param>
-public class RefreshTokenCommand(string accessToken, string refreshToken) : IRequest<LoginResponseDTO> {
+public class RefreshTokenCommand(string accessToken, string refreshToken) : IRequest<LoginResponseDto> {
     /// <summary>访问令牌</summary>
     public string AccessToken { get; set; } = accessToken;
     /// <summary>刷新令牌</summary>

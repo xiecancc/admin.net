@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: ApiPermissionDtos.cs
  * 功能描述: API权限相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -24,7 +24,7 @@ public class ApiPermissionCreateDto : PermissionCreateDto {
     /// API 路径
     /// </summary>
     /// <value>API 的访问路径，长度不超过300个字符，不能为空</value>
-    public string ApiPath { get; set; } = string.Empty;
+    public required string ApiPath { get; set; } = string.Empty;
 
     /// <summary>
     /// 模块名称
@@ -60,7 +60,7 @@ public class ApiPermissionUpdateDto : PermissionUpdateDto {
     /// API 路径
     /// </summary>
     /// <value>API 的访问路径，长度不超过300个字符，不能为空</value>
-    public string ApiPath { get; set; } = string.Empty;
+    public required string ApiPath { get; set; } = string.Empty;
 
     /// <summary>
     /// 模块名称
@@ -96,7 +96,7 @@ public class ApiPermissionListDto : PermissionListDto {
     /// API 路径
     /// </summary>
     /// <value>API 的访问路径，长度不超过300个字符，不能为空</value>
-    public string ApiPath { get; set; } = string.Empty;
+    public required string ApiPath { get; set; } = string.Empty;
 
     /// <summary>
     /// 模块名称
@@ -132,7 +132,7 @@ public class ApiPermissionDetailDto : PermissionDetailDto {
     /// API 路径
     /// </summary>
     /// <value>API 的访问路径，长度不超过300个字符，不能为空</value>
-    public string ApiPath { get; set; } = string.Empty;
+    public required string ApiPath { get; set; } = string.Empty;
 
     /// <summary>
     /// 模块名称
@@ -168,7 +168,7 @@ public class ApiPermissionPagedDto : PermissionPagedDto {
     /// API 路径
     /// </summary>
     /// <value>API 的访问路径，长度不超过300个字符，不能为空</value>
-    public string ApiPath { get; set; } = string.Empty;
+    public required string ApiPath { get; set; } = string.Empty;
 
     /// <summary>
     /// 模块名称

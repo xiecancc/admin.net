@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionDomainEventHandlers.cs
  * 功能描述: 权限领域事件处理器，处理权限相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -33,9 +33,9 @@ public class MenuPermissionCreatedEventHandler(
         LogEvent("创建", "菜单权限", @event.Description, @event.Domains.Count());
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MENU_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除菜单权限列表和分页缓存（新增 {Count} 个）", @event.Domains.Count());
     }
@@ -66,9 +66,9 @@ public class MenuPermissionUpdatedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MENU_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除菜单权限列表和分页缓存");
     }
@@ -99,9 +99,9 @@ public class MenuPermissionDeletedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MENU_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除菜单权限列表和分页缓存");
     }
@@ -132,9 +132,9 @@ public class MenuPermissionRestoredEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MENU_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除菜单权限列表和分页缓存");
     }
@@ -162,9 +162,9 @@ public class ApiPermissionCreatedEventHandler(
         LogEvent("创建", "API权限", @event.Description, @event.Domains.Count());
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.API_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除 API 权限列表和分页缓存（新增 {Count} 个）", @event.Domains.Count());
     }
@@ -195,9 +195,9 @@ public class ApiPermissionUpdatedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.API_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除 API 权限列表和分页缓存");
     }
@@ -228,9 +228,9 @@ public class ApiPermissionDeletedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.API_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除 API 权限列表和分页缓存");
     }
@@ -261,9 +261,9 @@ public class ApiPermissionRestoredEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.API_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除 API 权限列表和分页缓存");
     }
@@ -291,9 +291,9 @@ public class ButtonPermissionCreatedEventHandler(
         LogEvent("创建", "按钮权限", @event.Description, @event.Domains.Count());
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.BUTTON_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除按钮权限列表和分页缓存（新增 {Count} 个）", @event.Domains.Count());
     }
@@ -324,9 +324,9 @@ public class ButtonPermissionUpdatedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.BUTTON_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除按钮权限列表和分页缓存");
     }
@@ -357,9 +357,9 @@ public class ButtonPermissionDeletedEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.BUTTON_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除按钮权限列表和分页缓存");
     }
@@ -390,9 +390,9 @@ public class ButtonPermissionRestoredEventHandler(
         await Task.WhenAll(permissionTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.BUTTON_PREFIX}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
         );
         Logger.LogInformation("已清除按钮权限列表和分页缓存");
     }

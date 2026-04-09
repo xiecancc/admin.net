@@ -89,10 +89,5 @@ public class User : AggregateBase {
     [Navigate(typeof(UserRole), nameof(UserRole.UserId), nameof(UserRole.RoleId))]
     public List<Role> Roles { get; set; } = [];
 
-    /// <summary>
-    /// 用户关联的部门角色（多对多）
-    /// </summary>
-    /// <value>用户在各部门中的角色列表</value>
-    [Navigate(typeof(UserDepartmentRole), nameof(UserDepartmentRole.UserId), nameof(UserDepartmentRole.DepartmentId))]
-    public List<Department> Departments { get; set; } = [];
+
 }

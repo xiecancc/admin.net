@@ -1,5 +1,5 @@
-﻿/*
- * 文件名称: JwtUtils.cs
+/*
+ * 文件名称: JwtUtil.cs
  * 功能描述: JWT 工具类，提供令牌生成、验证、解析等功能
  * 作者信息: 谢灿软件 <492384481@qq.com>
  * 最近修订: 2026-03-30
@@ -135,7 +135,10 @@ public static class JwtUtil {
 
             return principal;
         }
-        catch {
+        catch (SecurityTokenException) {
+            return null;
+        }
+        catch (ArgumentException) {
             return null;
         }
     }

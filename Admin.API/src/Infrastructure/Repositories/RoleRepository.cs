@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleRepository.cs
  * 功能描述: 角色仓储实现类，实现角色相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,11 +16,11 @@ namespace Infrastructure.Repositories;
 
 /// <inheritdoc cref="IRoleRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
-public class RoleRepository(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, ILogger<RoleRepository> logger)
-    : AggregateTreeRepository<Role>(client, eventBus, httpContextProvider, "角色", logger), IRoleRepository {
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
+public class RoleRepository(ISqlSugarClient client, IDomainEventBus eventBus, IUserContextProvider userContextProvider, ILogger<RoleRepository> logger)
+    : AggregateTreeRepository<Role>(client, eventBus, userContextProvider, "角色", logger), IRoleRepository {
     /// <inheritdoc/>
     public async Task<Role?> FindByCodeAsync(string code, CancellationToken cancellationToken = default) {
         return await GetAsync(t => t.Code == code, cancellationToken);

@@ -63,6 +63,7 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
+    [Permission("role:view")]
     public async Task<ActionResult<PagedResponse<Role>>> GetPagedAsync([FromQuery] RoleQueryParameters parameters, CancellationToken cancellationToken = default) {
         var query = new RolePagedQuery(parameters);
         return Ok(await _mediator.Send(query, cancellationToken));

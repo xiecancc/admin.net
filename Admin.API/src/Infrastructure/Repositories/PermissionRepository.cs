@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionRepository.cs
  * 功能描述: 权限仓储实现类，实现权限相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -18,11 +18,16 @@ namespace Infrastructure.Repositories;
 /// <inheritdoc cref="IPermissionRepository{TPermission}"/>
 /// <param name="client">SqlSugar 客户端</param>
 /// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="entityName">实体名称</param>
-/// <param name="logger">日志记录器</param>
-public class PermissionRepository<TPermission>(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, string entityName, ILogger<PermissionRepository<TPermission>> logger)
-    : AggregateTreeRepository<TPermission>(client, eventBus, httpContextProvider, entityName, logger), IPermissionRepository<TPermission>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="entityName">实体名称</param>
+    /// <param name="logger">日志记录器</param>
+public class PermissionRepository<TPermission>(
+    ISqlSugarClient client,
+    IDomainEventBus eventBus,
+    IUserContextProvider userContextProvider,
+    string entityName,
+    ILogger<PermissionRepository<TPermission>> logger)
+    : AggregateTreeRepository<TPermission>(client, eventBus, userContextProvider, entityName, logger), IPermissionRepository<TPermission>
     where TPermission : Permission, IAggregateTree<TPermission>, new() {
     /// <inheritdoc/>
     public async Task<TPermission?> FindByCodeAsync(string code, CancellationToken cancellationToken = default) {
@@ -37,27 +42,27 @@ public class PermissionRepository<TPermission>(ISqlSugarClient client, IDomainEv
 
 /// <inheritdoc cref="IMenuPermissionRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
-public class MenuPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, ILogger<MenuPermissionRepository> logger)
-    : PermissionRepository<MenuPermission>(client, eventBus, httpContextProvider, "菜单权限", logger), IMenuPermissionRepository {
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
+public class MenuPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IUserContextProvider userContextProvider, ILogger<MenuPermissionRepository> logger)
+    : PermissionRepository<MenuPermission>(client, eventBus, userContextProvider, "菜单权限", logger), IMenuPermissionRepository {
 }
 
 /// <inheritdoc cref="IApiPermissionRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
-public class ApiPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, ILogger<ApiPermissionRepository> logger)
-    : PermissionRepository<ApiPermission>(client, eventBus, httpContextProvider, "API 权限", logger), IApiPermissionRepository {
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
+public class ApiPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IUserContextProvider userContextProvider, ILogger<ApiPermissionRepository> logger)
+    : PermissionRepository<ApiPermission>(client, eventBus, userContextProvider, "API 权限", logger), IApiPermissionRepository {
 }
 
 /// <inheritdoc cref="IButtonPermissionRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
-public class ButtonPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, ILogger<ButtonPermissionRepository> logger)
-    : PermissionRepository<ButtonPermission>(client, eventBus, httpContextProvider, "按钮权限", logger), IButtonPermissionRepository {
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
+public class ButtonPermissionRepository(ISqlSugarClient client, IDomainEventBus eventBus, IUserContextProvider userContextProvider, ILogger<ButtonPermissionRepository> logger)
+    : PermissionRepository<ButtonPermission>(client, eventBus, userContextProvider, "按钮权限", logger), IButtonPermissionRepository {
 }

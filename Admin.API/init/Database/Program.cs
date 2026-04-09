@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Program.cs
  * 功能描述: 数据库初始化程序入口，负责构建配置、创建数据库上下文并执行初始化
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -38,9 +38,11 @@ internal class Program {
             var initializer = new Initializer(dbContext.GetClient());
             await initializer.InitializeAsync();
         }
+#pragma warning disable CA1031 // 主入口需要捕获所有异常以确保程序不会崩溃
         catch (Exception ex) {
             LogException(ex, "数据库初始化失败");
         }
+#pragma warning restore CA1031
     }
 
     /// <summary>

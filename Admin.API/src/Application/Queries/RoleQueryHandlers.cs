@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleQueryHandlers.cs
  * 功能描述: 角色相关查询处理器，包含角色的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,7 +31,7 @@ public class RoleByIdQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
 }
 
 /// <summary>
@@ -48,7 +48,7 @@ public class RoleListQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
 }
 
 /// <summary>
@@ -65,5 +65,5 @@ public class RolePagedQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
 }

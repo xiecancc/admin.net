@@ -1,4 +1,11 @@
-﻿using System.Net;
+/*
+ * 文件名称: RedisConnectionManager.cs
+ * 功能描述: Redis 连接管理实现，提供 Redis 连接的创建和管理功能
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-06
+ */
+
+using System.Net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
@@ -34,6 +41,7 @@ public class RedisConnectionManager : IRedisConnectionManager {
     /// <summary>
     /// 创建 Redis 连接
     /// </summary>
+#pragma warning disable CA1031 // Redis 连接需要捕获所有异常以确保应用程序能正常启动
     private static ConnectionMultiplexer? CreateConnection(RedisOption options, ILogger logger) {
         try {
             var config = new ConfigurationOptions {
@@ -47,11 +55,20 @@ public class RedisConnectionManager : IRedisConnectionManager {
             logger.LogInformation("Redis 连接成功：{ConnectionString}", options.ConnectionString);
             return connection;
         }
+        catch (RedisConnectionException ex) {
+            logger.LogError(ex, "Redis 连接失败，将禁用 Redis 缓存 | ConnectionString: {ConnectionString}", options.ConnectionString);
+            return null;
+        }
+        catch (RedisTimeoutException ex) {
+            logger.LogError(ex, "Redis 连接超时，将禁用 Redis 缓存 | ConnectionString: {ConnectionString}", options.ConnectionString);
+            return null;
+        }
         catch (Exception ex) {
-            logger.LogError(ex, "Redis 连接失败，将禁用 Redis 缓存");
+            logger.LogError(ex, "Redis 连接发生未知错误，将禁用 Redis 缓存 | ConnectionString: {ConnectionString}", options.ConnectionString);
             return null;
         }
     }
+#pragma warning restore CA1031
 
     /// <summary>
     /// 是否已连接

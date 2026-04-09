@@ -1,15 +1,12 @@
-/*
+﻿/*
  * 文件名称: PermissionAuthorizationHandler.cs
  * 功能描述: 权限校验授权处理器，实现基于策略的权限校验功能
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-07
+ * 最近修订: 2026-04-09
  */
 
-using Domain.Services;
+using Infrastructure.Shared.Contexts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace API.Filters;
 
@@ -73,21 +70,21 @@ public class PermissionRequirement : IAuthorizationRequirement {
 /// </code>
 /// </remarks>
 public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement> {
-    private readonly IPermissionDomainService _permissionService;
+    private readonly IUserContextProvider _userContext;
     private readonly ILogger<PermissionAuthorizationHandler> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     /// <summary>
     /// 初始化权限校验授权处理器
     /// </summary>
-    /// <param name="permissionService">权限领域服务</param>
+    /// <param name="userContext">用户上下文提供者</param>
     /// <param name="logger">日志记录器</param>
     /// <param name="httpContextAccessor">HTTP 上下文访问器</param>
     public PermissionAuthorizationHandler(
-        IPermissionDomainService permissionService,
+        IUserContextProvider userContext,
         ILogger<PermissionAuthorizationHandler> logger,
         IHttpContextAccessor httpContextAccessor) {
-        _permissionService = permissionService ?? throw new ArgumentNullException(nameof(permissionService));
+        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
     }
@@ -107,9 +104,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
             return;
         }
 
-        var userId = GetUserIdFromClaims(context.User);
-
-        if (userId == null) {
+        if (!_userContext.IsAuthenticated) {
             _logger.LogWarning(
                 "用户未登录，权限校验失败: Permissions=[{Permissions}], Path={Path}",
                 string.Join(", ", requirement.PermissionCodes),
@@ -120,7 +115,6 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
 
         try {
             var hasPermission = await CheckPermissionsAsync(
-                userId.Value,
                 requirement.PermissionCodes,
                 requirement.LogicalOperator,
                 httpContext.RequestAborted
@@ -129,7 +123,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
             if (hasPermission) {
                 _logger.LogDebug(
                     "权限校验成功: UserId={UserId}, Permissions=[{Permissions}], Operator={Operator}",
-                    userId,
+                    _userContext.UserId,
                     string.Join(", ", requirement.PermissionCodes),
                     requirement.LogicalOperator
                 );
@@ -137,76 +131,42 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
             } else {
                 _logger.LogWarning(
                     "权限校验失败: UserId={UserId}, Permissions=[{Permissions}], Operator={Operator}, Path={Path}",
-                    userId,
+                    _userContext.UserId,
                     string.Join(", ", requirement.PermissionCodes),
                     requirement.LogicalOperator,
                     httpContext.Request.Path
                 );
             }
+#pragma warning disable CA1031 // 权限验证需要捕获所有异常以确保不影响主业务流程
         } catch (Exception ex) {
             _logger.LogError(
                 ex,
                 "权限校验异常: UserId={UserId}, Permissions=[{Permissions}], Operator={Operator}",
-                userId,
+                _userContext.UserId,
                 string.Join(", ", requirement.PermissionCodes),
                 requirement.LogicalOperator
             );
         }
-    }
-
-    /// <summary>
-    /// 从 Claims 中获取用户 ID
-    /// </summary>
-    /// <param name="principal">用户主体</param>
-    /// <returns>用户 ID，如果未找到则返回 null</returns>
-    private Guid? GetUserIdFromClaims(ClaimsPrincipal principal) {
-        var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
-
-        if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value)) {
-            return null;
-        }
-
-        if (!Guid.TryParse(userIdClaim.Value, out var userId)) {
-            _logger.LogWarning("用户 ID 格式错误: {UserId}", userIdClaim.Value);
-            return null;
-        }
-
-        return userId;
+#pragma warning restore CA1031
     }
 
     /// <summary>
     /// 异步检查权限
     /// </summary>
-    /// <param name="userId">用户 ID</param>
     /// <param name="permissionCodes">权限码数组</param>
     /// <param name="logicalOperator">逻辑运算符</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>是否拥有权限</returns>
     private async Task<bool> CheckPermissionsAsync(
-        Guid userId,
         string[] permissionCodes,
         LogicalOperator logicalOperator,
         CancellationToken cancellationToken) {
         if (permissionCodes.Length == 1) {
-            return await _permissionService.UserHasPermissionAsync(userId, permissionCodes[0], cancellationToken);
+            return await _userContext.HasPermissionAsync(permissionCodes[0], cancellationToken);
         }
 
-        var results = new List<bool>();
-        foreach (var code in permissionCodes) {
-            var hasPermission = await _permissionService.UserHasPermissionAsync(userId, code, cancellationToken);
-            results.Add(hasPermission);
-
-            if (logicalOperator == LogicalOperator.Or && hasPermission) {
-                return true;
-            }
-
-            if (logicalOperator == LogicalOperator.And && !hasPermission) {
-                return false;
-            }
-        }
-
-        return logicalOperator == LogicalOperator.And
-            ? results.All(r => r)
-            : results.Any(r => r);
+        return logicalOperator == LogicalOperator.Or
+            ? await _userContext.HasAnyPermissionAsync(permissionCodes, cancellationToken)
+            : await _userContext.HasAllPermissionsAsync(permissionCodes, cancellationToken);
     }
 }

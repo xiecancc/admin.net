@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleDtos.cs
  * 功能描述: 角色相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,13 +16,13 @@ public class RoleCreateDto : AggregateCreateDto {
     /// 角色名称
     /// </summary>
     /// <value>角色的名称，不能为空</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色代码
     /// </summary>
     /// <value>角色的代码，不能为空</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 排序
@@ -46,13 +46,13 @@ public class RoleUpdateDto : AggregateUpdateDto {
     /// 角色名称
     /// </summary>
     /// <value>角色的名称，不能为空</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色代码
     /// </summary>
     /// <value>角色的代码，不能为空</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 排序
@@ -80,13 +80,13 @@ public class RoleListDto : AggregateListDto {
     /// 角色名称
     /// </summary>
     /// <value>角色的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色代码
     /// </summary>
     /// <value>角色的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 排序
@@ -114,13 +114,13 @@ public class RoleDetailDto : AggregateDetailDto {
     /// 角色名称
     /// </summary>
     /// <value>角色的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色代码
     /// </summary>
     /// <value>角色的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 排序
@@ -154,13 +154,13 @@ public class RolePagedDto : AggregatePagedDto {
     /// 角色名称
     /// </summary>
     /// <value>角色的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色代码
     /// </summary>
     /// <value>角色的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 排序

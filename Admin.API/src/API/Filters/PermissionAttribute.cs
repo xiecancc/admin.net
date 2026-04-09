@@ -2,13 +2,12 @@
  * 文件名称: PermissionAttribute.cs
  * 功能描述: 权限校验特性，实现声明式权限校验功能
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-07
+ * 最近修订: 2026-04-09
  */
 
-using Domain.Services;
+using Infrastructure.Shared.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Security.Claims;
 
 namespace API.Filters;
 
@@ -51,7 +50,7 @@ public enum LogicalOperator {
 /// </code>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-public class PermissionAttribute : Attribute, IAuthorizationFilter {
+public class PermissionAttribute : Attribute, IAsyncAuthorizationFilter {
     /// <summary>
     /// 权限码数组
     /// </summary>
@@ -86,22 +85,20 @@ public class PermissionAttribute : Attribute, IAuthorizationFilter {
     }
 
     /// <summary>
-    /// 权限校验
+    /// 异步权限校验
     /// </summary>
     /// <param name="context">授权过滤器上下文</param>
-    public void OnAuthorization(AuthorizationFilterContext context) {
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context) {
         var logger = context.HttpContext.RequestServices.GetService(typeof(ILogger<PermissionAttribute>)) as ILogger<PermissionAttribute>;
-        var permissionService = context.HttpContext.RequestServices.GetService(typeof(IPermissionDomainService)) as IPermissionDomainService;
 
-        if (permissionService == null) {
-            logger?.LogError("IPermissionDomainService 服务未注册");
+        if (context.HttpContext.RequestServices.GetService(typeof(IUserContextProvider)) is not IUserContextProvider userContext)
+        {
+            logger?.LogError("IUserContextProvider 服务未注册");
             context.Result = new StatusCodeResult(500);
             return;
         }
 
-        var userIdClaim = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-
-        if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value)) {
+        if (!userContext.IsAuthenticated) {
             logger?.LogWarning("用户未登录，拒绝访问: {Path}", context.HttpContext.Request.Path);
             context.Result = new ObjectResult(new {
                 Success = false,
@@ -112,24 +109,13 @@ public class PermissionAttribute : Attribute, IAuthorizationFilter {
             return;
         }
 
-        if (!Guid.TryParse(userIdClaim.Value, out var userId)) {
-            logger?.LogWarning("用户ID格式错误: {UserId}", userIdClaim.Value);
-            context.Result = new ObjectResult(new {
-                Success = false,
-                Message = "用户信息无效"
-            }) {
-                StatusCode = 401
-            };
-            return;
-        }
-
-        var hasPermission = CheckPermissionsAsync(permissionService, userId, context.HttpContext.RequestAborted).GetAwaiter().GetResult();
+        bool hasPermission = await CheckPermissionsAsync(userContext, context.HttpContext.RequestAborted);
 
         if (!hasPermission) {
-            var message = ErrorMessage ?? BuildDefaultErrorMessage();
+            string message = ErrorMessage ?? BuildDefaultErrorMessage();
             logger?.LogWarning(
                 "权限校验失败: UserId={UserId}, Permissions=[{Permissions}], Operator={Operator}, Path={Path}",
-                userId,
+                userContext.UserId,
                 string.Join(", ", PermissionCodes),
                 LogicalOperator,
                 context.HttpContext.Request.Path
@@ -147,35 +133,19 @@ public class PermissionAttribute : Attribute, IAuthorizationFilter {
     /// <summary>
     /// 异步检查权限
     /// </summary>
-    /// <param name="permissionService">权限领域服务</param>
-    /// <param name="userId">用户ID</param>
+    /// <param name="userContext">用户上下文提供者</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>是否拥有权限</returns>
     private async Task<bool> CheckPermissionsAsync(
-        IPermissionDomainService permissionService,
-        Guid userId,
+        IUserContextProvider userContext,
         CancellationToken cancellationToken) {
         if (PermissionCodes.Length == 1) {
-            return await permissionService.UserHasPermissionAsync(userId, PermissionCodes[0], cancellationToken);
+            return await userContext.HasPermissionAsync(PermissionCodes[0], cancellationToken);
         }
 
-        var results = new List<bool>();
-        foreach (var code in PermissionCodes) {
-            var hasPermission = await permissionService.UserHasPermissionAsync(userId, code, cancellationToken);
-            results.Add(hasPermission);
-
-            if (LogicalOperator == LogicalOperator.Or && hasPermission) {
-                return true;
-            }
-
-            if (LogicalOperator == LogicalOperator.And && !hasPermission) {
-                return false;
-            }
-        }
-
-        return LogicalOperator == LogicalOperator.And
-            ? results.All(r => r)
-            : results.Any(r => r);
+        return LogicalOperator == LogicalOperator.Or
+            ? await userContext.HasAnyPermissionAsync(PermissionCodes, cancellationToken)
+            : await userContext.HasAllPermissionsAsync(PermissionCodes, cancellationToken);
     }
 
     /// <summary>
@@ -183,7 +153,7 @@ public class PermissionAttribute : Attribute, IAuthorizationFilter {
     /// </summary>
     /// <returns>错误消息</returns>
     private string BuildDefaultErrorMessage() {
-        var permissionList = string.Join("、", PermissionCodes);
+        string permissionList = string.Join("、", PermissionCodes);
         return LogicalOperator == LogicalOperator.And
             ? $"需要同时拥有以下权限: {permissionList}"
             : $"需要拥有以下任意权限: {permissionList}";

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleDomainEventHandlers.cs
  * 功能描述: 角色领域事件处理器，处理角色相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -33,8 +33,8 @@ public class RoleCreatedEventHandler(
         LogEvent("创建", @event.Description, @event.Domains.Count());
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
         Logger.LogInformation("已清除角色列表和分页缓存（新增 {Count} 个角色）", @event.Domains.Count());
     }
@@ -65,8 +65,8 @@ public class RoleUpdatedEventHandler(
         await Task.WhenAll(roleTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
         Logger.LogInformation("已清除角色列表和分页缓存");
     }
@@ -97,8 +97,8 @@ public class RoleDeletedEventHandler(
         await Task.WhenAll(roleTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
         Logger.LogInformation("已清除角色列表和分页缓存");
     }
@@ -129,8 +129,8 @@ public class RoleRestoredEventHandler(
         await Task.WhenAll(roleTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
         Logger.LogInformation("已清除角色列表和分页缓存");
     }

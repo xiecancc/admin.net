@@ -1,5 +1,5 @@
 # .editorconfig 配置文件
-# 基于 C# 13 / .NET 10 最新特性
+# 基于 .NET 10 / C# 14 最新特性
 # 适用于 VS Code、Visual Studio 2026 等主流 IDE
 
 root = true
@@ -9,14 +9,17 @@ root = true
 # 使用 LF 作为行结束符（跨平台一致性）
 end_of_line = lf
 
-# 使用 UTF-8 编码
-charset = utf-8
+# 使用 UTF-8 编码（带 BOM）
+charset = utf-8-bom
 
-# 使用空格缩进
+# 使用空格缩进（对应规范 2.1 节）
 indent_style = space
 
-# 缩进大小为 4 个空格
+# 缩进大小为 4 个空格（对应规范 2.1 节）
 indent_size = 4
+
+# 制表符宽度
+tab_width = 4
 
 # 移除尾随空格
 trim_trailing_whitespace = true
@@ -24,29 +27,15 @@ trim_trailing_whitespace = true
 # 文件末尾插入空行
 insert_final_newline = true
 
-# ==================== IDE 优化配置 ====================
-# Visual Studio 2026 和 VS Code 优化设置
-
-# 在 VS Code 中启用编辑器配置支持
-generated_code = false
-
-# 文件编码检测（VS 2026+ 和 VS Code）
-charset = utf-8-bom
-
-# 制表符宽度（VS Code 显示用）
-tab_width = 4
-
-# 最大行长度（VS Code 标尺参考）
+# 最大行长度 120 字符（对应规范 2.3 节）
 max_line_length = 120
 
-# 连续空行最大数量（VS 2026+）
+# 连续空行最大数量
 max_consecutive_empty_lines = 2
 
-# 保持语句在同一行（适用于简单语句）
-keep_simple_blocks_in_one_line = false
-
-# 放置简单方法在同一行
-place_simple_blocks_on_same_line = false
+# ==================== IDE 通用设置 ====================
+# 文件编码和格式化
+generated_code = false
 
 # 对象和集合初始化器的换行设置
 csharp_new_line_before_members_in_object_initializers = true
@@ -68,186 +57,130 @@ editor.codeActionsOnSave = {
   "source.organizeImports": true
 }
 
-# VS Code 代码导航
-editor.gotoLocation.multipleDefinitions = "goto"
-editor.gotoLocation.multipleReferences = "goto"
-editor.gotoLocation.multipleImplementations = "goto"
-
 # VS Code 行尾空格显示
 editor.renderWhitespace = "boundary"
 
 # VS Code 分号自动添加
 editor.formatOnType = true
 
-# ==================== VS 2026 特定设置 ====================
+# ==================== Visual Studio 2026 特定设置 ====================
 # VS 2026 代码分析
 roslynator.enabled = true
-
-# VS 2026 性能分析
 vs.enableCodeAnalysisOnBuild = true
-
-# VS 2026 调试
-vs.debugger.displayFormat = "hex"
 
 # VS 2026 智能提示
 vs.intellisense.showAdvancedMembers = true
 
-# VS 2026 行尾空格显示
+# VS 2026 空白字符显示
 vs.showWhitespace = true
 
-# ==================== C# 基础配置 ====================
+# ==================== C# 基础格式配置 ====================
+# 对应编码规范第 2 章：代码格式
 [*.cs]
-# 最大行长度为 120 字符（提高可读性）
-max_line_length = 120
 
-# 保持成员在同一行
+# 大括号风格：Allman 风格（大括号换行）- 对应规范 2.2 节
 csharp_new_line_before_open_brace = all
 
-# 保持控制块在同一行
-csharp_new_line_before_open_brace = methods, properties, indexers, events
+# 表达式体成员使用规则（对应规范 2.1 节）
+# 方法：不在单行使用表达式体（除非非常简单）
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+# 构造函数：不在单行使用表达式体
+csharp_style_expression_bodied_constructors = when_on_single_line:suggestion
+# 运算符：可以在单行使用表达式体
+csharp_style_expression_bodied_operators = when_on_single_line:suggestion
+# 属性：可以在单行使用表达式体
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+# 索引器：可以在单行使用表达式体
+csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
+# 访问器：可以在单行使用表达式体
+csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
 
-# 保持类型在同一行
-csharp_new_line_before_open_brace = types
-
-# 保持命名空间在同一行
-csharp_new_line_before_open_brace = namespaces
-
-# 保持类型成员在新行
-csharp_new_line_before_members_in_object_initializers = true
-csharp_new_line_before_members_in_anonymous_types = true
-
-# 保持数组初始化器在新行
-csharp_new_line_between_query_expression_clauses = true
-
-# 保持数组元素在新行
-csharp_array_initializer_style = block
-
-# 保持表达式体成员的新行
-csharp_style_expression_bodied_methods = false:error
-csharp_style_expression_bodied_constructors = false:error
-csharp_style_expression_bodied_operators = false:error
-csharp_style_expression_bodied_properties = true:error
-csharp_style_expression_bodied_indexers = true:error
-csharp_style_expression_bodied_accessors = true:error
-
-# 保持方法声明的新行
+# 方法声明和方法调用的参数换行
 csharp_method_declaration_parameters_on_new_line = when_on_single_line
 csharp_method_call_parameters_on_new_line = when_on_single_line
 
-# 保持参数列表的新行
+# 保持单行块和语句
 csharp_preserve_single_line_blocks = false
-
-# 保持单行块的新行
 csharp_preserve_single_line_statements = false
 
-# ==================== C# 13 新特性规则 ====================
-# 强制使用文件作用域命名空间（C# 10+）
+# 数组初始化器样式：块样式（对应规范 6.2 节）
+csharp_array_initializer_style = block
+
+# using 语句排序：系统命名空间在前，按字母顺序（对应规范 2.4 节）
+csharp_using_directive_placement = outside_namespace:error
+
+# 命名空间声明：文件作用域命名空间（C# 10+，对应规范 2.1 节）
 csharp_style_namespace_declarations = file_scoped:error
 
-# 强制 using 指令在命名空间之前（C# 10+）
-csharp_style_using_directives_placement = outside_namespace:error
+# ==================== 命名约定配置 ====================
+# 对应编码规范第 1 章：命名约定
 
-# 强制使用全局 using 指令（.NET 6+ 隐式 usings）
-dotnet_style_require_global_usings = true:suggestion
+# 接口命名必须以 I 开头（PascalCase）- 对应规范 1.2 节
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = error
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
 
-# 强制使用 using 类型别名而非全限定名（C# 10+）
-csharp_style_using_type_alias = true:error
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal
 
-# 强制使用集合表达式（C# 12+）- [] 而非 new List<T>()
-csharp_style_prefer_collection_expression = true:error
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
-# 强制使用主构造函数（C# 12+）
-csharp_style_prefer_primary_constructors = true:error
+# 类型参数命名以 T 开头 - 对应规范 1.2 节
+dotnet_naming_rule.type_parameters_must_begin_with_t.severity = error
+dotnet_naming_rule.type_parameters_must_begin_with_t.symbols = type_parameters
+dotnet_naming_rule.type_parameters_must_begin_with_t.style = begin_with_t
 
-# 强制使用 ref readonly 返回（C# 12+）
-csharp_style_prefer_ref_readonly = true:error
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
 
-# 强制使用内联数组（C# 12+）
-csharp_style_prefer_inline_arrays = true:error
+dotnet_naming_style.begin_with_t.required_prefix = T
+dotnet_naming_style.begin_with_t.capitalization = pascal_case
 
-# 强制使用文件局部类型（C# 11+）
-csharp_style_prefer_file_local_types = true:error
+# 常量命名使用 PascalCase - 对应规范 1.1 节
+dotnet_naming_rule.constants_should_be_pascal_case.severity = error
+dotnet_naming_rule.constants_should_be_pascal_case.symbols = constants
+dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case
 
-# 强制使用原始字符串字面量（C# 11+）
-csharp_style_prefer_raw_string_literals = true:error
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.required_modifiers = const
 
-# 强制使用 UTF-8 字符串字面量（C# 12+）
-csharp_style_prefer_utf8_string_literals = true:error
+dotnet_naming_style.pascal_case.capitalization = pascal_case
 
-# ==================== C# 14 展望规则（预览/候选） ====================
-# 阻止使用 unsafe 代码（除非必要）
-dotnet_diagnostic.IDE0260.severity = suggestion
+# 公共成员使用 PascalCase - 对应规范 1.1 节
+dotnet_naming_rule.public_members_should_be_pascal_case.severity = error
+dotnet_naming_rule.public_members_should_be_pascal_case.symbols = public_members
+dotnet_naming_rule.public_members_should_be_pascal_case.style = pascal_case
 
-# 强制使用 checked 表达式（C# 14+）
-dotnet_diagnostic.IDE0261.severity = suggestion
+dotnet_naming_symbols.public_members.applicable_kinds = property, method, event, delegate
+dotnet_naming_symbols.public_members.applicable_accessibilities = public
 
-# 强制使用 ref 条件表达式（C# 14+）
-dotnet_diagnostic.IDE0262.severity = suggestion
+# 私有字段使用 camelCase 或 _camelCase - 对应规范 1.1 节
+dotnet_naming_rule.private_fields_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camel_case.style = camel_case_or_underscore_camel_case
 
-# 强制使用扩展成员语法（C# 14+）- 允许为现有类型添加新成员
-# 语法：extension MyExtension for MyType { /* 成员定义 */ }
-dotnet_diagnostic.IDE0310.severity = error
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 
-# 强制使用字段关键字（C# 14+）- 简化字段声明
-# 语法：field int x;
-dotnet_diagnostic.IDE0311.severity = error
+dotnet_naming_style.camel_case_or_underscore_camel_case.capitalization = camel_case
 
-# 强制使用扩展成员的访问修饰符（C# 14+）
-dotnet_diagnostic.IDE0312.severity = error
+# ==================== 代码风格基础规则 ====================
+# 对应编码规范各章节的最佳实践
 
-# 强制使用扩展成员的命名规范（C# 14+）
-dotnet_diagnostic.IDE0313.severity = error
+# 使用 var 关键字的场景（对应规范 7.2 节）
+# 内置类型不使用 var
+csharp_style_var_for_built_in_types = false:error
+# 类型明显时可使用 var
+csharp_style_var_when_type_is_apparent = true:suggestion
+# 其他情况偏好显式类型
+csharp_style_var_elsewhere = false:suggestion
 
-# 强制使用扩展成员的静态修饰符（C# 14+）
-dotnet_diagnostic.IDE0314.severity = error
+# 使用模式匹配（对应规范 8.2 节）
+csharp_style_pattern_matching_over_is_with_cast = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
 
-# 强制使用扩展成员的 this 参数（C# 14+）
-dotnet_diagnostic.IDE0315.severity = error
-
-# ==================== 性能优化规则（IDE 分析器）====================
-# 使用字符串插值简化字符串连接
-dotnet_diagnostic.IDE0071.severity = error
-
-# 使用 ToArray 或 ToList 时指定容量
-dotnet_diagnostic.IDE0306.severity = warning
-
-# 使用 Span<T> 替代 Substring
-dotnet_diagnostic.IDE0057.severity = error
-
-# 使用 Index 和 Range 运算符
-dotnet_diagnostic.IDE0056.severity = error
-dotnet_diagnostic.IDE0058.severity = error
-
-# 使用异步方法替代同步方法
-dotnet_diagnostic.IDE0070.severity = warning
-
-# 使用 Memory<T> 替代 byte[]
-dotnet_diagnostic.IDE0060.severity = warning
-
-# 使用 StringBuilder 的 Append 方法链
-dotnet_diagnostic.IDE0072.severity = suggestion
-
-# 使用 foreach 循环替代 for 循环（可读性）
-dotnet_diagnostic.IDE0067.severity = error
-
-# 使用 switch 表达式替代 switch 语句（C# 8+）
-dotnet_diagnostic.IDE0066.severity = error
-
-# 使用模式匹配简化条件判断（C# 8+）
-dotnet_diagnostic.IDE0078.severity = error
-
-# 使用空值合并运算符（??）简化 null 检查
-dotnet_diagnostic.IDE0029.severity = error
-
-# 使用条件访问运算符（?.）简化 null 检查
-dotnet_diagnostic.IDE0031.severity = error
-
-# 使用弃元（_）忽略未使用的变量
-dotnet_diagnostic.IDE0059.severity = error
-
-# ==================== 代码风格一致性规则 ====================
-# 使用 throw 表达式
-dotnet_diagnostic.IDE0016.severity = error
+# 使用局部函数而非 lambda（对应规范 5.3 节）
+csharp_style_prefer_local_functions = true:suggestion
 
 # 使用对象初始化器
 dotnet_diagnostic.IDE0017.severity = error
@@ -258,19 +191,23 @@ dotnet_diagnostic.IDE0028.severity = error
 # 使用自动实现属性
 dotnet_diagnostic.IDE0032.severity = error
 
-# 使用默认字面量
-dotnet_diagnostic.IDE0034.severity = error
-
 # 使用内联变量声明
 dotnet_diagnostic.IDE0018.severity = error
 
-# 使用模式匹配
-dotnet_diagnostic.IDE0078.severity = error
-dotnet_diagnostic.IDE0083.severity = error
-dotnet_diagnostic.IDE0084.severity = error
+# 使用默认字面量
+dotnet_diagnostic.IDE0034.severity = error
 
-# 使用 switch 表达式
-dotnet_diagnostic.IDE0066.severity = error
+# 使用弃元忽略未使用的变量
+dotnet_diagnostic.IDE0059.severity = warning
+
+# 使用 throw 表达式
+dotnet_diagnostic.IDE0016.severity = error
+
+# 使用条件访问运算符简化 null 检查
+dotnet_diagnostic.IDE0031.severity = error
+
+# 使用空值合并运算符简化 null 检查
+dotnet_diagnostic.IDE0029.severity = error
 
 # 使用条件表达式
 dotnet_diagnostic.IDE0045.severity = error
@@ -280,11 +217,17 @@ dotnet_diagnostic.IDE0046.severity = error
 dotnet_diagnostic.IDE0054.severity = error
 dotnet_diagnostic.IDE0074.severity = error
 
-# 使用局部函数
-dotnet_diagnostic.IDE0061.severity = error
+# 使用 switch 表达式替代 switch 语句（C# 8+）
+dotnet_diagnostic.IDE0066.severity = suggestion
 
-# 使用静态本地函数
-dotnet_diagnostic.IDE0062.severity = error
+# 使用 foreach 循环提高可读性
+dotnet_diagnostic.IDE0067.severity = suggestion
+
+# 使用局部函数
+dotnet_diagnostic.IDE0061.severity = suggestion
+
+# 使用静态本地函数避免不必要的闭包分配
+dotnet_diagnostic.IDE0062.severity = suggestion
 
 # 使用简单 using 语句
 dotnet_diagnostic.IDE0063.severity = error
@@ -292,110 +235,91 @@ dotnet_diagnostic.IDE0063.severity = error
 # 使用 using 声明
 dotnet_diagnostic.IDE0064.severity = error
 
-# 使用弃元
-dotnet_diagnostic.IDE0059.severity = error
-dotnet_diagnostic.IDE0060.severity = error
+# 使用字符串插值简化字符串连接
+dotnet_diagnostic.IDE0071.severity = error
+
+# 使用 StringBuilder 的 Append 方法链
+dotnet_diagnostic.IDE0072.severity = suggestion
 
 # 简化条件表达式
-dotnet_diagnostic.IDE0075.severity = error
+dotnet_diagnostic.IDE0075.severity = suggestion
 
-# 使用 System.HashCode 组合哈希值
-dotnet_diagnostic.IDE0070.severity = error
+# 使用模式匹配简化条件判断（C# 8+）- 对应规范 8.2 节
+dotnet_diagnostic.IDE0078.severity = suggestion
+dotnet_diagnostic.IDE0083.severity = suggestion
+dotnet_diagnostic.IDE0084.severity = suggestion
 
-# 使用递归模式匹配
-dotnet_diagnostic.IDE0078.severity = error
+# 使用递归模式匹配（C# 8+）
+dotnet_diagnostic.IDE0170.severity = suggestion
 
-# 使用属性模式
-dotnet_diagnostic.IDE0170.severity = error
+# 使用列表模式（C# 11+）
+dotnet_diagnostic.IDE0307.severity = suggestion
 
-# 使用列表模式
-dotnet_diagnostic.IDE0307.severity = error
-
-# ==================== 严格避免无用代码规则 ====================
-# 未使用的私有字段（强制报错）
-dotnet_diagnostic.CA1823.severity = error
-
-# 未使用的私有方法（强制报错）
-dotnet_diagnostic.CA1811.severity = error
-
-# 未使用的参数（强制报错）
-dotnet_diagnostic.CA1801.severity = error
-
-# 未使用的局部变量（强制报错）
-dotnet_diagnostic.CA1804.severity = error
-
-# 未使用的返回值（强制报错）
-dotnet_diagnostic.CA1806.severity = error
-
-# 未使用的类型（强制报错）
-dotnet_diagnostic.CA1812.severity = warning
-
-# 未使用的程序集引用（强制报错）
-dotnet_diagnostic.IDE0005.severity = error
-
-# 可以设置为常量的字段（强制报错）
-dotnet_diagnostic.CA1802.severity = error
-
-# 未使用的 using 指令（强制报错）
-dotnet_diagnostic.IDE0005.severity = error
-
-# ==================== C# 13 / .NET 10 新增特性强制规则 ====================
-# 强制使用参数 null 检查（C# 11+ 参数验证模式）
-dotnet_diagnostic.IDE0270.severity = error
-
-# 强制使用 nameof 操作符（避免硬编码字符串）
+# 使用 nameof 操作符避免硬编码字符串（对应规范 11.6 节）
 dotnet_diagnostic.IDE0002.severity = error
 
-# 强制使用静态本地函数（避免不必要的闭包分配）
-dotnet_diagnostic.IDE0062.severity = error
+# 未使用的 using 指令
+dotnet_diagnostic.IDE0005.severity = error
 
-# 强制使用只读自动属性（C# 6+，提高不可变性）
-dotnet_diagnostic.IDE0044.severity = error
+# ==================== C# 10+ 新特性强制规则 ====================
+# 对应编码规范第 2-9 章
 
-# 强制使用命名参数提高可读性
-dotnet_diagnostic.IDE0049.severity = suggestion
+# 强制使用全局 using 指令（.NET 6+）
+dotnet_style_require_global_usings = true:suggestion
 
-# 强制使用结构体只读自动属性
-dotnet_diagnostic.IDE0064.severity = error
+# 强制使用 using 类型别名而非全限定名
+csharp_style_using_type_alias = true:suggestion
+
+# 强制使用集合表达式（C# 12+）- [] 而非 new List<T>() （对应规范 6.2 节）
+csharp_style_prefer_collection_expression = true:suggestion
+
+# 强制使用主构造函数（C# 12+）- 对应规范 7.2 节
+csharp_style_prefer_primary_constructors = true:suggestion
+
+# 强制使用 ref readonly 返回（C# 12+）
+csharp_style_prefer_ref_readonly = true:suggestion
+
+# 强制使用内联数组（C# 12+）
+csharp_style_prefer_inline_arrays = true:suggestion
+
+# 强制使用文件局部类型（C# 11+ file 关键字）
+csharp_style_prefer_file_local_types = true:suggestion
+
+# 强制使用原始字符串字面量（C# 11+）
+csharp_style_prefer_raw_string_literals = true:suggestion
+
+# 强制使用 UTF-8 字符串字面量（C# 12+）
+csharp_style_prefer_utf8_string_literals = true:suggestion
+
+# ==================== C# 11+ 可空性和不可变性规则 ====================
+# 对应编码规范 7.1 和 7.3 节
 
 # 使用 required 修饰符标记必须初始化的属性（C# 11+）
-dotnet_diagnostic.IDE0250.severity = error
+dotnet_diagnostic.IDE0250.severity = suggestion
 
-# 使用 init 访问器（C# 9+ 不可变初始化）
+# 使用 init 访问器进行不可变初始化（C# 9+）
 dotnet_diagnostic.IDE0251.severity = suggestion
 
-# 使用 record struct（C# 10+ 值类型记录）
+# 使用 record struct（C# 10+ 值类型记录）- 对应规范 3.3 节
 dotnet_diagnostic.IDE0252.severity = suggestion
 
 # 使用 with 表达式进行非破坏性修改（C# 9+）
 dotnet_diagnostic.IDE0253.severity = suggestion
 
-# 使用原生整数类型（C# 9+ nint/nuint）
-dotnet_diagnostic.IDE0254.severity = suggestion
+# 使用只读自动属性提高不可变性
+dotnet_diagnostic.IDE0044.severity = suggestion
 
-# 使用函数指针（C# 9+ 高性能互操作）
-dotnet_diagnostic.IDE0255.severity = suggestion
+# 使用参数 null 检查（C# 11+ 参数验证模式）- 对应规范 4.3 节
+dotnet_diagnostic.IDE0270.severity = error
 
-# 使用 suppress 可空状态（C# 9+ 可空安全覆盖）
-dotnet_diagnostic.IDE0260.severity = suggestion
+# 使用 required 成员（C# 11+）
+dotnet_diagnostic.IDE0274.severity = suggestion
 
-# 使用目标类型条件表达式（C# 9+）
-dotnet_diagnostic.IDE0261.severity = suggestion
+# 使用命名参数提高可读性
+dotnet_diagnostic.IDE0049.severity = suggestion
 
-# 使用协变返回类型（C# 9+）
-dotnet_diagnostic.IDE0262.severity = suggestion
-
-# 使用模块初始化器（C# 9+）
-dotnet_diagnostic.IDE0263.severity = suggestion
-
-# 使用扩展的 partial 方法（C# 9+）
-dotnet_diagnostic.IDE0264.severity = suggestion
-
-# 使用本机整数大小写（C# 9+）
-dotnet_diagnostic.IDE0265.severity = suggestion
-
-# 使用无符号右移运算符（C# 11+）
-dotnet_diagnostic.IDE0266.severity = suggestion
+# ==================== C# 13/14 新特性规则 ====================
+# 对应编码规范第 11 章：C# 14 新特性使用规范
 
 # 使用原始字符串字面量（C# 11+）
 dotnet_diagnostic.IDE0271.severity = suggestion
@@ -403,11 +327,8 @@ dotnet_diagnostic.IDE0271.severity = suggestion
 # 使用泛型数学运算（C# 11+）
 dotnet_diagnostic.IDE0272.severity = suggestion
 
-# 使用文件局部类型（C# 11+ file 关键字）
+# 使用文件局部类型（C# 11+）
 dotnet_diagnostic.IDE0273.severity = suggestion
-
-# 使用 required 成员（C# 11+）
-dotnet_diagnostic.IDE0274.severity = error
 
 # 使用 scoped 修饰符（C# 11+ 内存安全）
 dotnet_diagnostic.IDE0275.severity = suggestion
@@ -418,167 +339,227 @@ dotnet_diagnostic.IDE0276.severity = suggestion
 # 使用内联数组（C# 12+）
 dotnet_diagnostic.IDE0277.severity = suggestion
 
+# 使用原生整数类型（C# 9+ nint/nuint）
+dotnet_diagnostic.IDE0254.severity = suggestion
+
+# 使用无符号右移运算符（C# 11+）
+dotnet_diagnostic.IDE0266.severity = suggestion
+
+# 使用扩展的 partial 方法（C# 9+）- 对应规范 11.3 节
+dotnet_diagnostic.IDE0264.severity = suggestion
+
+# 使用目标类型条件表达式（C# 9+）
+dotnet_diagnostic.IDE0261.severity = suggestion
+
+# 使用协变返回类型（C# 9+）
+dotnet_diagnostic.IDE0262.severity = suggestion
+
+# 使用模块初始化器（C# 9+）
+dotnet_diagnostic.IDE0263.severity = suggestion
+
+# 使用本机整数大小写（C# 9+）
+dotnet_diagnostic.IDE0265.severity = suggestion
+
+# 使用函数指针（C# 9+ 高性能互操作）
+dotnet_diagnostic.IDE0255.severity = suggestion
+
+# 使用 suppress 可空状态（C# 9+）
+dotnet_diagnostic.IDE0260.severity = suggestion
+
 # 使用拦截器（C# 12+ 高级场景）
 dotnet_diagnostic.IDE0278.severity = suggestion
 
-# ==================== 内存安全与性能优化 ====================
-# 使用 Span<T> 替代数组参数（性能优化）
-dotnet_diagnostic.CA1836.severity = warning
+# ==================== C# 14 特性前瞻规则 ====================
+# 对应编码规范 11.1-11.8 节
 
-# 使用 Memory<T> 替代数组参数（异步场景）
-dotnet_diagnostic.CA1837.severity = warning
+# 阻止使用 unsafe 代码（除非必要）
+dotnet_diagnostic.IDE0260.severity = suggestion
+
+# 强制使用 checked 表达式（数值溢出保护）
+dotnet_diagnostic.IDE0261.severity = suggestion
+
+# 强制使用 ref 条件表达式（C# 14+）
+dotnet_diagnostic.IDE0262.severity = suggestion
+
+# ==================== 性能优化规则（IDE 分析器）====================
+# 对应编码规范第 9 章：性能优化
+
+# 使用 Index 和 Range 运算符（C# 8+）
+dotnet_diagnostic.IDE0056.severity = suggestion
+dotnet_diagnostic.IDE0058.severity = suggestion
+
+# 使用 Span<T> 替代 Substring（高性能字符串处理）- 对应规范 9.1 节
+dotnet_diagnostic.IDE0057.severity = suggestion
+
+# 使用 ToArray 或 ToList 时指定容量
+dotnet_diagnostic.IDE0306.severity = suggestion
+
+# 使用异步方法替代同步方法（I/O 密集型操作）- 对应规范 9.3 节
+dotnet_diagnostic.IDE0070.severity = suggestion
+
+# 使用 Memory<T> 替代 byte[]（异步场景）
+dotnet_diagnostic.IDE0060.severity = suggestion
+
+# 使用 System.HashCode 组合哈希值
+dotnet_diagnostic.CA1836.severity = suggestion
+
+# 使用 Span<T> 替代数组参数（性能优化）
+dotnet_diagnostic.CA1837.severity = suggestion
 
 # 使用 stackalloc 替代 new 数组（短生命周期数组）
-dotnet_diagnostic.CA1838.severity = warning
+dotnet_diagnostic.CA1838.severity = suggestion
 
-# 使用 ArrayPool<T> 共享数组（减少 GC）
-dotnet_diagnostic.CA1839.severity = warning
+# 使用 ArrayPool<T> 共享数组（减少 GC 压力）- 对应规范 9.1 节
+dotnet_diagnostic.CA1839.severity = suggestion
 
-# 使用 StringBuilder 替代字符串连接（多次连接）
-dotnet_diagnostic.CA1840.severity = warning
+# 使用 StringBuilder 替代字符串连接（多次连接场景）- 对应规范 9.2 节
+dotnet_diagnostic.CA1840.severity = suggestion
 
-# 使用 string.Create 替代字符串格式化（高性能）
+# 使用 string.Create 替代字符串格式化（高性能场景）
 dotnet_diagnostic.CA1841.severity = suggestion
 
-# 使用 span.Contains 替代 IndexOf（可读性）
+# 使用 span.Contains/IndexOf/SequenceEqual 等（可读性和性能）
 dotnet_diagnostic.CA1842.severity = suggestion
-
-# 使用 span.SequenceEqual 替代循环比较（性能）
 dotnet_diagnostic.CA1843.severity = suggestion
-
-# 使用 span.IndexOfAny 替代多次 IndexOf（性能）
 dotnet_diagnostic.CA1844.severity = suggestion
 
-# ==================== LINQ 性能优化规则 ====================
-# 使用 Any() 替代 Count() > 0（性能优化）
+# 使用 Any() 替代 Count() > 0（LINQ 性能优化）
 dotnet_diagnostic.CA1860.severity = error
 
 # 使用 Count() 替代 Count 属性（可读性）
-dotnet_diagnostic.CA1861.severity = warning
+dotnet_diagnostic.CA1861.severity = suggestion
 
-# ==================== .NET 10 特定的性能和安全性规则 ====================
-# 优先使用 Memory<T> 而非 byte[]（.NET 10+ 内存优化）
-dotnet_diagnostic.CA1837.severity = error
+# ==================== .NET 10 性能优化规则 ====================
+# 对应编码规范 9.1 和 11.5 节
 
-# 优先使用 MemoryMarshal.AsRef 替代强制转换（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2290.severity = error
+# 优先使用 Memory<T> 而非 byte[]
+dotnet_diagnostic.CA1837.severity = suggestion
 
-# 优先使用 MemoryMarshal.CreateSpan 替代手动创建（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2291.severity = error
+# 优先使用 ValueTask.FromResult 替代 Task.FromResult（减少分配）
+dotnet_diagnostic.CA2306.severity = suggestion
 
-# 优先使用 MemoryMarshal.TryGetArray 替代不安全代码（.NET 10+ 安全性）
-dotnet_diagnostic.CA2292.severity = error
+# 优先使用 ValueTask.CompletedTask 替代 Task.CompletedTask
+dotnet_diagnostic.CA2307.severity = suggestion
 
-# 优先使用 CollectionsMarshal.AsSpan 替代数组访问（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2293.severity = error
+# 优先使用 TimeProvider 替代 DateTime/TimeSpan（可测试性）
+dotnet_diagnostic.CA2303.severity = suggestion
 
-# 优先使用 CollectionsMarshal.GetValueRef 替代索引器（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2294.severity = error
+# 优先使用 PeriodicTimer 替代 Timer（性能优化）
+dotnet_diagnostic.CA2304.severity = suggestion
 
-# 优先使用 StringPool.Shared 替代字符串常量（.NET 10+ 内存优化）
-dotnet_diagnostic.CA2295.severity = error
+# 优先使用 AsyncLocal<T> 替代 ThreadLocal<T>（异步安全）
+dotnet_diagnostic.CA2305.severity = suggestion
 
-# 优先使用 CompositeFormat.Parse 替代字符串格式化（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2296.severity = error
+# 优先使用 FrozenDictionary/Create 等高性能集合
+dotnet_diagnostic.CA2299.severity = suggestion
 
-# 优先使用 SearchValues.Create 替代字符串数组（.NET 10+ 搜索优化）
-dotnet_diagnostic.CA2297.severity = error
+# 优先使用 OrderedDictionary 替代 SortedDictionary
+dotnet_diagnostic.CA2300.severity = suggestion
 
-# 优先使用 TensorPrimitives.Add 替代手动循环（.NET 10+ 张量运算）
-dotnet_diagnostic.CA2298.severity = error
+# 优先使用 PriorityQueue 替代自定义优先队列
+dotnet_diagnostic.CA2301.severity = suggestion
 
-# 优先使用 FrozenDictionary.Create 替代 ImmutableDictionary（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2299.severity = error
+# 优先使用 RateLimiter 替代自定义限流
+dotnet_diagnostic.CA2302.severity = suggestion
 
-# 优先使用 OrderedDictionary<TKey, TValue> 替代 SortedDictionary（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2300.severity = error
+# 优先使用 SearchValues.Create 替代字符串数组（搜索优化）
+dotnet_diagnostic.CA2297.severity = suggestion
 
-# 优先使用 PriorityQueue<TElement, TPriority> 替代自定义优先队列（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2301.severity = error
+# 优先使用 CompositeFormat.Parse 替代字符串格式化
+dotnet_diagnostic.CA2296.severity = suggestion
 
-# 优先使用 RateLimiter.Create 替代自定义限流（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2302.severity = error
+# 优先使用 StringPool.Shared 替代字符串常量（内存优化）
+dotnet_diagnostic.CA2295.severity = suggestion
 
-# 优先使用 TimeProvider 替代 DateTime/TimeSpan（.NET 10+ 可测试性）
-dotnet_diagnostic.CA2303.severity = error
+# 优先使用 TensorPrimitives 替代手动循环（向量化计算）
+dotnet_diagnostic.CA2298.severity = suggestion
 
-# 优先使用 PeriodicTimer 替代 Timer（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2304.severity = error
+# 优先使用 CollectionsMarshal.AsSpan/GetValueRef（性能优化）
+dotnet_diagnostic.CA2293.severity = suggestion
+dotnet_diagnostic.CA2294.severity = suggestion
 
-# 优先使用 AsyncLocal<T> 替代 ThreadLocal<T>（.NET 10+ 异步安全）
-dotnet_diagnostic.CA2305.severity = error
+# 优先使用 MemoryMarshal 的高性能 API
+dotnet_diagnostic.CA2290.severity = suggestion
+dotnet_diagnostic.CA2291.severity = suggestion
+dotnet_diagnostic.CA2292.severity = suggestion
 
-# 优先使用 ValueTask.FromResult 替代 Task.FromResult（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2306.severity = error
+# ==================== 内存安全与代码质量规则 ====================
+# 对应编码规范第 10 章：安全最佳实践
 
-# 优先使用 ValueTask.CompletedTask 替代 Task.CompletedTask（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2307.severity = error
+# 未使用的私有字段
+dotnet_diagnostic.CA1823.severity = warning
 
-# 优先使用 MemoryExtensions.Contains 替代 string.Contains（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2308.severity = error
+# 未使用的私有方法
+dotnet_diagnostic.CA1811.severity = warning
 
-# 优先使用 MemoryExtensions.IndexOf 替代 string.IndexOf（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2309.severity = error
+# 未使用的参数
+dotnet_diagnostic.CA1801.severity = warning
 
-# 优先使用 MemoryExtensions.StartsWith 替代 string.StartsWith（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2310.severity = error
+# 未使用的局部变量
+dotnet_diagnostic.CA1804.severity = warning
 
-# 优先使用 MemoryExtensions.EndsWith 替代 string.EndsWith（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2311.severity = error
+# 未使用的返回值
+dotnet_diagnostic.CA1806.severity = warning
 
-# 优先使用 MemoryExtensions.Equals 替代 string.Equals（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2312.severity = error
+# 未使用的类型
+dotnet_diagnostic.CA1812.severity = suggestion
 
-# 优先使用 MemoryExtensions.CompareTo 替代 string.CompareTo（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2313.severity = error
+# 可以设置为常量的字段
+dotnet_diagnostic.CA1802.severity = suggestion
 
-# 优先使用 MemoryExtensions.Replace 替代 string.Replace（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2314.severity = error
+# ==================== 可空引用类型配置 ====================
+# 对应编码规范 7.3 节：可空引用类型
 
-# 优先使用 MemoryExtensions.Remove 替代 string.Remove（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2315.severity = error
+# 启用可空引用类型检查
+dotnet_naming_rule.nullable_reference_types.severity = warning
 
-# 优先使用 MemoryExtensions.Insert 替代 string.Insert（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2316.severity = error
+# 允许隐式可空类型（对于遗留代码）
+dotnet_code_quality.allow_implicit_nullable_types = false
 
-# 优先使用 MemoryExtensions.PadLeft 替代 string.PadLeft（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2317.severity = error
+# 可空引用类型的警告级别
+nullable = enable
 
-# 优先使用 MemoryExtensions.PadRight 替代 string.PadRight（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2318.severity = error
+# ==================== 异步编程规则 ====================
+# 对应编码规范第 5 章：异步编程
 
-# 优先使用 MemoryExtensions.Trim 替代 string.Trim（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2319.severity = error
+# 避免 async void（事件处理器除外）
+dotnet_diagnostic.VSTHRD100.severity = error
 
-# 优先使用 MemoryExtensions.TrimStart 替代 string.TrimStart（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2320.severity = error
+# 使用 ConfigureAwait(false) 在库代码中
+dotnet_diagnostic.VSTHRD106.severity = suggestion
 
-# 优先使用 MemoryExtensions.TrimEnd 替代 string.TrimEnd（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2321.severity = error
+# 不要在 finally 块中使用 async
+dotnet_diagnostic.VSTHRD103.severity = warning
 
-# 优先使用 MemoryExtensions.ToUpper 替代 string.ToUpper（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2322.severity = error
+# 不要在 lock 中使用 await
+dotnet_diagnostic.VSTHRD102.severity = error
 
-# 优先使用 MemoryExtensions.ToLower 替代 string.ToLower（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2323.severity = error
+# ==================== 异常处理规则 ====================
+# 对应编码规范第 4 章：异常处理
 
-# 优先使用 MemoryExtensions.ToUpperInvariant 替代 string.ToUpperInvariant（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2324.severity = error
+# 不要捕获通用异常（对应规范 4.1 节）
+dotnet_diagnostic.CA1031.severity = warning
 
-# 优先使用 MemoryExtensions.ToLowerInvariant 替代 string.ToLowerInvariant（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2325.severity = error
+# 不要抛出基类 Exception（对应规范 4.1 节）
+dotnet_diagnostic.CA1058.severity = warning
 
-# 优先使用 MemoryExtensions.Substring 替代 string.Substring（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2326.severity = error
+# 使用 ArgumentNullException.ThrowIfNull（C# 10+，对应规范 4.2 节）
+dotnet_diagnostic.IDE0019.severity = suggestion
 
-# 优先使用 MemoryExtensions.Slice 替代 string.Substring（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2327.severity = error
+# ==================== 安全最佳实践规则 ====================
+# 对应编码规范第 10 章：安全最佳实践
 
-# 优先使用 MemoryExtensions.Span 替代 string.AsSpan（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2328.severity = error
+# SQL 注入防护：使用参数化查询（对应规范 10.3 节）
+dotnet_diagnostic.SCA1001.severity = error
 
-# 优先使用 MemoryExtensions.Create 替代 string.Create（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2329.severity = error
+# XSS 防护：对输出进行 HTML 编码
+dotnet_diagnostic.SCA1002.severity = error
 
-# 优先使用 MemoryExtensions.AsMemory 替代 string.AsMemory（.NET 10+ 性能优化）
-dotnet_diagnostic.CA2330.severity = error
+# 敏感数据不要记录到日志（对应规范 10.2 节）
+dotnet_diagnostic.CA2153.severity = warning
+
+# 不要硬编码敏感信息
+dotnet_diagnostic.CA2100.severity = error
+
+# 使用 SecureString 处理密码等敏感数据（对应规范 10.2 节）
+dotnet_diagnostic.CA2122.severity = suggestion

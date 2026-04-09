@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRoleRepository.cs
  * 功能描述: 用户角色关联仓储实现，用于处理用户和角色之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,15 +16,15 @@ namespace Infrastructure.Repositories;
 
 /// <inheritdoc cref="IUserRoleRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
 public class UserRoleRepository(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     ILogger<UserRoleRepository> logger)
-    : DomainRepository<UserRole>(client, eventBus, httpContextProvider, "UserRole", logger), IUserRoleRepository {
+    : DomainRepository<UserRole>(client, eventBus, userContextProvider, nameof(UserRole), logger), IUserRoleRepository {
     /// <inheritdoc/>
     public async Task<List<Guid>> GetRoleIdsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default) {
         return await _client.Queryable<UserRole>()

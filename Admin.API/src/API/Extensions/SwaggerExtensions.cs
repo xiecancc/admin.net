@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: SwaggerExtensions.cs
  * 功能描述: Swagger 扩展方法，配置 Swagger 文档服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -138,9 +138,11 @@ public static class SwaggerExtensions {
             try {
                 options.IncludeXmlComments(xml, includeControllerXmlComments: true);
             }
+#pragma warning disable CA1031 // XML 注释加载失败不应影响 Swagger 启动
             catch (Exception ex) {
                 Trace.TraceWarning($"[SwaggerExtensions] 加载 XML 注释失败：{xml}. {ex.Message}");
             }
+#pragma warning restore CA1031
         }
     }
 

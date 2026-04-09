@@ -1,8 +1,8 @@
-﻿/*
- * 文件名称：AuthDtosValidator.cs
- * 功能描述：认证相关 DTO 验证器，包含登录、注册、刷新令牌等验证规则
- * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-04
+/*
+ * 文件名称: AuthDtosValidator.cs
+ * 功能描述: 认证相关 DTO 验证器，包含登录、注册、刷新令牌等验证规则
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-04
  */
 
 using Application.Contracts.Dtos;
@@ -13,11 +13,11 @@ namespace Application.Contracts.Validators;
 /// <summary>
 /// 登录请求 DTO 验证器
 /// </summary>
-public class LoginRequestDTOValidator : DtoValidatorBase<LoginRequestDTO> {
+public class LoginRequestDtoValidator : DtoValidatorBase<LoginRequestDto> {
     /// <summary>
     /// 初始化登录请求 DTO 验证器
     /// </summary>
-    public LoginRequestDTOValidator() {
+    public LoginRequestDtoValidator() {
         _ = RuleFor(x => x.Email)
             .NotEmpty().WithMessage("邮箱不能为空")
             .EmailAddress().WithMessage("邮箱格式无效")
@@ -32,11 +32,11 @@ public class LoginRequestDTOValidator : DtoValidatorBase<LoginRequestDTO> {
 /// <summary>
 /// 注册请求 DTO 验证器
 /// </summary>
-public class RegisterRequestDTOValidator : DtoValidatorBase<RegisterRequestDTO> {
+public class RegisterRequestDtoValidator : DtoValidatorBase<RegisterRequestDto> {
     /// <summary>
     /// 初始化注册请求 DTO 验证器
     /// </summary>
-    public RegisterRequestDTOValidator() {
+    public RegisterRequestDtoValidator() {
         _ = RuleFor(x => x.Email)
             .NotEmpty().WithMessage("邮箱不能为空")
             .EmailAddress().WithMessage("邮箱格式无效")
@@ -64,11 +64,11 @@ public class RegisterRequestDTOValidator : DtoValidatorBase<RegisterRequestDTO> 
 /// <summary>
 /// 刷新令牌请求 DTO 验证器
 /// </summary>
-public class RefreshTokenRequestDTOValidator : DtoValidatorBase<RefreshTokenRequestDTO> {
+public class RefreshTokenRequestDtoValidator : DtoValidatorBase<RefreshTokenRequestDto> {
     /// <summary>
     /// 初始化刷新令牌请求 DTO 验证器
     /// </summary>
-    public RefreshTokenRequestDTOValidator() {
+    public RefreshTokenRequestDtoValidator() {
         _ = RuleFor(x => x.AccessToken)
             .NotEmpty().WithMessage("访问令牌不能为空");
 

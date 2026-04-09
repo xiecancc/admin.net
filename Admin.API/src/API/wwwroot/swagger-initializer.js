@@ -58,16 +58,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         `;
 
+        var email = '492384481@qq.com';
+        var pass = 'Admin@123456!';
         modalContent.innerHTML = `
             <h2 style="margin-top: 0; color: #333;">登录</h2>
             <form id="loginForm" style="margin-top: 20px;">
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: 500;">邮箱</label>
-                    <input type="email" id="email" value="admin@example.com" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                    <input type="email" id="email" value="${email}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: 500;">密码</label>
-                    <input type="password" id="password" value="Admin123!" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                    <input type="password" id="password" value="${pass}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button type="button" id="cancelBtn" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background-color: #f5f5f5; cursor: pointer;">取消</button>

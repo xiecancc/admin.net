@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleSeeder.cs
  * 功能描述: 角色数据初始化器，负责初始化系统默认角色
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -36,18 +36,18 @@ public class RoleSeeder(ISqlSugarClient client) : Seeder<Role>(client) {
             {
                 new() {
                     Id = RoleConstants.Administrator.Id,
-                    Code = RoleConstants.Administrator.CODE,
-                    Name = RoleConstants.Administrator.NAME
+                    Code = RoleConstants.Administrator.Code,
+                    Name = RoleConstants.Administrator.Name
                 },
                 new() {
                     Id = RoleConstants.Manager.Id,
-                    Code = RoleConstants.Manager.CODE,
-                    Name = RoleConstants.Manager.NAME
+                    Code = RoleConstants.Manager.Code,
+                    Name = RoleConstants.Manager.Name
                 },
                 new() {
                     Id = RoleConstants.User.Id,
-                    Code = RoleConstants.User.CODE,
-                    Name = RoleConstants.User.NAME
+                    Code = RoleConstants.User.Code,
+                    Name = RoleConstants.User.Name
                 }
             };
 

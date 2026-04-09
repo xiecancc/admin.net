@@ -18,9 +18,9 @@ namespace Infrastructure.Repositories;
 public class PermissionAuditLogRepository(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     ILogger<PermissionAuditLogRepository> logger)
-    : DomainRepository<PermissionAuditLog>(client, eventBus, httpContextProvider, "权限审计日志", logger as ILogger<DomainRepository<PermissionAuditLog>>), IPermissionAuditLogRepository {
+    : DomainRepository<PermissionAuditLog>(client, eventBus, userContextProvider, "权限审计日志", logger as ILogger<DomainRepository<PermissionAuditLog>>), IPermissionAuditLogRepository {
     
     /// <inheritdoc/>
     public async Task<List<PermissionAuditLog>> GetByUserIdAsync(Guid userId, DateTime? startTime = null, DateTime? endTime = null, CancellationToken cancellationToken = default) {

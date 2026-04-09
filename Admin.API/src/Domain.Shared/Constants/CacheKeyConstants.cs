@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: CacheKeyConstants.cs
  * 功能描述: 缓存键常量类，统一管理所有缓存键
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -28,37 +28,37 @@ public static class CacheKeyConstants {
         /// <summary>
         /// 缓存键前缀
         /// </summary>
-        public const string PREFIX = "user";
+        public const string Prefix = "user";
 
         /// <summary>
         /// 详情缓存键格式
         /// </summary>
-        public const string DETAIL_FORMAT = "user:detail:{0}";
+        public const string DetailFormat = "user:detail:{0}";
 
         /// <summary>
         /// 列表缓存键前缀
         /// </summary>
-        public const string LIST = "user:list";
+        public const string List = "user:list";
 
         /// <summary>
         /// 分页缓存键格式
         /// </summary>
-        public const string PAGED_FORMAT = "user:paged:{0}:{1}:{2}";
+        public const string PagedFormat = "user:paged:{0}:{1}:{2}";
 
         /// <summary>
         /// 权限缓存键格式
         /// </summary>
-        public const string PERMISSIONS_FORMAT = "user:permissions:{0}";
+        public const string PermissionsFormat = "user:permissions:{0}";
 
         /// <summary>
         /// 状态缓存键格式
         /// </summary>
-        public const string STATUS_FORMAT = "user:status:{0}";
+        public const string StatusFormat = "user:status:{0}";
 
         /// <summary>
         /// 信息缓存键格式
         /// </summary>
-        public const string INFO_FORMAT = "user:info:{0}";
+        public const string InfoFormat = "user:info:{0}";
 
         /// <summary>
         /// 获取详情缓存键
@@ -66,7 +66,7 @@ public static class CacheKeyConstants {
         /// <param name="userId">用户 ID</param>
         /// <returns>详情缓存键</returns>
         public static string Detail(Guid userId) {
-            return string.Format(DETAIL_FORMAT, userId);
+            return string.Format(DetailFormat, userId);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ public static class CacheKeyConstants {
         /// <param name="queryCacheKey">查询参数缓存键</param>
         /// <returns>列表缓存键</returns>
         public static string ListByKey(string queryCacheKey) {
-            return string.IsNullOrEmpty(queryCacheKey) ? LIST : $"{LIST}:{queryCacheKey}";
+            return string.IsNullOrEmpty(queryCacheKey) ? List : $"{List}:{queryCacheKey}";
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ public static class CacheKeyConstants {
         /// <returns>分页缓存键</returns>
         public static string Paged(int page, int size, string queryCacheKey) {
             return string.IsNullOrEmpty(queryCacheKey)
-                ? string.Format(PAGED_FORMAT, page, size, string.Empty).TrimEnd(':')
-                : string.Format(PAGED_FORMAT, page, size, queryCacheKey);
+                ? string.Format(PagedFormat, page, size, string.Empty).TrimEnd(':')
+                : string.Format(PagedFormat, page, size, queryCacheKey);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ public static class CacheKeyConstants {
         /// <param name="userId">用户 ID</param>
         /// <returns>权限缓存键</returns>
         public static string Permissions(Guid userId) {
-            return string.Format(PERMISSIONS_FORMAT, userId);
+            return string.Format(PermissionsFormat, userId);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ public static class CacheKeyConstants {
         /// <param name="userId">用户 ID</param>
         /// <returns>状态缓存键</returns>
         public static string Status(Guid userId) {
-            return string.Format(STATUS_FORMAT, userId);
+            return string.Format(StatusFormat, userId);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ public static class CacheKeyConstants {
         /// <param name="userId">用户 ID</param>
         /// <returns>信息缓存键</returns>
         public static string Info(Guid userId) {
-            return string.Format(INFO_FORMAT, userId);
+            return string.Format(InfoFormat, userId);
         }
 
         /// <summary>
@@ -140,27 +140,27 @@ public static class CacheKeyConstants {
         /// <summary>
         /// 缓存键前缀
         /// </summary>
-        public const string PREFIX = "role";
+        public const string Prefix = "role";
 
         /// <summary>
         /// 详情缓存键格式
         /// </summary>
-        public const string DETAIL_FORMAT = "role:detail:{0}";
+        public const string DetailFormat = "role:detail:{0}";
 
         /// <summary>
         /// 列表缓存键前缀
         /// </summary>
-        public const string LIST = "role:list";
+        public const string List = "role:list";
 
         /// <summary>
         /// 分页缓存键格式
         /// </summary>
-        public const string PAGED_FORMAT = "role:paged:{0}:{1}:{2}";
+        public const string PagedFormat = "role:paged:{0}:{1}:{2}";
 
         /// <summary>
         /// 权限缓存键格式
         /// </summary>
-        public const string PERMISSIONS_FORMAT = "role:permissions:{0}";
+        public const string PermissionsFormat = "role:permissions:{0}";
 
         /// <summary>
         /// 获取详情缓存键
@@ -168,7 +168,7 @@ public static class CacheKeyConstants {
         /// <param name="roleId">角色 ID</param>
         /// <returns>详情缓存键</returns>
         public static string Detail(Guid roleId) {
-            return string.Format(DETAIL_FORMAT, roleId);
+            return string.Format(DetailFormat, roleId);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ public static class CacheKeyConstants {
         /// <param name="queryCacheKey">查询参数缓存键</param>
         /// <returns>列表缓存键</returns>
         public static string ListByKey(string queryCacheKey) {
-            return string.IsNullOrEmpty(queryCacheKey) ? LIST : $"{LIST}:{queryCacheKey}";
+            return string.IsNullOrEmpty(queryCacheKey) ? List : $"{List}:{queryCacheKey}";
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ public static class CacheKeyConstants {
         /// <returns>分页缓存键</returns>
         public static string Paged(int page, int size, string queryCacheKey) {
             return string.IsNullOrEmpty(queryCacheKey)
-                ? string.Format(PAGED_FORMAT, page, size, string.Empty).TrimEnd(':')
-                : string.Format(PAGED_FORMAT, page, size, queryCacheKey);
+                ? string.Format(PagedFormat, page, size, string.Empty).TrimEnd(':')
+                : string.Format(PagedFormat, page, size, queryCacheKey);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ public static class CacheKeyConstants {
         /// <param name="roleId">角色 ID</param>
         /// <returns>权限缓存键</returns>
         public static string Permissions(Guid roleId) {
-            return string.Format(PERMISSIONS_FORMAT, roleId);
+            return string.Format(PermissionsFormat, roleId);
         }
 
         /// <summary>
@@ -222,37 +222,37 @@ public static class CacheKeyConstants {
         /// <summary>
         /// 缓存键前缀
         /// </summary>
-        public const string PREFIX = "permission";
+        public const string Prefix = "permission";
 
         /// <summary>
         /// 详情缓存键格式
         /// </summary>
-        public const string DETAIL_FORMAT = "permission:detail:{0}";
+        public const string DetailFormat = "permission:detail:{0}";
 
         /// <summary>
         /// 列表缓存键前缀
         /// </summary>
-        public const string LIST = "permission:list";
+        public const string List = "permission:list";
 
         /// <summary>
         /// 分页缓存键格式
         /// </summary>
-        public const string PAGED_FORMAT = "permission:paged:{0}:{1}:{2}";
+        public const string PagedFormat = "permission:paged:{0}:{1}:{2}";
 
         /// <summary>
         /// 菜单权限缓存键前缀
         /// </summary>
-        public const string MENU_PREFIX = "permission:menu";
+        public const string MenuPrefix = "permission:menu";
 
         /// <summary>
         /// API 权限缓存键前缀
         /// </summary>
-        public const string API_PREFIX = "permission:api";
+        public const string ApiPrefix = "permission:api";
 
         /// <summary>
         /// 按钮权限缓存键前缀
         /// </summary>
-        public const string BUTTON_PREFIX = "permission:button";
+        public const string ButtonPrefix = "permission:button";
 
         /// <summary>
         /// 获取详情缓存键
@@ -260,7 +260,7 @@ public static class CacheKeyConstants {
         /// <param name="permissionId">权限 ID</param>
         /// <returns>详情缓存键</returns>
         public static string Detail(Guid permissionId) {
-            return string.Format(DETAIL_FORMAT, permissionId);
+            return string.Format(DetailFormat, permissionId);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ public static class CacheKeyConstants {
         /// <param name="queryCacheKey">查询参数缓存键</param>
         /// <returns>列表缓存键</returns>
         public static string ListByKey(string queryCacheKey) {
-            return string.IsNullOrEmpty(queryCacheKey) ? LIST : $"{LIST}:{queryCacheKey}";
+            return string.IsNullOrEmpty(queryCacheKey) ? List : $"{List}:{queryCacheKey}";
         }
 
         /// <summary>
@@ -281,8 +281,8 @@ public static class CacheKeyConstants {
         /// <returns>分页缓存键</returns>
         public static string Paged(int page, int size, string queryCacheKey) {
             return string.IsNullOrEmpty(queryCacheKey)
-                ? string.Format(PAGED_FORMAT, page, size, string.Empty).TrimEnd(':')
-                : string.Format(PAGED_FORMAT, page, size, queryCacheKey);
+                ? string.Format(PagedFormat, page, size, string.Empty).TrimEnd(':')
+                : string.Format(PagedFormat, page, size, queryCacheKey);
         }
     }
 }

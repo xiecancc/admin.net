@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: DomainRepository.cs
  * 功能描述: 领域仓储实现，支持所有实体（包括聚合根和关系表）的基本操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -34,16 +34,16 @@ namespace Infrastructure.Repositories;
 /// <typeparam name="TDomain">领域模型类型，必须继承自 DomainBase</typeparam>
 /// <param name="client">SqlSugar 客户端，用于数据库操作</param>
 /// <param name="eventBus">领域事件总线，用于发布领域事件</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者，用于获取当前用户信息</param>
-/// <param name="entityName">实体名称，用于日志记录</param>
-/// <param name="logger">日志记录器，用于记录操作日志</param>
+    /// <param name="userContextProvider">用户上下文提供者，用于获取当前用户信息</param>
+    /// <param name="entityName">实体名称，用于日志记录</param>
+    /// <param name="logger">日志记录器，用于记录操作日志</param>
 public class DomainRepository<TDomain>(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     string entityName,
     ILogger<DomainRepository<TDomain>> logger)
-    : Repository<TDomain>(client, eventBus, httpContextProvider, entityName, logger as ILogger<Repository<TDomain>>), IDomainRepository<TDomain>
+    : Repository<TDomain>(client, eventBus, userContextProvider, entityName, logger as ILogger<Repository<TDomain>>), IDomainRepository<TDomain>
     where TDomain : DomainBase, new() {
 
     /// <inheritdoc/>

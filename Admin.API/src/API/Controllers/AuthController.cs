@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AuthController.cs
  * 功能描述: 认证控制器，处理用户登录、注册、令牌刷新等认证相关操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -34,7 +34,7 @@ public class AuthController(ILogger<AuthController> logger, IMediator mediator) 
     /// </summary>
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO request, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto request, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(request, "登录请求");
         var command = new LoginCommand(request.Email, request.Password);
         var result = await _mediator.Send(command, cancellationToken);
@@ -47,7 +47,7 @@ public class AuthController(ILogger<AuthController> logger, IMediator mediator) 
     /// </summary>
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<ActionResult<bool>> Register([FromBody] RegisterRequestDTO request, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> Register([FromBody] RegisterRequestDto request, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(request, "注册请求");
         var command = new RegisterCommand(request.Email, request.Password, request.NickName, request.Phone);
         var result = await _mediator.Send(command, cancellationToken);
@@ -60,7 +60,7 @@ public class AuthController(ILogger<AuthController> logger, IMediator mediator) 
     /// </summary>
     [HttpPost("refresh")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginResponseDTO>> RefreshToken([FromBody] RefreshTokenRequestDTO request, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<LoginResponseDto>> RefreshToken([FromBody] RefreshTokenRequestDto request, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(request, "刷新令牌请求");
         var command = new RefreshTokenCommand(request.AccessToken, request.RefreshToken);
         var result = await _mediator.Send(command, cancellationToken);
@@ -90,7 +90,7 @@ public class AuthController(ILogger<AuthController> logger, IMediator mediator) 
     /// </summary>
     [HttpGet("me")]
     [Authorize]
-    public async Task<ActionResult<LoginUserInfoDTO>> GetCurrentUser(CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<LoginUserInfoDto>> GetCurrentUser(CancellationToken cancellationToken = default) {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? throw new ArgumentException("用户信息不完整");
 
         var userId = Guid.Parse(userIdClaim.Value);

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRepositoryTests.cs
  * 功能描述: 用户仓储测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -22,20 +22,20 @@ namespace Infrastructure.Test.Repositories;
 public class UserRepositoryTests {
     private readonly Mock<ISqlSugarClient> _mockClient;
     private readonly Mock<IDomainEventBus> _mockEventBus;
-    private readonly Mock<IHttpContextProvider> _mockHttpContextProvider;
+    private readonly Mock<IUserContextProvider> _mockUserContextProvider;
     private readonly Mock<ILogger<UserRepository>> _mockLogger;
     private readonly UserRepository _userRepository;
 
     public UserRepositoryTests() {
         _mockClient = new Mock<ISqlSugarClient>();
         _mockEventBus = new Mock<IDomainEventBus>();
-        _mockHttpContextProvider = new Mock<IHttpContextProvider>();
+        _mockUserContextProvider = new Mock<IUserContextProvider>();
         _mockLogger = new Mock<ILogger<UserRepository>>();
 
         _userRepository = new UserRepository(
             _mockClient.Object,
             _mockEventBus.Object,
-            _mockHttpContextProvider.Object,
+            _mockUserContextProvider.Object,
             _mockLogger.Object
         );
     }

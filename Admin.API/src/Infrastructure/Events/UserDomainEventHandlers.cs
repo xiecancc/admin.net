@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserDomainEventHandlers.cs
  * 功能描述: 用户领域事件处理器，处理用户相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -111,8 +111,8 @@ public class UserCreatedEventHandler(
         LogEvent("创建", @event.Description, @event.Domains.Count());
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
         Logger.LogInformation("已清除用户列表和分页缓存（新增 {Count} 个用户）", @event.Domains.Count());
     }
@@ -147,8 +147,8 @@ public class UserUpdatedEventHandler(
         await Task.WhenAll(userTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
         Logger.LogInformation("已清除用户列表和分页缓存");
     }
@@ -183,8 +183,8 @@ public class UserDeletedEventHandler(
         await Task.WhenAll(userTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
         Logger.LogInformation("已清除用户列表和分页缓存");
     }
@@ -219,8 +219,8 @@ public class UserRestoredEventHandler(
         await Task.WhenAll(userTasks);
 
         _ = await Task.WhenAll(
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.LIST}*"),
-            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.PREFIX}:paged*")
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
+            cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
         Logger.LogInformation("已清除用户列表和分页缓存");
     }

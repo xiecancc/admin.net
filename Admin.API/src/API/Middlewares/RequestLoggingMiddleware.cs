@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RequestLoggingMiddleware.cs
  * 功能描述: 请求日志中间件，记录请求开始和结束信息
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -28,9 +28,10 @@ public class RequestLoggingMiddleware(
     /// <returns>任务</returns>
     public async Task InvokeAsync(HttpContext ctx) {
         var httpContextProvider = ctx.RequestServices.GetRequiredService<IHttpContextProvider>();
+        var userContextProvider = ctx.RequestServices.GetRequiredService<IUserContextProvider>();
         var traceId = httpContextProvider.TraceId ?? ctx.TraceIdentifier;
         var requestId = httpContextProvider.RequestId ?? ctx.TraceIdentifier;
-        var userId = httpContextProvider.UserId?.ToString();
+        var userId = userContextProvider.UserId?.ToString();
         var userAgent = httpContextProvider.UserAgent;
         var clientIp = httpContextProvider.ClientIp;
         var requestPath = httpContextProvider.RequestPath;

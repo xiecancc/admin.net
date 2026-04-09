@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: JwtService.cs
  * 功能描述: JWT服务实现
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -152,6 +152,7 @@ public class JwtService(IOptions<JwtOption> jwtOption, ICacheProvider cacheProvi
     /// <param name="token">JWT令牌</param>
     /// <param name="expiration">令牌过期时间</param>
     /// <returns>是否成功</returns>
+#pragma warning disable CA1031 // 缓存操作需要捕获所有异常以确保不影响主业务流程
     public async Task<bool> AddTokenToBlacklistAsync(string token, DateTime expiration) {
         try {
             var cacheKey = $"{BLACKLIST_PREFIX}{token}";
@@ -163,7 +164,7 @@ public class JwtService(IOptions<JwtOption> jwtOption, ICacheProvider cacheProvi
 
             return true;
         }
-        catch (Exception) {
+        catch {
             return false;
         }
     }
@@ -179,7 +180,7 @@ public class JwtService(IOptions<JwtOption> jwtOption, ICacheProvider cacheProvi
             var result = await _cacheProvider.GetAsync<bool>(cacheKey);
             return result;
         }
-        catch (Exception) {
+        catch {
             return false;
         }
     }
@@ -195,8 +196,9 @@ public class JwtService(IOptions<JwtOption> jwtOption, ICacheProvider cacheProvi
             await _cacheProvider.RemoveAsync(cacheKey);
             return true;
         }
-        catch (Exception) {
+        catch {
             return false;
         }
     }
+#pragma warning restore CA1031
 }

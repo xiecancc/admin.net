@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateRepository.cs
  * 功能描述: 聚合根仓储实现，继承 DomainRepository 并添加软删除支持
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,16 +31,16 @@ namespace Infrastructure.Repositories;
 /// <typeparam name="TAggregate">聚合根类型，必须继承自 AggregateBase</typeparam>
 /// <param name="client">SqlSugar 客户端，用于数据库操作</param>
 /// <param name="eventBus">领域事件总线，用于发布领域事件</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者，用于获取当前用户信息</param>
-/// <param name="entityName">实体名称，用于日志记录</param>
-/// <param name="logger">日志记录器，用于记录操作日志</param>
+    /// <param name="userContextProvider">用户上下文提供者，用于获取当前用户信息</param>
+    /// <param name="entityName">实体名称，用于日志记录</param>
+    /// <param name="logger">日志记录器，用于记录操作日志</param>
 public class AggregateRepository<TAggregate>(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     string entityName,
     ILogger<AggregateRepository<TAggregate>> logger)
-    : DomainRepository<TAggregate>(client, eventBus, httpContextProvider, entityName, logger), IAggregateRepository<TAggregate>
+    : DomainRepository<TAggregate>(client, eventBus, userContextProvider, entityName, logger), IAggregateRepository<TAggregate>
     where TAggregate : AggregateBase, new() {
 
     /// <inheritdoc/>
@@ -53,7 +53,7 @@ public class AggregateRepository<TAggregate>(
 
         try {
             var now = DateTime.UtcNow;
-            var userId = _httpContextProvider.UserId;
+            var userId = _userContextProvider.UserId;
             entities.ForEach(e => {
                 e.CreatedAt = now;
                 if (userId.HasValue) {
@@ -87,7 +87,7 @@ public class AggregateRepository<TAggregate>(
 
         try {
             var now = DateTime.UtcNow;
-            var userId = _httpContextProvider.UserId;
+            var userId = _userContextProvider.UserId;
             validEntities.ForEach(e => {
                 e.UpdatedAt = now;
                 if (userId.HasValue) {
@@ -123,7 +123,7 @@ public class AggregateRepository<TAggregate>(
             }
 
             var now = DateTime.UtcNow;
-            var userId = _httpContextProvider.UserId;
+            var userId = _userContextProvider.UserId;
             entities.ForEach(e => {
                 e.IsDeleted = true;
                 e.DeletedAt = now;
@@ -162,7 +162,7 @@ public class AggregateRepository<TAggregate>(
             }
 
             var now = DateTime.UtcNow;
-            var userId = _httpContextProvider.UserId;
+            var userId = _userContextProvider.UserId;
             entities.ForEach(e => {
                 e.IsDeleted = false;
                 e.DeletedAt = null;

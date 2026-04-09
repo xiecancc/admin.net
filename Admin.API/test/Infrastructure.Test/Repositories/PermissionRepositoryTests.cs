@@ -22,17 +22,17 @@ namespace Infrastructure.Test.Repositories;
 public class PermissionRepositoryTests {
     private readonly Mock<ISqlSugarClient> _mockClient;
     private readonly Mock<IDomainEventBus> _mockEventBus;
-    private readonly Mock<IHttpContextProvider> _mockHttpContextProvider;
+    private readonly Mock<IUserContextProvider> _mockUserContextProvider;
     private readonly Mock<ILogger<PermissionRepository<MenuPermission>>> _mockLogger;
     private readonly PermissionRepository<MenuPermission> _permissionRepository;
 
     public PermissionRepositoryTests() {
         _mockClient = new Mock<ISqlSugarClient>();
         _mockEventBus = new Mock<IDomainEventBus>();
-        _mockHttpContextProvider = new Mock<IHttpContextProvider>();
+        _mockUserContextProvider = new Mock<IUserContextProvider>();
         _mockLogger = new Mock<ILogger<PermissionRepository<MenuPermission>>>();
 
-        _permissionRepository = new PermissionRepository<MenuPermission>(_mockClient.Object, _mockEventBus.Object, _mockHttpContextProvider.Object, "菜单权限", _mockLogger.Object);
+        _permissionRepository = new PermissionRepository<MenuPermission>(_mockClient.Object, _mockEventBus.Object, _mockUserContextProvider.Object, "菜单权限", _mockLogger.Object);
     }
 
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AuthDtos.cs
  * 功能描述: 认证相关的数据传输对象，包含登录、注册、刷新令牌等请求和响应模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,7 +11,7 @@ namespace Application.Contracts.Dtos;
 /// 登录请求 DTO
 /// <para>用于用户登录认证</para>
 /// </summary>
-public class LoginRequestDTO {
+public class LoginRequestDto {
     /// <summary>
     /// 邮箱（登录账号）
     /// </summary>
@@ -35,7 +35,7 @@ public class LoginRequestDTO {
 /// 登录响应 DTO
 /// <para>登录成功后返回的响应数据</para>
 /// </summary>
-public class LoginResponseDTO {
+public class LoginResponseDto {
     /// <summary>
     /// 访问令牌
     /// </summary>
@@ -66,14 +66,14 @@ public class LoginResponseDTO {
     /// 用户信息
     /// </summary>
     /// <value>登录用户的详细信息</value>
-    public LoginUserInfoDTO User { get; set; } = new();
+    public LoginUserInfoDto User { get; set; } = new();
 }
 
 /// <summary>
 /// 登录用户信息 DTO
 /// <para>包含用户的基本信息和角色，用于登录响应</para>
 /// </summary>
-public class LoginUserInfoDTO {
+public class LoginUserInfoDto {
     /// <summary>
     /// 用户 ID
     /// </summary>
@@ -115,7 +115,7 @@ public class LoginUserInfoDTO {
 /// 刷新令牌请求 DTO
 /// <para>用于刷新访问令牌</para>
 /// </summary>
-public class RefreshTokenRequestDTO {
+public class RefreshTokenRequestDto {
     /// <summary>
     /// 访问令牌
     /// </summary>
@@ -133,7 +133,7 @@ public class RefreshTokenRequestDTO {
 /// 注册请求 DTO
 /// <para>用于用户注册</para>
 /// </summary>
-public class RegisterRequestDTO {
+public class RegisterRequestDto {
     /// <summary>
     /// 邮箱
     /// </summary>

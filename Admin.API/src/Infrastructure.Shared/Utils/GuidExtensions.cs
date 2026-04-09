@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: GuidExtensions.cs
  * 功能描述: GUID 扩展方法，提供常用的 GUID 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -197,7 +197,10 @@ public static class GuidExtensions {
         try {
             return FromShortString(shortGuid);
         }
-        catch {
+        catch (FormatException) {
+            return null;
+        }
+        catch (ArgumentException) {
             return null;
         }
     }

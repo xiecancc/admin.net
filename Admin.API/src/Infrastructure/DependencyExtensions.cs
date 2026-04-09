@@ -14,6 +14,7 @@ using Infrastructure.Services;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Contexts;
 using Infrastructure.Shared.Options;
+using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ using Domain.Repositories;
 using Domain.Services;
 using Infrastructure.Shared.Units;
 using System.Reflection;
+using Infrastructure.Shared.Services;
 
 namespace Infrastructure;
 
@@ -58,58 +60,31 @@ public static class DependencyExtensions {
         this IServiceCollection services,
         IConfiguration configuration) {
         // 数据库配置
-        _ = services.Configure<DatabaseOption>(options => {
-            configuration.GetSection("Database").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<DatabaseOption>(configuration, "Database");
 
         // Redis 配置
-        _ = services.Configure<RedisOption>(options => {
-            configuration.GetSection("Redis").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<RedisOption>(configuration, "Redis");
 
         // 内存缓存配置
-        _ = services.Configure<MemoryCacheOption>(options => {
-            configuration.GetSection("MemoryCache").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<MemoryCacheOption>(configuration, "MemoryCache");
 
         // JWT 配置
-        _ = services.Configure<JwtOption>(options => {
-            configuration.GetSection("Jwt").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<JwtOption>(configuration, "Jwt");
 
         // 限流配置
-        _ = services.Configure<RateLimitOption>(options => {
-            configuration.GetSection("RateLimit").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<RateLimitOption>(configuration, "RateLimit");
 
         // 跨域配置
-        _ = services.Configure<CorsOption>(options => {
-            configuration.GetSection("Cors").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<CorsOption>(configuration, "Cors");
 
         // 请求超时配置
-        _ = services.Configure<RequestTimeoutOption>(options => {
-            configuration.GetSection("RequestTimeout").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<RequestTimeoutOption>(configuration, "RequestTimeout");
 
         // 请求体大小限制配置
-        _ = services.Configure<RequestSizeLimitOption>(options => {
-            configuration.GetSection("RequestSizeLimit").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<RequestSizeLimitOption>(configuration, "RequestSizeLimit");
 
         // 遥测配置
-        _ = services.Configure<TelemetryOption>(options => {
-            configuration.GetSection("Telemetry").Bind(options);
-            options.Validate();
-        });
+        _ = services.AddOption<TelemetryOption>(configuration, "Telemetry");
 
         return services;
     }
@@ -117,13 +92,14 @@ public static class DependencyExtensions {
     private static IServiceCollection AddHttpContextServices(this IServiceCollection services) {
         _ = services.AddHttpContextAccessor();
         _ = services.AddScoped<IHttpContextProvider, HttpContextProvider>();
+        _ = services.AddScoped<IUserContextProvider, UserContextProvider>();
         return services;
     }
 
     private static IServiceCollection AddDatabaseServices(this IServiceCollection services) {
-        _ = services.AddScoped<SugarDb>(sp => {
-            var dbOptions = sp.GetRequiredService<IOptions<DatabaseOption>>().Value;
-            var logger = sp.GetService<ILogger<SugarDb>>();
+        _ = services.AddScoped(sp => {
+            DatabaseOption dbOptions = sp.GetRequiredService<IOptions<DatabaseOption>>().Value;
+            ILogger<SugarDb>? logger = sp.GetService<ILogger<SugarDb>>();
             return new SugarDb(dbOptions, logger);
         });
 
@@ -143,7 +119,7 @@ public static class DependencyExtensions {
     }
 
     private static IServiceCollection AddJwtServices(this IServiceCollection services) {
-        _ = services.AddScoped<Infrastructure.Shared.Services.IJwtService, Services.JwtService>();
+        _ = services.AddScoped<IJwtService, JwtService>();
         return services;
     }
 
@@ -155,13 +131,11 @@ public static class DependencyExtensions {
         _ = services.AddScoped<IButtonPermissionRepository, ButtonPermissionRepository>();
         _ = services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         _ = services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
-        _ = services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         return services;
     }
 
     private static IServiceCollection AddDomainServices(this IServiceCollection services) {
         _ = services.AddScoped<IPermissionDomainService, PermissionDomainService>();
-        _ = services.AddScoped<IDepartmentPermissionService, DepartmentPermissionService>();
         return services;
     }
 
@@ -171,11 +145,8 @@ public static class DependencyExtensions {
     }
 
     private static IServiceCollection AddCachingServices(this IServiceCollection services, IConfiguration configuration) {
-        var memoryOptions = new MemoryCacheOption();
-        configuration.GetSection("MemoryCache").Bind(memoryOptions);
-
-        var redisOptions = new RedisOption();
-        configuration.GetSection("Redis").Bind(redisOptions);
+        var memoryOptions = ConfigurationUtil.GetOption<MemoryCacheOption>(configuration, "MemoryCache");
+        var redisOptions = ConfigurationUtil.GetOption<RedisOption>(configuration, "Redis");
 
         _ = services.AddMemoryCache(options => {
             if (memoryOptions.SizeLimit.HasValue) {

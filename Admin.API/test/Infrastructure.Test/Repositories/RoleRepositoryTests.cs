@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleRepositoryTests.cs
  * 功能描述: 角色仓储测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -23,20 +23,20 @@ namespace Infrastructure.Test.Repositories;
 public class RoleRepositoryTests {
     private readonly Mock<ISqlSugarClient> _mockClient;
     private readonly Mock<IDomainEventBus> _mockEventBus;
-    private readonly Mock<IHttpContextProvider> _mockHttpContextProvider;
+    private readonly Mock<IUserContextProvider> _mockUserContextProvider;
     private readonly Mock<ILogger<RoleRepository>> _mockLogger;
     private readonly RoleRepository _roleRepository;
 
     public RoleRepositoryTests() {
         _mockClient = new Mock<ISqlSugarClient>();
         _mockEventBus = new Mock<IDomainEventBus>();
-        _mockHttpContextProvider = new Mock<IHttpContextProvider>();
+        _mockUserContextProvider = new Mock<IUserContextProvider>();
         _mockLogger = new Mock<ILogger<RoleRepository>>();
 
         _roleRepository = new RoleRepository(
             _mockClient.Object,
             _mockEventBus.Object,
-            _mockHttpContextProvider.Object,
+            _mockUserContextProvider.Object,
             _mockLogger.Object
         );
     }
@@ -48,7 +48,7 @@ public class RoleRepositoryTests {
     [Fact]
     public async Task FindByCodeAsync_WithExistingCode_ShouldReturnRole() {
         var code = "ADMIN";
-        var role = new Role { Id = Guid.NewGuid(), Code = code, Name = RoleConstants.Administrator.NAME };
+        var role = new Role { Id = Guid.NewGuid(), Code = code, Name = RoleConstants.Administrator.Name };
 
         var mockQueryable = new Mock<ISugarQueryable<Role>>();
         _ = mockQueryable.Setup(x => x.FirstAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))

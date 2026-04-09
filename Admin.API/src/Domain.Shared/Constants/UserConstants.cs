@@ -31,15 +31,15 @@ public static class UserConstants {
         /// <summary>
         /// 邮箱
         /// </summary>
-        public const string EMAIL = "admin@example.com";
+        public const string Email = "492384481@qq.com";
         /// <summary>
         /// 默认密码
         /// </summary>
-        public const string PASSWORD = "Admin@123456!";
+        public const string Password = "Admin@123456!";
         /// <summary>
         /// 昵称
         /// </summary>
-        public const string NICK_NAME = "超级管理员";
+        public const string NickName = "超级管理员";
     }
 
     /// <summary>
@@ -49,13 +49,13 @@ public static class UserConstants {
         /// <summary>
         /// 默认密码
         /// </summary>
-        public const string DEFAULT_PASSWORD = "user@123!";
+        public const string DefaultPassword = "user@123!";
     }
 
     /// <summary>
     /// 获取默认密码
     /// </summary>
     public static string GetDefaultPassword(string? roleCode = null) {
-        return roleCode == RoleConstants.Administrator.CODE ? Administrator.PASSWORD : User.DEFAULT_PASSWORD;
+        return roleCode == RoleConstants.Administrator.Code ? Administrator.Password : User.DefaultPassword;
     }
 }

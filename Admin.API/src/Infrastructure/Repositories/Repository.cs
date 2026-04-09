@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Repository.cs
  * 功能描述: 泛型仓储实现，提供通用的实体操作和依赖注入
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -34,13 +34,13 @@ namespace Infrastructure.Repositories;
 /// <typeparam name="TDomain">领域模型类型，必须继承自DomainBase</typeparam>
 /// <param name="client">SqlSugar 客户端，用于数据库操作</param>
 /// <param name="eventBus">领域事件总线，用于发布领域事件</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者，用于获取当前用户信息</param>
-/// <param name="entityName">实体名称，用于日志记录</param>
-/// <param name="logger">日志记录器，用于记录操作日志</param>
+    /// <param name="userContextProvider">用户上下文提供者，用于获取当前用户信息</param>
+    /// <param name="entityName">实体名称，用于日志记录</param>
+    /// <param name="logger">日志记录器，用于记录操作日志</param>
 public class Repository<TDomain>(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     string entityName,
     ILogger<Repository<TDomain>> logger)
     : IRepository<TDomain>
@@ -56,9 +56,9 @@ public class Repository<TDomain>(
     protected IDomainEventBus _eventBus { get; init; } = eventBus;
 
     /// <summary>
-    /// HTTP 上下文提供者，用于获取当前用户信息
+    /// 用户上下文提供者，用于获取当前用户信息
     /// </summary>
-    protected IHttpContextProvider _httpContextProvider { get; init; } = httpContextProvider;
+    protected IUserContextProvider _userContextProvider { get; init; } = userContextProvider;
 
     /// <summary>
     /// 实体名称

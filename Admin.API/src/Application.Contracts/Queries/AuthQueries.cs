@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AuthQueries.cs
  * 功能描述: 认证相关的查询类，包含获取当前用户信息等查询
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -15,7 +15,7 @@ namespace Application.Contracts.Queries;
 /// <para>用于获取当前登录用户的详细信息</para>
 /// </summary>
 /// <param name="userId">用户 ID</param>
-public class GetCurrentUserQuery(Guid userId) : IRequest<LoginUserInfoDTO> {
+public class GetCurrentUserQuery(Guid userId) : IRequest<LoginUserInfoDto> {
     /// <summary>用户 ID</summary>
     public Guid UserId { get; set; } = userId;
 }

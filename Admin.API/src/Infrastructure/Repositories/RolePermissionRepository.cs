@@ -16,15 +16,15 @@ namespace Infrastructure.Repositories;
 
 /// <inheritdoc cref="IRolePermissionRepository"/>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="eventBus">领域事件总线</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者</param>
-/// <param name="logger">日志记录器</param>
+    /// <param name="eventBus">领域事件总线</param>
+    /// <param name="userContextProvider">用户上下文提供者</param>
+    /// <param name="logger">日志记录器</param>
 public class RolePermissionRepository(
     ISqlSugarClient client,
     IDomainEventBus eventBus,
-    IHttpContextProvider httpContextProvider,
+    IUserContextProvider userContextProvider,
     ILogger<RolePermissionRepository> logger)
-    : DomainRepository<RolePermission>(client, eventBus, httpContextProvider, "RolePermission", logger), IRolePermissionRepository {
+    : DomainRepository<RolePermission>(client, eventBus, userContextProvider, nameof(RolePermission), logger), IRolePermissionRepository {
     /// <inheritdoc/>
     public async Task<List<Guid>> GetPermissionIdsByRoleIdAsync(Guid roleId, CancellationToken cancellationToken = default) {
         return await _client.Queryable<RolePermission>()

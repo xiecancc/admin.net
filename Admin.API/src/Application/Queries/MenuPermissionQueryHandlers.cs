@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: MenuPermissionQueryHandlers.cs
  * 功能描述: 菜单权限相关查询处理器，包含菜单权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,7 +31,7 @@ public class MenuPermissionByIdQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }
 
 /// <summary>
@@ -48,7 +48,7 @@ public class MenuPermissionListQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }
 
 /// <summary>
@@ -65,5 +65,5 @@ public class MenuPermissionPagedQueryHandler(
     /// <summary>
     /// 缓存键前缀
     /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.PREFIX;
+    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
 }

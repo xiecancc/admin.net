@@ -75,15 +75,7 @@ public class Initializer {
     /// </summary>
     private readonly RolePermissionSeeder _rolePermissionSeeder;
 
-    /// <summary>
-    /// 部门数据初始化器
-    /// </summary>
-    private readonly DepartmentSeeder _departmentSeeder;
 
-    /// <summary>
-    /// 用户部门角色关联数据初始化器
-    /// </summary>
-    private readonly UserDepartmentRoleSeeder _userDepartmentRoleSeeder;
 
     /// <summary>
     /// 构造函数（用于 ASP.NET Core）
@@ -112,8 +104,6 @@ public class Initializer {
         _adminUserSeeder = new AdminUserSeeder(client);
         _userRoleSeeder = new UserRoleSeeder(client);
         _rolePermissionSeeder = new RolePermissionSeeder(client);
-        _departmentSeeder = new DepartmentSeeder(client);
-        _userDepartmentRoleSeeder = new UserDepartmentRoleSeeder(client, _adminUserSeeder, _departmentSeeder, _roleSeeder);
     }
 
     /// <summary>
@@ -133,23 +123,17 @@ public class Initializer {
             var adminUserId = _adminUserSeeder.GetAdminUserId();
 
             if (adminUserId.HasValue) {
-                await _userRoleSeeder.SeedAsync(adminUserId.Value, RoleConstants.Administrator.CODE);
+                await _userRoleSeeder.SeedAsync(adminUserId.Value, RoleConstants.Administrator.Code);
 
                 var allPermissions = new List<Guid>();
                 allPermissions.AddRange(await _menuPermissionSeeder.GetAllPermissionIdsAsync());
                 allPermissions.AddRange(await _apiPermissionSeeder.GetAllPermissionIdsAsync());
                 allPermissions.AddRange(await _buttonPermissionSeeder.GetAllPermissionIdsAsync());
 
-                var adminRole = await _roleSeeder.GetRoleByCodeAsync(RoleConstants.Administrator.CODE);
+                var adminRole = await _roleSeeder.GetRoleByCodeAsync(RoleConstants.Administrator.Code);
                 if (adminRole != null) {
                     await _rolePermissionSeeder.SeedAsync(RoleConstants.Administrator.Id, allPermissions);
                 }
-
-                // 初始化部门数据
-                await _departmentSeeder.SeedAsync();
-
-                // 初始化用户部门角色关联数据
-                await _userDepartmentRoleSeeder.SeedAsync();
             }
         }
         catch (Exception ex) {

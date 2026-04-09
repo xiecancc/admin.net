@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserDtos.cs
  * 功能描述: 用户相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -18,13 +18,13 @@ public class UserCreateDto : AggregateCreateDto {
     /// 邮箱（登录账号）
     /// </summary>
     /// <value>用户的邮箱地址，不能为空</value>
-    public string Email { get; set; } = string.Empty;
+    public required string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// 密码
     /// </summary>
     /// <value>用户的密码，不能为空</value>
-    public string Password { get; set; } = string.Empty;
+    public required string Password { get; set; } = string.Empty;
 
     /// <summary>
     /// 昵称
@@ -104,7 +104,7 @@ public class UserListDto : AggregateListDto {
     /// 邮箱
     /// </summary>
     /// <value>用户的邮箱地址</value>
-    public string Email { get; set; } = string.Empty;
+    public required string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// 昵称
@@ -148,7 +148,7 @@ public class UserDetailDto : AggregateDetailDto {
     /// 邮箱
     /// </summary>
     /// <value>用户的邮箱地址</value>
-    public string Email { get; set; } = string.Empty;
+    public required string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// 昵称
@@ -198,7 +198,7 @@ public class UserPagedDto : AggregatePagedDto {
     /// 邮箱
     /// </summary>
     /// <value>用户的邮箱地址</value>
-    public string Email { get; set; } = string.Empty;
+    public required string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// 昵称

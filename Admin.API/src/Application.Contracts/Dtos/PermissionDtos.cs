@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionDtos.cs
  * 功能描述: 权限相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,13 +16,13 @@ public class PermissionCreateDto : AggregateCreateDto {
     /// 权限名称
     /// </summary>
     /// <value>权限的名称，不能为空</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限代码
     /// </summary>
     /// <value>权限的代码，不能为空</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限类型
@@ -62,13 +62,13 @@ public class PermissionUpdateDto : AggregateUpdateDto {
     /// 权限名称
     /// </summary>
     /// <value>权限的名称，不能为空</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限代码
     /// </summary>
     /// <value>权限的代码，不能为空</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限类型
@@ -112,13 +112,13 @@ public class PermissionListDto : AggregateListDto {
     /// 权限名称
     /// </summary>
     /// <value>权限的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限代码
     /// </summary>
     /// <value>权限的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限类型
@@ -162,13 +162,13 @@ public class PermissionDetailDto : AggregateDetailDto {
     /// 权限名称
     /// </summary>
     /// <value>权限的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限代码
     /// </summary>
     /// <value>权限的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限类型
@@ -212,13 +212,13 @@ public class PermissionPagedDto : AggregatePagedDto {
     /// 权限名称
     /// </summary>
     /// <value>权限的名称</value>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限代码
     /// </summary>
     /// <value>权限的代码</value>
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 权限类型
@@ -259,4 +259,3 @@ public class PermissionPagedDto : AggregatePagedDto {
 /// </summary>
 public class PermissionActionDto : AggregateActionDto {
 }
-

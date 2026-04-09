@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: TableCreator.cs
  * 功能描述: 数据表创建器，负责根据实体类型创建数据表
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -37,9 +37,7 @@ public class TableCreator(ISqlSugarClient client) : Creator(client) {
                     typeof(MenuPermission),
                     typeof(ButtonPermission),
                     typeof(UserRole),
-                    typeof(RolePermission),
-                    typeof(Department),
-                    typeof(UserDepartmentRole)
+                    typeof(RolePermission)
                 );
             LogInfo("数据表创建完成");
         }

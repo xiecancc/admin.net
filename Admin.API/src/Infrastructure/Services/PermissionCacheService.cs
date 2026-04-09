@@ -24,25 +24,27 @@ public class PermissionCacheService(ICacheProvider cacheProvider, ILogger<Permis
     public async Task<HashSet<string>?> GetUserPermissionsAsync(Guid userId, CancellationToken cancellationToken = default) {
         var cacheKey = $"{CACHE_KEY_PREFIX}{userId}";
         var permissions = await _cacheProvider.GetAsync<HashSet<string>>(cacheKey);
-        
+
         if (permissions != null) {
             _logger.LogDebug("从缓存获取用户权限成功 | UserId: {UserId} | PermissionCount: {Count}", userId, permissions.Count);
         }
-        
+
         return permissions;
     }
 
     /// <inheritdoc/>
+#pragma warning disable CA1031 // 缓存操作需要捕获所有异常以确保不影响主业务流程
     public async Task<bool> SetUserPermissionsAsync(Guid userId, HashSet<string> permissions, TimeSpan? expiration = null, CancellationToken cancellationToken = default) {
         var cacheKey = $"{CACHE_KEY_PREFIX}{userId}";
         var expireTime = expiration ?? DEFAULT_EXPIRATION;
-        
+
         try {
             await _cacheProvider.SetAsync(cacheKey, permissions, expireTime);
-            _logger.LogInformation("设置用户权限缓存成功 | UserId: {UserId} | PermissionCount: {Count} | Expiration: {Expiration}", 
+            _logger.LogInformation("设置用户权限缓存成功 | UserId: {UserId} | PermissionCount: {Count} | Expiration: {Expiration}",
                 userId, permissions.Count, expireTime);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             _logger.LogWarning(ex, "设置用户权限缓存失败 | UserId: {UserId}", userId);
             return false;
         }
@@ -51,12 +53,13 @@ public class PermissionCacheService(ICacheProvider cacheProvider, ILogger<Permis
     /// <inheritdoc/>
     public async Task<bool> RemoveUserPermissionsAsync(Guid userId, CancellationToken cancellationToken = default) {
         var cacheKey = $"{CACHE_KEY_PREFIX}{userId}";
-        
+
         try {
             await _cacheProvider.RemoveAsync(cacheKey);
             _logger.LogInformation("移除用户权限缓存成功 | UserId: {UserId}", userId);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             _logger.LogWarning(ex, "移除用户权限缓存失败 | UserId: {UserId}", userId);
             return false;
         }
@@ -65,14 +68,16 @@ public class PermissionCacheService(ICacheProvider cacheProvider, ILogger<Permis
     /// <inheritdoc/>
     public async Task<bool> RemoveAllUserPermissionsAsync(CancellationToken cancellationToken = default) {
         var pattern = $"{CACHE_KEY_PREFIX}*";
-        
+
         try {
             var count = await _cacheProvider.RemoveByPatternAsync(pattern);
             _logger.LogInformation("移除所有用户权限缓存成功 | Count: {Count}", count);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             _logger.LogWarning(ex, "移除所有用户权限缓存失败");
             return false;
         }
     }
+#pragma warning restore CA1031
 }

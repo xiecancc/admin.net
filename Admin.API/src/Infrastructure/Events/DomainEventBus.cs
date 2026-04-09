@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using Domain.Shared.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,6 +20,7 @@ public class DomainEventBus(IServiceProvider serviceProvider, ILogger<DomainEven
     /// <summary>
     /// 发布领域事件
     /// </summary>
+#pragma warning disable CA1031 // 事件处理需要捕获所有异常以避免影响其他处理器
     public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : DomainEvent {
         ArgumentNullException.ThrowIfNull(@event);
 
@@ -54,6 +55,7 @@ public class DomainEventBus(IServiceProvider serviceProvider, ILogger<DomainEven
 
         logger.LogInformation("领域事件 {EventType} 发布完成，共 {HandlerCount} 个处理器", eventType.Name, handlersSnapshot.Count);
     }
+#pragma warning restore CA1031
 
     /// <summary>
     /// 注册领域事件处理器

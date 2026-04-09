@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateTreeRepository.cs
  * 功能描述: 树形结构仓储实现，支持具有父子关系的聚合根实体
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -29,11 +29,16 @@ namespace Infrastructure.Repositories;
 /// <typeparam name="TAggregate">聚合根类型，必须继承自 AggregateBase 并实现 IAggregateTree 接口</typeparam>
 /// <param name="client">SqlSugar 客户端，用于数据库操作</param>
 /// <param name="eventBus">领域事件总线，用于发布领域事件</param>
-/// <param name="httpContextProvider">HTTP 上下文提供者，用于获取当前用户信息</param>
-/// <param name="entityName">实体名称，用于日志记录</param>
-/// <param name="logger">日志记录器，用于记录操作日志</param>
-public class AggregateTreeRepository<TAggregate>(ISqlSugarClient client, IDomainEventBus eventBus, IHttpContextProvider httpContextProvider, string entityName, ILogger<AggregateTreeRepository<TAggregate>> logger)
-    : AggregateRepository<TAggregate>(client, eventBus, httpContextProvider, entityName, logger), IAggregateTreeRepository<TAggregate>
+    /// <param name="userContextProvider">用户上下文提供者，用于获取当前用户信息</param>
+    /// <param name="entityName">实体名称，用于日志记录</param>
+    /// <param name="logger">日志记录器，用于记录操作日志</param>
+public class AggregateTreeRepository<TAggregate>(
+    ISqlSugarClient client,
+    IDomainEventBus eventBus,
+    IUserContextProvider userContextProvider,
+    string entityName,
+    ILogger<AggregateTreeRepository<TAggregate>> logger)
+    : AggregateRepository<TAggregate>(client, eventBus, userContextProvider, entityName, logger), IAggregateTreeRepository<TAggregate>
     where TAggregate : AggregateBase, IAggregateTree<TAggregate>, new() {
 
     /// <inheritdoc/>
