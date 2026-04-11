@@ -30,10 +30,7 @@ public class ApiPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateByIdQueryHandler<ApiPermissionByIdQuery, ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionDetailDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 }
 
 /// <summary>
@@ -47,10 +44,7 @@ public class ApiPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateListQueryHandler<ApiPermissionListQuery, ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件
@@ -129,10 +123,7 @@ public class ApiPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregatePagedQueryHandler<ApiPermissionPagedQuery, ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件

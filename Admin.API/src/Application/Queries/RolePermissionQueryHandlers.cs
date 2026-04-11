@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RolePermissionQueryHandlers.cs
  * 功能描述: 角色权限关联查询处理器，处理角色权限查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,10 +31,7 @@ public class RolePermissionPagedQueryHandler(
     ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermissionPagedQuery, RolePermission, IRolePermissionRepository, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
     private readonly ILogger<RolePermissionPagedQueryHandler> _logger = logger;
 
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => "rolePermission";
+
 
     /// <summary>
     /// 构建查询条件
@@ -98,10 +95,7 @@ public class RolePermissionListQueryHandler(
     ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermissionListQuery, RolePermission, IRolePermissionRepository, RolePermissionListDto>(unitOfWork, mapper, cacheProvider) {
     private readonly ILogger<RolePermissionListQueryHandler> _logger = logger;
 
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => "rolePermission";
+
 
     /// <summary>
     /// 构建查询条件

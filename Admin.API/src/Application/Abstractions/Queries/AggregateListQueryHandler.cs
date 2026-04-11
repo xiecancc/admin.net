@@ -14,6 +14,7 @@ using Infrastructure.Shared.Units;
 using AutoMapper;
 using SqlSugar;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Application.Abstractions.Queries;
 
@@ -37,6 +38,32 @@ public abstract class AggregateListQueryHandler<TQuery, TAggregate, TRepository,
     where TAggregate : AggregateBase, new()
     where TRepository : IAggregateRepository<TAggregate>
     where TListDto : AggregateListDto {
+    /// <summary>
+    /// 构建列表查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<TAggregate, bool>>> BuildPredicates(TQuery query) {
+        var predicates = base.BuildPredicates(query);
+        if (!string.IsNullOrWhiteSpace(query.Id)) {
+            predicates.Add(t => t.Id.ToString().Contains(query.Id));
+        }
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建列表查询缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override StringBuilder BuildCacheParams(TQuery query) {
+        var builder = base.BuildCacheParams(query);
+        if (!string.IsNullOrWhiteSpace(query.Id)) {
+            builder.Append($"|Id={query.Id}");
+        }
+        return builder;
+    }
+
     /// <summary>
     /// 处理列表查询命令
     /// </summary>

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleQueryHandlers.cs
  * 功能描述: 角色相关查询处理器，包含角色的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -31,10 +31,7 @@ public class RoleByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateByIdQueryHandler<RoleByIdQuery, Role, IRoleRepository, RoleDetailDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
+
 }
 
 /// <summary>
@@ -48,10 +45,7 @@ public class RoleListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateListQueryHandler<RoleListQuery, Role, IRoleRepository, RoleListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
+
 
     /// <summary>
     /// 构建查询条件
@@ -109,10 +103,7 @@ public class RolePagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregatePagedQueryHandler<RolePagedQuery, Role, IRoleRepository, RolePagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
+
 
     /// <summary>
     /// 构建查询条件

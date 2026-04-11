@@ -31,10 +31,7 @@ public class UserByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateByIdQueryHandler<UserByIdQuery, User, IUserRepository, UserDetailDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.User.Prefix;
+
 }
 
 /// <summary>
@@ -48,10 +45,7 @@ public class UserListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateListQueryHandler<UserListQuery, User, IUserRepository, UserListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.User.Prefix;
+
 
     /// <summary>
     /// 构建查询条件
@@ -109,10 +103,7 @@ public class UserPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregatePagedQueryHandler<UserPagedQuery, User, IUserRepository, UserPagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.User.Prefix;
+
 
     /// <summary>
     /// 构建查询条件

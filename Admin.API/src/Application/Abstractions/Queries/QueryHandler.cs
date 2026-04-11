@@ -45,10 +45,10 @@ public abstract class QueryHandler<TQuery, TDomain, TRepository, TResponse>(
 
     /// <summary>
     /// 缓存键前缀
-    /// <para>子类需要重写此属性以提供正确的缓存键前缀</para>
+    /// <para>默认返回 TDomain 类型名称，子类可重写以提供自定义缓存键前缀</para>
     /// </summary>
-    protected abstract string CacheKeyPrefix {
-        get;
+    protected virtual string CacheKeyPrefix {
+        get => typeof(TDomain).Name.ToLower();
     }
 
     /// <summary>

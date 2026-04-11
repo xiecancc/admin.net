@@ -19,10 +19,11 @@ public abstract class AggregateListQuery<TListDto>
     where TListDto : AggregateListDto
 {
     /// <summary>
-    /// 主键 ID
+    /// 主键 ID（支持模糊查询）
     /// </summary>
-    public Guid? Id
+    public string? Id
     {
-        get; set;
+        get;
+        set;
     }
 }

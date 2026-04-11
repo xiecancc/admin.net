@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: ButtonPermissionQueryHandlers.cs
  * 功能描述: 按钮权限相关查询处理器，包含按钮权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -30,10 +30,7 @@ public class ButtonPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateByIdQueryHandler<ButtonPermissionByIdQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionDetailDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 }
 
 /// <summary>
@@ -47,10 +44,7 @@ public class ButtonPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateListQueryHandler<ButtonPermissionListQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件
@@ -115,10 +109,7 @@ public class ButtonPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregatePagedQueryHandler<ButtonPermissionPagedQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件

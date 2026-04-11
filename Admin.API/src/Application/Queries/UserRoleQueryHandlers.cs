@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -115,10 +115,7 @@ public class UserRoleListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : ListQueryHandler<UserRoleListQuery, UserRole, IUserRoleRepository, UserRoleListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => "userrole";
+
 
     /// <summary>
     /// 构建查询条件
@@ -165,10 +162,7 @@ public class UserRolePagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : PagedQueryHandler<UserRolePagedQuery, UserRole, IUserRoleRepository, UserRolePagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => "userrole";
+
 
     /// <summary>
     /// 构建查询条件

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: MenuPermissionQueryHandlers.cs
  * 功能描述: 菜单权限相关查询处理器，包含菜单权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -30,10 +30,7 @@ public class MenuPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateByIdQueryHandler<MenuPermissionByIdQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionDetailDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 }
 
 /// <summary>
@@ -47,10 +44,7 @@ public class MenuPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregateListQueryHandler<MenuPermissionListQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionListDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件
@@ -122,10 +116,7 @@ public class MenuPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : AggregatePagedQueryHandler<MenuPermissionPagedQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
-    /// <summary>
-    /// 缓存键前缀
-    /// </summary>
-    protected override string CacheKeyPrefix => CacheKeyConstants.Permission.Prefix;
+
 
     /// <summary>
     /// 构建查询条件

@@ -168,12 +168,12 @@ dotnet_naming_style.camel_case_or_underscore_camel_case.capitalization = camel_c
 # 对应编码规范各章节的最佳实践
 
 # 使用 var 关键字的场景（对应规范 7.2 节）
-# 内置类型不使用 var
-csharp_style_var_for_built_in_types = false:error
-# 类型明显时可使用 var
-csharp_style_var_when_type_is_apparent = true:suggestion
-# 其他情况偏好显式类型
-csharp_style_var_elsewhere = false:suggestion
+# 内置类型也使用 var
+csharp_style_var_for_built_in_types = true:error
+# 类型明显时优先使用 var
+csharp_style_var_when_type_is_apparent = true:error
+# 其他情况也优先使用 var
+csharp_style_var_elsewhere = true:error
 
 # 使用模式匹配（对应规范 8.2 节）
 csharp_style_pattern_matching_over_is_with_cast = true:suggestion
@@ -386,7 +386,6 @@ dotnet_diagnostic.IDE0262.severity = suggestion
 
 # 使用 Index 和 Range 运算符（C# 8+）
 dotnet_diagnostic.IDE0056.severity = suggestion
-dotnet_diagnostic.IDE0058.severity = suggestion
 
 # 使用 Span<T> 替代 Substring（高性能字符串处理）- 对应规范 9.1 节
 dotnet_diagnostic.IDE0057.severity = suggestion
