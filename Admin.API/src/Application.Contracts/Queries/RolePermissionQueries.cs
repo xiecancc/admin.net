@@ -7,7 +7,6 @@
 
 using Application.Contracts.Abstractions.Queries;
 using Application.Contracts.Dtos;
-using Domain.Entities;
 using MediatR;
 
 namespace Application.Contracts.Queries;
@@ -48,7 +47,7 @@ public class RolePermissionListQuery : DomainListQuery<RolePermissionListDto> {
 /// 角色权限列表查询
 /// <para>获取指定角色的所有权限</para>
 /// </summary>
-public class RolePermissionsQuery : IRequest<List<Permission>> {
+public class RolePermissionsQuery : IRequest<List<PermissionListDto>> {
     /// <summary>
     /// 角色ID
     /// </summary>

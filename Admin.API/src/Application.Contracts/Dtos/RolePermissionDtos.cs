@@ -5,8 +5,6 @@
  * 最近修订: 2026-04-11
  */
 
-using Domain.Entities;
-
 namespace Application.Contracts.Dtos;
 
 /// <summary>

@@ -24,14 +24,16 @@ namespace Application.Queries;
 /// </summary>
 public class UserRolesQueryHandler(
     IUnitOfWork unitOfWork,
-    ILogger<UserRolesQueryHandler> logger) : IRequestHandler<UserRolesQuery, List<Role>> {
+    IMapper mapper,
+    ILogger<UserRolesQueryHandler> logger) : IRequestHandler<UserRolesQuery, List<RoleListDto>> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
     private readonly ILogger<UserRolesQueryHandler> _logger = logger;
 
     /// <summary>
     /// 处理用户角色列表查询
     /// </summary>
-    public async Task<List<Role>> Handle(UserRolesQuery request, CancellationToken cancellationToken) {
+    public async Task<List<RoleListDto>> Handle(UserRolesQuery request, CancellationToken cancellationToken) {
         var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
         var roleIds = await userRoleRepository.GetRoleIdsByUserIdAsync(request.UserId, cancellationToken);
 
@@ -45,7 +47,7 @@ public class UserRolesQueryHandler(
         _logger.LogDebug("查询用户角色列表 | UserId: {UserId} | RoleCount: {Count}", 
             request.UserId, roles.Count);
 
-        return roles;
+        return _mapper.Map<List<RoleListDto>>(roles);
     }
 }
 
@@ -54,14 +56,16 @@ public class UserRolesQueryHandler(
 /// </summary>
 public class RoleUsersQueryHandler(
     IUnitOfWork unitOfWork,
-    ILogger<RoleUsersQueryHandler> logger) : IRequestHandler<RoleUsersQuery, List<User>> {
+    IMapper mapper,
+    ILogger<RoleUsersQueryHandler> logger) : IRequestHandler<RoleUsersQuery, List<UserListDto>> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
     private readonly ILogger<RoleUsersQueryHandler> _logger = logger;
 
     /// <summary>
     /// 处理角色用户列表查询
     /// </summary>
-    public async Task<List<User>> Handle(RoleUsersQuery request, CancellationToken cancellationToken) {
+    public async Task<List<UserListDto>> Handle(RoleUsersQuery request, CancellationToken cancellationToken) {
         var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
         var userIds = await userRoleRepository.GetUserIdsByRoleIdAsync(request.RoleId, cancellationToken);
 
@@ -75,7 +79,7 @@ public class RoleUsersQueryHandler(
         _logger.LogDebug("查询角色用户列表 | RoleId: {RoleId} | UserCount: {Count}", 
             request.RoleId, users.Count);
 
-        return users;
+        return _mapper.Map<List<UserListDto>>(users);
     }
 }
 

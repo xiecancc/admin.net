@@ -159,21 +159,23 @@ public class RolePermissionListQueryHandler(
 /// </summary>
 public class RolePermissionsQueryHandler(
     IUnitOfWork unitOfWork,
-    ILogger<RolePermissionsQueryHandler> logger) : IRequestHandler<RolePermissionsQuery, List<Permission>> {
+    IMapper mapper,
+    ILogger<RolePermissionsQueryHandler> logger) : IRequestHandler<RolePermissionsQuery, List<PermissionListDto>> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
     private readonly ILogger<RolePermissionsQueryHandler> _logger = logger;
 
     /// <summary>
     /// 处理角色权限列表查询
     /// </summary>
-    public async Task<List<Permission>> Handle(RolePermissionsQuery request, CancellationToken cancellationToken) {
+    public async Task<List<PermissionListDto>> Handle(RolePermissionsQuery request, CancellationToken cancellationToken) {
         var rolePermissionRepository = _unitOfWork.GetRepository<IRolePermissionRepository, RolePermission>();
         var permissions = await rolePermissionRepository.GetPermissionsByRoleIdAsync(request.RoleId, cancellationToken);
 
         _logger.LogDebug("查询角色权限列表 | RoleId: {RoleId} | PermissionCount: {Count}", 
             request.RoleId, permissions.Count);
 
-        return permissions;
+        return _mapper.Map<List<PermissionListDto>>(permissions);
     }
 }
 

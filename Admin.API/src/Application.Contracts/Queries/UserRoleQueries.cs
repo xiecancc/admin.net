@@ -7,7 +7,6 @@
 
 using Application.Contracts.Abstractions.Queries;
 using Application.Contracts.Dtos;
-using Domain.Entities;
 using MediatR;
 
 namespace Application.Contracts.Queries;
@@ -16,7 +15,7 @@ namespace Application.Contracts.Queries;
 /// 用户角色列表查询
 /// <para>获取指定用户的所有角色</para>
 /// </summary>
-public class UserRolesQuery : IRequest<List<Role>> {
+public class UserRolesQuery : IRequest<List<RoleListDto>> {
     /// <summary>
     /// 用户ID
     /// </summary>
@@ -35,7 +34,7 @@ public class UserRolesQuery : IRequest<List<Role>> {
 /// 角色用户列表查询
 /// <para>获取指定角色的所有用户</para>
 /// </summary>
-public class RoleUsersQuery : IRequest<List<User>> {
+public class RoleUsersQuery : IRequest<List<UserListDto>> {
     /// <summary>
     /// 角色ID
     /// </summary>
