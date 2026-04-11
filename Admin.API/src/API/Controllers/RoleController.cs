@@ -2,7 +2,7 @@
  * 文件名称: RoleController.cs
  * 功能描述: 角色控制器，处理角色相关的CRUD操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using API.Filters;
@@ -38,8 +38,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>角色列表</returns>
     [HttpGet]
     [Permission("role:view")]
-    public async Task<ActionResult<List<Role>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new RoleListQuery(new RoleQueryParameters());
+    public async Task<ActionResult<List<RoleListDto>>> GetListAsync(CancellationToken cancellationToken = default) {
+        var query = new RoleListQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -51,7 +51,7 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>角色详情</returns>
     [HttpGet("{id:guid}")]
     [Permission("role:view")]
-    public async Task<ActionResult<Role?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<RoleDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
         var query = new RoleByIdQuery(id);
         return Ok(await _mediator.Send(query, cancellationToken));
     }
@@ -59,13 +59,12 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <summary>
     /// 分页获取角色
     /// </summary>
-    /// <param name="parameters">查询参数</param>
+    /// <param name="query">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("role:view")]
-    public async Task<ActionResult<PagedResponse<Role>>> GetPagedAsync([FromQuery] RoleQueryParameters parameters, CancellationToken cancellationToken = default) {
-        var query = new RolePagedQuery(parameters);
+    public async Task<ActionResult<PagedResponse<RolePagedDto>>> GetPagedAsync([FromQuery] RolePagedQuery query, CancellationToken cancellationToken = default) {
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

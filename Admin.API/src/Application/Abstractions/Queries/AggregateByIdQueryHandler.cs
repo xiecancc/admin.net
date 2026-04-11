@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: AggregateByIdQueryHandler.cs
- * 功能描述: 通用详情查询处理器，用于处理所有领域实体的详情获取操作
+ * 功能描述: 聚合根详情查询处理器，用于处理聚合根实体的详情获取操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions.Queries;
@@ -30,8 +30,8 @@ namespace Application.Abstractions.Queries;
 public abstract class AggregateByIdQueryHandler<TQuery, TAggregate, TRepository, TResponseDto>(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainQueryHandler<TQuery, TAggregate, TRepository, TResponseDto>(unitOfWork, mapper, cacheProvider)
-    where TQuery : AggregateByIdQuery<TAggregate, TRepository, TResponseDto>
+    ICacheProvider cacheProvider) : AggregateQueryHandler<TQuery, TAggregate, TRepository, TResponseDto>(unitOfWork, mapper, cacheProvider)
+    where TQuery : AggregateByIdQuery<TResponseDto>
     where TAggregate : AggregateBase, new()
     where TRepository : IAggregateRepository<TAggregate>
     where TResponseDto : AggregateDetailDto {

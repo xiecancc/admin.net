@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: AggregateRestoreCommandHandler.cs
  * 功能描述: 通用恢复命令处理器，用于处理所有聚合根实体的恢复操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using Domain.Shared.Entities;
@@ -28,7 +28,7 @@ namespace Application.Abstractions.Commands;
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 public abstract class AggregateRestoreCommandHandler<TCommand, TDomain, TRepository, TActionDto>(IUnitOfWork unitOfWork, IMapper mapper) : DomainCommandHandler<TCommand, TDomain, TRepository, bool>(unitOfWork, mapper)
-    where TCommand : AggregateRestoreCommand<TDomain, TRepository, TActionDto>
+    where TCommand : AggregateRestoreCommand<TActionDto>
     where TDomain : AggregateBase, new()
     where TRepository : IAggregateRepository<TDomain>
     where TActionDto : AggregateActionDto {

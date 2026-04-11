@@ -2,7 +2,7 @@
  * 文件名称: ApiPermissionController.cs
  * 功能描述: API权限控制器，处理API权限相关的 CRUD 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using API.Filters;
@@ -37,7 +37,7 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     [HttpGet]
     [Permission("permission:api:view")]
     public async Task<ActionResult<List<ApiPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new ApiPermissionListQuery(new ApiPermissionQueryParameters());
+        var query = new ApiPermissionListQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -57,13 +57,12 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <summary>
     /// 分页获取API权限
     /// </summary>
-    /// <param name="parameters">查询参数</param>
+    /// <param name="query">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:api:view")]
-    public async Task<ActionResult<PagedResponse<ApiPermission>>> GetPagedAsync([FromQuery] ApiPermissionQueryParameters parameters, CancellationToken cancellationToken = default) {
-        var query = new ApiPermissionPagedQuery(parameters);
+    public async Task<ActionResult<PagedResponse<ApiPermission>>> GetPagedAsync([FromQuery] ApiPermissionPagedQuery query, CancellationToken cancellationToken = default) {
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

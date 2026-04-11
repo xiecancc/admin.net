@@ -1,12 +1,13 @@
-﻿/*
+/*
  * 文件名称：RoleDtosValidator.cs
  * 功能描述：角色相关 DTO 验证器，包含角色创建、更新、查询参数等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-04
+ * 最近修订：2026-04-11
  */
 
 using System.Linq.Expressions;
 using Application.Contracts.Dtos;
+using Application.Contracts.Queries;
 using FluentValidation;
 
 namespace Application.Contracts.Validators;
@@ -116,13 +117,13 @@ public class RoleActionDtoValidator : DtoValidatorBase<RoleActionDto> {
 }
 
 /// <summary>
-/// 角色查询参数验证器
+/// 角色列表查询验证器
 /// </summary>
-public class RoleQueryParametersValidator : DtoValidatorBase<RoleQueryParameters> {
+public class RoleListQueryValidator : DtoValidatorBase<RoleListQuery> {
     /// <summary>
-    /// 初始化角色查询参数验证器
+    /// 初始化角色列表查询验证器
     /// </summary>
-    public RoleQueryParametersValidator() {
+    public RoleListQueryValidator() {
         _ = RuleFor(x => x.Name)
             .MaximumLength(50).WithMessage("角色名称长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(x.Name));
@@ -130,6 +131,30 @@ public class RoleQueryParametersValidator : DtoValidatorBase<RoleQueryParameters
         _ = RuleFor(x => x.Code)
             .MaximumLength(50).WithMessage("角色编码长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(x.Code));
+    }
+}
+
+/// <summary>
+/// 角色分页查询验证器
+/// </summary>
+public class RolePagedQueryValidator : DtoValidatorBase<RolePagedQuery> {
+    /// <summary>
+    /// 初始化角色分页查询验证器
+    /// </summary>
+    public RolePagedQueryValidator() {
+        _ = RuleFor(x => x.Name)
+            .MaximumLength(50).WithMessage("角色名称长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Name));
+
+        _ = RuleFor(x => x.Code)
+            .MaximumLength(50).WithMessage("角色编码长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Code));
+
+        _ = RuleFor(x => x.Page)
+            .GreaterThanOrEqualTo(1).WithMessage("页码必须大于等于 1");
+
+        _ = RuleFor(x => x.Size)
+            .InclusiveBetween(1, 100).WithMessage("每页大小必须在 1 到 100 之间");
     }
 }
 

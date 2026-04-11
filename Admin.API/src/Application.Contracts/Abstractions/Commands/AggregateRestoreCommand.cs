@@ -1,13 +1,11 @@
-﻿/*
+/*
  * 文件名称: AggregateRestoreCommand.cs
  * 功能描述: 聚合根恢复命令，用于聚合根实体的恢复操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Dtos;
-using Domain.Shared.Entities;
-using Domain.Shared.Repositories;
 
 namespace Application.Contracts.Abstractions.Commands;
 
@@ -16,16 +14,12 @@ namespace Application.Contracts.Abstractions.Commands;
 /// <para>用于聚合根实体的恢复操作</para>
 /// <para>聚合根实体支持软删除和恢复</para>
 /// </summary>
-/// <typeparam name="TAggregate">聚合根类型</typeparam>
-/// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TActionDto">操作DTO类型</typeparam>
 /// <remarks>
 /// 构造函数
 /// </remarks>
 /// <param name="data">实体ID列表</param>
-public class AggregateRestoreCommand<TAggregate, TRepository, TActionDto>(List<TActionDto> data) : DomainCommand<TAggregate, TRepository, bool>
-    where TAggregate : AggregateBase, new()
-    where TRepository : IAggregateRepository<TAggregate>
+public class AggregateRestoreCommand<TActionDto>(List<TActionDto> data) : DomainCommand<bool>
     where TActionDto : AggregateActionDto {
     /// <summary>
     /// 要恢复的实体ID列表

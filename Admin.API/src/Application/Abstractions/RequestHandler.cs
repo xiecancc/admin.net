@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: RequestHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions;
@@ -24,7 +24,7 @@ namespace Application.Abstractions;
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TResponse">响应类型</typeparam>
 public abstract class DomainRequestHandler<TRequest, TDomain, TRepository, TResponse> : IRequestHandler<TRequest, TResponse>
-    where TRequest : DomainRequest<TDomain, TRepository, TResponse>
+    where TRequest : IRequest<TResponse>
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain> {
     /// <summary>
@@ -84,7 +84,7 @@ public abstract class DomainQueryHandler<TQuery, TDomain, TRepository, TResponse
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider) : DomainRequestHandler<TQuery, TDomain, TRepository, TResponse>(unitOfWork, mapper)
-    where TQuery : DomainQuery<TDomain, TRepository, TResponse>
+    where TQuery : IRequest<TResponse>
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain> {
     /// <summary>
@@ -127,7 +127,7 @@ public abstract class DomainQueryHandler<TQuery, TDomain, TRepository, TResponse
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 public abstract class DomainCommandHandler<TCommand, TDomain, TRepository, TResponse>(IUnitOfWork unitOfWork, IMapper mapper) : DomainRequestHandler<TCommand, TDomain, TRepository, TResponse>(unitOfWork, mapper)
-    where TCommand : DomainCommand<TDomain, TRepository, TResponse>
+    where TCommand : IRequest<TResponse>
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain> {
 }

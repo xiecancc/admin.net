@@ -2,7 +2,7 @@
  * 文件名称: ButtonPermissionController.cs
  * 功能描述: 按钮权限控制器，处理按钮权限相关的 CRUD 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using API.Filters;
@@ -37,7 +37,7 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     [HttpGet]
     [Permission("permission:button:view")]
     public async Task<ActionResult<List<ButtonPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new ButtonPermissionListQuery(new ButtonPermissionQueryParameters());
+        var query = new ButtonPermissionListQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -57,13 +57,12 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <summary>
     /// 分页获取按钮权限
     /// </summary>
-    /// <param name="parameters">查询参数</param>
+    /// <param name="query">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:button:view")]
-    public async Task<ActionResult<PagedResponse<ButtonPermission>>> GetPagedAsync([FromQuery] ButtonPermissionQueryParameters parameters, CancellationToken cancellationToken = default) {
-        var query = new ButtonPermissionPagedQuery(parameters);
+    public async Task<ActionResult<PagedResponse<ButtonPermission>>> GetPagedAsync([FromQuery] ButtonPermissionPagedQuery query, CancellationToken cancellationToken = default) {
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

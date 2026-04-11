@@ -1,11 +1,9 @@
-﻿/*
+/*
  * 文件名称: UserRoleDtos.cs
  * 功能描述: 用户角色关联关系DTO类，用于用户角色关系的数据传输
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
-
-using Domain.Entities;
 
 namespace Application.Contracts.Dtos;
 
@@ -126,39 +124,5 @@ public class UserRolePagedDto : DomainPagedDto {
     /// <value>角色的名称，可能为空</value>
     public string? RoleName {
         get; set;
-    }
-}
-
-/// <summary>
-/// 用户角色关联查询参数
-/// <para>用于用户角色关联关系的查询</para>
-/// </summary>
-public class UserRoleQueryParameters : DomainQueryParameters<UserRole> {
-    /// <summary>
-    /// 用户 ID
-    /// </summary>
-    public Guid? UserId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 角色 ID
-    /// </summary>
-    public Guid? RoleId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 查询条件列表
-    /// </summary>
-    public override List<System.Linq.Expressions.Expression<System.Func<UserRole, bool>>> Predicates() {
-        var predicates = base.Predicates();
-        if (UserId.HasValue) {
-            predicates.Add(t => t.UserId == UserId.Value);
-        }
-        if (RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == RoleId.Value);
-        }
-        return predicates;
     }
 }

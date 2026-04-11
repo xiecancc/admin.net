@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称：ButtonPermissionDtosValidator.cs
  * 功能描述：按钮权限相关 DTO 验证器，包含按钮权限创建、更新、查询参数等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
@@ -62,27 +62,5 @@ public class ButtonPermissionActionDtoValidator : DtoValidatorBase<ButtonPermiss
     /// 初始化按钮权限操作 DTO 验证器
     /// </summary>
     public ButtonPermissionActionDtoValidator() {
-    }
-}
-
-/// <summary>
-/// 按钮权限查询参数验证器
-/// </summary>
-public class ButtonPermissionQueryParametersValidator : DtoValidatorBase<ButtonPermissionQueryParameters> {
-    /// <summary>
-    /// 初始化按钮权限查询参数验证器
-    /// </summary>
-    public ButtonPermissionQueryParametersValidator() {
-        _ = RuleFor(x => x.Code)
-            .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
-            .When(x => !string.IsNullOrEmpty(x.Code));
-
-        _ = RuleFor(x => x.Name)
-            .MaximumLength(50).WithMessage("权限名称长度不能超过 50 个字符")
-            .When(x => !string.IsNullOrEmpty(x.Name));
-
-        _ = RuleFor(x => x.ActionType)
-            .MaximumLength(50).WithMessage("操作类型长度不能超过 50 个字符")
-            .When(x => !string.IsNullOrEmpty(x.ActionType));
     }
 }

@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: RolePermissionDtos.cs
  * 功能描述: 角色权限关联关系DTO类，用于角色权限关系的数据传输
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 using Domain.Entities;
@@ -142,39 +142,5 @@ public class RolePermissionPagedDto : DomainPagedDto {
     /// <value>权限的类型，可能为空</value>
     public string? PermissionType {
         get; set;
-    }
-}
-
-/// <summary>
-/// 角色权限关联查询参数
-/// <para>用于角色权限关联关系的查询</para>
-/// </summary>
-public class RolePermissionQueryParameters : DomainQueryParameters<RolePermission> {
-    /// <summary>
-    /// 角色 ID
-    /// </summary>
-    public Guid? RoleId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 权限 ID
-    /// </summary>
-    public Guid? PermissionId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 查询条件列表
-    /// </summary>
-    public override List<System.Linq.Expressions.Expression<System.Func<RolePermission, bool>>> Predicates() {
-        var predicates = base.Predicates();
-        if (RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == RoleId.Value);
-        }
-        if (PermissionId.HasValue) {
-            predicates.Add(t => t.PermissionId == PermissionId.Value);
-        }
-        return predicates;
     }
 }

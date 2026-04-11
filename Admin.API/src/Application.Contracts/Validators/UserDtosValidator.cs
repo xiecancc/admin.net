@@ -1,12 +1,13 @@
-﻿/*
+/*
  * 文件名称：UserDtosValidator.cs
- * 功能描述：用户相关 DTO 验证器，包含用户创建、更新、查询参数等验证规则
+ * 功能描述：用户相关 DTO 验证器，包含用户创建、更新等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-04
+ * 最近修订：2026-04-11
  */
 
 using System.Linq.Expressions;
 using Application.Contracts.Dtos;
+using Application.Contracts.Queries;
 using FluentValidation;
 
 namespace Application.Contracts.Validators;
@@ -142,13 +143,43 @@ public class UserActionDtoValidator : DtoValidatorBase<UserActionDto> {
 }
 
 /// <summary>
-/// 用户查询参数验证器
+/// 用户列表查询验证器
 /// </summary>
-public class UserQueryParametersValidator : DtoValidatorBase<UserQueryParameters> {
+public class UserListQueryValidator : DtoValidatorBase<UserListQuery> {
     /// <summary>
-    /// 初始化用户查询参数验证器
+    /// 初始化用户列表查询验证器
     /// </summary>
-    public UserQueryParametersValidator() {
+    public UserListQueryValidator() {
+        _ = RuleFor(x => x.Email)
+            .EmailAddress().WithMessage("邮箱格式无效")
+            .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Email));
+
+        _ = RuleFor(x => x.NickName)
+            .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.NickName));
+
+        _ = RuleFor(x => x.Phone)
+            .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Phone));
+    }
+}
+
+/// <summary>
+/// 用户分页查询验证器
+/// </summary>
+public class UserPagedQueryValidator : DtoValidatorBase<UserPagedQuery> {
+    /// <summary>
+    /// 初始化用户分页查询验证器
+    /// </summary>
+    public UserPagedQueryValidator() {
+        _ = RuleFor(x => x.Page)
+            .GreaterThanOrEqualTo(1).WithMessage("页码必须大于等于 1");
+
+        _ = RuleFor(x => x.Size)
+            .GreaterThanOrEqualTo(1).WithMessage("每页大小必须大于等于 1")
+            .LessThanOrEqualTo(100).WithMessage("每页大小不能超过 100");
+
         _ = RuleFor(x => x.Email)
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")

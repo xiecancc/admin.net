@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: DomainCreateCommandHandler.cs
  * 功能描述: 通用创建命令处理器，用于处理所有领域实体的创建操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions.Commands;
@@ -28,7 +28,7 @@ namespace Application.Abstractions.Commands;
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 public abstract class DomainCreateCommandHandler<TCommand, TDomain, TRepository, TCreateDto>(IUnitOfWork unitOfWork, IMapper mapper) : DomainCommandHandler<TCommand, TDomain, TRepository, bool>(unitOfWork, mapper)
-    where TCommand : DomainCreateCommands<TDomain, TRepository, TCreateDto>
+    where TCommand : DomainCreateCommand<TCreateDto>
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TCreateDto : DomainCreateDto {

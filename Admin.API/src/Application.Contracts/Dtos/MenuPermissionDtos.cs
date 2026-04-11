@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: MenuPermissionDtos.cs
  * 功能描述: 菜单权限相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 namespace Application.Contracts.Dtos;
@@ -308,79 +308,4 @@ public class MenuPermissionPagedDto : PermissionPagedDto {
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
 public class MenuPermissionActionDto : PermissionActionDto {
-}
-
-/// <summary>
-/// 菜单权限查询参数
-/// <para>用于菜单权限列表查询的参数</para>
-/// </summary>
-public class MenuPermissionQueryParameters : AggregateQueryParameters<Domain.Entities.MenuPermission> {
-    /// <summary>
-    /// 权限编码
-    /// </summary>
-    /// <value>权限编码，用于模糊搜索</value>
-    public string? Code {
-        get; set;
-    }
-
-    /// <summary>
-    /// 权限名称
-    /// </summary>
-    /// <value>权限名称，用于模糊搜索</value>
-    public string? Name {
-        get; set;
-    }
-
-    /// <summary>
-    /// 菜单路径
-    /// </summary>
-    /// <value>菜单路径，用于模糊搜索</value>
-    public string? Path {
-        get; set;
-    }
-
-    /// <summary>
-    /// 是否可见
-    /// </summary>
-    /// <value>是否可见，用于筛选</value>
-    public bool? IsVisible {
-        get; set;
-    }
-
-    /// <summary>
-    /// 父权限ID
-    /// </summary>
-    /// <value>父权限ID，用于筛选</value>
-    public Guid? ParentId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 查询条件列表
-    /// </summary>
-    public override List<System.Linq.Expressions.Expression<System.Func<Domain.Entities.MenuPermission, bool>>> Predicates() {
-        var predicates = base.Predicates();
-
-        if (!string.IsNullOrWhiteSpace(Code)) {
-            predicates.Add(p => p.Code.Contains(Code!));
-        }
-
-        if (!string.IsNullOrWhiteSpace(Name)) {
-            predicates.Add(p => p.Name.Contains(Name!));
-        }
-
-        if (!string.IsNullOrWhiteSpace(Path)) {
-            predicates.Add(p => p.Path != null && p.Path.Contains(Path!));
-        }
-
-        if (IsVisible.HasValue) {
-            predicates.Add(p => p.IsVisible == IsVisible.Value);
-        }
-
-        if (ParentId.HasValue) {
-            predicates.Add(p => p.ParentId == ParentId.Value);
-        }
-
-        return predicates;
-    }
 }

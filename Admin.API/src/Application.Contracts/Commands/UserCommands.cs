@@ -1,15 +1,13 @@
-﻿/*
+/*
  * 文件名称: UserCommands.cs
  * 功能描述: 用户相关命令类，包含用户的所有命令操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions;
 using Application.Contracts.Abstractions.Commands;
 using Application.Contracts.Dtos;
-using Domain.Entities;
-using Domain.Repositories;
 
 namespace Application.Contracts.Commands;
 
@@ -21,7 +19,7 @@ namespace Application.Contracts.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="userCreateDtos">用户创建DTO列表</param>
-public class UserCreateCommand(List<UserCreateDto> userCreateDtos) : DomainCreateCommands<User, IUserRepository, UserCreateDto>(userCreateDtos) {
+public class UserCreateCommand(List<UserCreateDto> userCreateDtos) : AggregateCreateCommand<UserCreateDto>(userCreateDtos) {
 }
 
 /// <summary>
@@ -32,7 +30,7 @@ public class UserCreateCommand(List<UserCreateDto> userCreateDtos) : DomainCreat
 /// 构造函数
 /// </remarks>
 /// <param name="userUpdateDtos">用户更新DTO列表</param>
-public class UserUpdateCommand(List<UserUpdateDto> userUpdateDtos) : AggregateUpdateCommand<User, IUserRepository, UserUpdateDto>(userUpdateDtos) {
+public class UserUpdateCommand(List<UserUpdateDto> userUpdateDtos) : AggregateUpdateCommand<UserUpdateDto>(userUpdateDtos) {
 }
 
 /// <summary>
@@ -43,7 +41,7 @@ public class UserUpdateCommand(List<UserUpdateDto> userUpdateDtos) : AggregateUp
 /// 构造函数
 /// </remarks>
 /// <param name="userIds">用户ID列表</param>
-public class UserDeleteCommand(List<Guid> userIds) : AggregateDeleteCommand<User, IUserRepository, UserActionDto>(userIds.Select(id => new UserActionDto { Id = id }).ToList()) {
+public class UserDeleteCommand(List<Guid> userIds) : AggregateDeleteCommand<UserActionDto>(userIds.Select(id => new UserActionDto { Id = id }).ToList()) {
 }
 
 /// <summary>
@@ -54,7 +52,7 @@ public class UserDeleteCommand(List<Guid> userIds) : AggregateDeleteCommand<User
 /// 构造函数
 /// </remarks>
 /// <param name="userIds">用户ID列表</param>
-public class UserRestoreCommand(List<Guid> userIds) : AggregateRestoreCommand<User, IUserRepository, UserActionDto>(userIds.Select(id => new UserActionDto { Id = id }).ToList()) {
+public class UserRestoreCommand(List<Guid> userIds) : AggregateRestoreCommand<UserActionDto>(userIds.Select(id => new UserActionDto { Id = id }).ToList()) {
 }
 
 /// <summary>
@@ -65,7 +63,7 @@ public class UserRestoreCommand(List<Guid> userIds) : AggregateRestoreCommand<Us
 /// 构造函数
 /// </remarks>
 /// <param name="userIds">用户ID列表</param>
-public class UserEnableCommand(List<Guid> userIds) : DomainCommand<User, IUserRepository, bool> {
+public class UserEnableCommand(List<Guid> userIds) : DomainCommand<bool> {
     /// <summary>
     /// 用户ID列表
     /// </summary>
@@ -80,7 +78,7 @@ public class UserEnableCommand(List<Guid> userIds) : DomainCommand<User, IUserRe
 /// 构造函数
 /// </remarks>
 /// <param name="userIds">用户ID列表</param>
-public class UserDisableCommand(List<Guid> userIds) : DomainCommand<User, IUserRepository, bool> {
+public class UserDisableCommand(List<Guid> userIds) : DomainCommand<bool> {
     /// <summary>
     /// 用户ID列表
     /// </summary>

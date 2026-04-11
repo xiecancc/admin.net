@@ -2,7 +2,7 @@
  * 文件名称: RoleDtos.cs
  * 功能描述: 角色相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 namespace Application.Contracts.Dtos;
@@ -184,55 +184,4 @@ public class RolePagedDto : AggregatePagedDto {
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
 public class RoleActionDto : AggregateActionDto {
-}
-
-/// <summary>
-/// 角色查询参数
-/// <para>用于角色列表查询的参数</para>
-/// </summary>
-public class RoleQueryParameters : AggregateQueryParameters<Domain.Entities.Role> {
-    /// <summary>
-    /// 角色编码
-    /// </summary>
-    /// <value>角色编码，用于模糊搜索</value>
-    public string? Code {
-        get; set;
-    }
-
-    /// <summary>
-    /// 角色名称
-    /// </summary>
-    /// <value>角色名称，用于模糊搜索</value>
-    public string? Name {
-        get; set;
-    }
-
-    /// <summary>
-    /// 父角色ID
-    /// </summary>
-    /// <value>父角色ID，用于筛选</value>
-    public Guid? ParentId {
-        get; set;
-    }
-
-    /// <summary>
-    /// 查询条件列表
-    /// </summary>
-    public override List<System.Linq.Expressions.Expression<System.Func<Domain.Entities.Role, bool>>> Predicates() {
-        var predicates = base.Predicates();
-
-        if (!string.IsNullOrWhiteSpace(Code)) {
-            predicates.Add(r => r.Code.Contains(Code!));
-        }
-
-        if (!string.IsNullOrWhiteSpace(Name)) {
-            predicates.Add(r => r.Name.Contains(Name!));
-        }
-
-        if (ParentId.HasValue) {
-            predicates.Add(r => r.ParentId == ParentId.Value);
-        }
-
-        return predicates;
-    }
 }

@@ -2,7 +2,7 @@
  * 文件名称: UserQueryHandlers.cs
  * 功能描述: 用户相关查询处理器，包含用户的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-05
+ * 最近修订: 2026-04-11
  */
 
 using Application.Abstractions.Queries;
@@ -11,9 +11,12 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Constants;
+using Domain.Shared.Enums;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using AutoMapper;
+using SqlSugar;
+using System.Linq.Expressions;
 
 namespace Application.Queries;
 
@@ -44,11 +47,66 @@ public class UserByIdQueryHandler(
 public class UserListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainListQueryHandler<UserListQuery, User, IUserRepository, UserListDto, UserQueryParameters>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : AggregateListQueryHandler<UserListQuery, User, IUserRepository, UserListDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
     protected override string CacheKeyPrefix => CacheKeyConstants.User.Prefix;
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<User, bool>>> BuildPredicates(UserListQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (!string.IsNullOrWhiteSpace(query.Email)) {
+            predicates.Add(u => u.Email.Contains(query.Email));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.NickName)) {
+            predicates.Add(u => u.NickName != null && u.NickName.Contains(query.NickName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Phone)) {
+            predicates.Add(u => u.Phone != null && u.Phone.Contains(query.Phone));
+        }
+
+        if (query.Status.HasValue) {
+            predicates.Add(u => u.Status == (query.Status.Value ? UserStatus.Normal : UserStatus.Disabled));
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(UserListQuery query) {
+        var parts = new List<string>();
+        var baseKey = base.BuildCacheKey(query);
+        if (!string.IsNullOrEmpty(baseKey)) {
+            parts.Add(baseKey);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Email)) {
+            parts.Add($"Email={query.Email}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.NickName)) {
+            parts.Add($"NickName={query.NickName}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.Phone)) {
+            parts.Add($"Phone={query.Phone}");
+        }
+        if (query.Status.HasValue) {
+            parts.Add($"Status={query.Status.Value}");
+        }
+
+        return string.Join("|", parts);
+    }
 }
 
 /// <summary>
@@ -61,9 +119,64 @@ public class UserListQueryHandler(
 public class UserPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainPagedQueryHandler<UserPagedQuery, User, IUserRepository, UserPagedDto, UserQueryParameters>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : AggregatePagedQueryHandler<UserPagedQuery, User, IUserRepository, UserPagedDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
     protected override string CacheKeyPrefix => CacheKeyConstants.User.Prefix;
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<User, bool>>> BuildPredicates(UserPagedQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (!string.IsNullOrWhiteSpace(query.Email)) {
+            predicates.Add(u => u.Email.Contains(query.Email));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.NickName)) {
+            predicates.Add(u => u.NickName != null && u.NickName.Contains(query.NickName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Phone)) {
+            predicates.Add(u => u.Phone != null && u.Phone.Contains(query.Phone));
+        }
+
+        if (query.Status.HasValue) {
+            predicates.Add(u => u.Status == (query.Status.Value ? UserStatus.Normal : UserStatus.Disabled));
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(UserPagedQuery query) {
+        var parts = new List<string>();
+        var baseKey = base.BuildCacheKey(query);
+        if (!string.IsNullOrEmpty(baseKey)) {
+            parts.Add(baseKey);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Email)) {
+            parts.Add($"Email={query.Email}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.NickName)) {
+            parts.Add($"NickName={query.NickName}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.Phone)) {
+            parts.Add($"Phone={query.Phone}");
+        }
+        if (query.Status.HasValue) {
+            parts.Add($"Status={query.Status.Value}");
+        }
+
+        return string.Join("|", parts);
+    }
 }

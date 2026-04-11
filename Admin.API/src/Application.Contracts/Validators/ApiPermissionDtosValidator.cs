@@ -1,11 +1,12 @@
-﻿/*
+/*
  * 文件名称：ApiPermissionDtosValidator.cs
  * 功能描述：API 权限相关 DTO 验证器，包含 API 权限创建、更新、查询参数等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-04
+ * 最近修订：2026-04-11
  */
 
 using Application.Contracts.Dtos;
+using Application.Contracts.Queries;
 using FluentValidation;
 
 namespace Application.Contracts.Validators;
@@ -88,13 +89,20 @@ public class ApiPermissionActionDtoValidator : DtoValidatorBase<ApiPermissionAct
 }
 
 /// <summary>
-/// API 权限查询参数验证器
+/// API 权限列表查询验证器
 /// </summary>
-public class ApiPermissionQueryParametersValidator : DtoValidatorBase<ApiPermissionQueryParameters> {
+public class ApiPermissionListQueryValidator : DtoValidatorBase<ApiPermissionListQuery> {
     /// <summary>
-    /// 初始化 API 权限查询参数验证器
+    /// 初始化 API 权限列表查询验证器
     /// </summary>
-    public ApiPermissionQueryParametersValidator() {
+    public ApiPermissionListQueryValidator() {
+        AddQueryRules();
+    }
+
+    /// <summary>
+    /// 添加查询参数验证规则
+    /// </summary>
+    private void AddQueryRules() {
         _ = RuleFor(x => x.Code)
             .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
             .When(x => !string.IsNullOrEmpty(x.Code));
@@ -114,5 +122,55 @@ public class ApiPermissionQueryParametersValidator : DtoValidatorBase<ApiPermiss
         _ = RuleFor(x => x.ModuleName)
             .MaximumLength(100).WithMessage("模块名称长度不能超过 100 个字符")
             .When(x => !string.IsNullOrEmpty(x.ModuleName));
+    }
+}
+
+/// <summary>
+/// API 权限分页查询验证器
+/// </summary>
+public class ApiPermissionPagedQueryValidator : DtoValidatorBase<ApiPermissionPagedQuery> {
+    /// <summary>
+    /// 初始化 API 权限分页查询验证器
+    /// </summary>
+    public ApiPermissionPagedQueryValidator() {
+        AddQueryRules();
+        AddPagedRules();
+    }
+
+    /// <summary>
+    /// 添加查询参数验证规则
+    /// </summary>
+    private void AddQueryRules() {
+        _ = RuleFor(x => x.Code)
+            .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Code));
+
+        _ = RuleFor(x => x.Name)
+            .MaximumLength(50).WithMessage("权限名称长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Name));
+
+        _ = RuleFor(x => x.ApiPath)
+            .MaximumLength(300).WithMessage("API 路径长度不能超过 300 个字符")
+            .When(x => !string.IsNullOrEmpty(x.ApiPath));
+
+        _ = RuleFor(x => x.HttpMethod)
+            .MaximumLength(10).WithMessage("HTTP 方法长度不能超过 10 个字符")
+            .When(x => !string.IsNullOrEmpty(x.HttpMethod));
+
+        _ = RuleFor(x => x.ModuleName)
+            .MaximumLength(100).WithMessage("模块名称长度不能超过 100 个字符")
+            .When(x => !string.IsNullOrEmpty(x.ModuleName));
+    }
+
+    /// <summary>
+    /// 添加分页参数验证规则
+    /// </summary>
+    private void AddPagedRules() {
+        _ = RuleFor(x => x.Page)
+            .GreaterThanOrEqualTo(1).WithMessage("页码必须大于等于 1");
+
+        _ = RuleFor(x => x.Size)
+            .GreaterThanOrEqualTo(1).WithMessage("每页大小必须大于等于 1")
+            .LessThanOrEqualTo(100).WithMessage("每页大小不能超过 100");
     }
 }

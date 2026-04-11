@@ -2,16 +2,20 @@
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-08
+ * 最近修订: 2026-04-11
  */
 
+using Application.Abstractions.Queries;
+using Application.Contracts.Dtos;
 using Application.Contracts.Queries;
 using Domain.Entities;
 using Domain.Repositories;
+using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using AutoMapper;
 
 namespace Application.Queries;
 
@@ -95,5 +99,105 @@ public class UserRoleIdsQueryHandler(
             request.UserId, roleIds.Count);
 
         return roleIds;
+    }
+}
+
+/// <summary>
+/// 用户角色关联列表查询处理器
+/// <para>用于处理用户角色关联关系的列表查询操作，支持缓存</para>
+/// </summary>
+public class UserRoleListQueryHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    ICacheProvider cacheProvider) : DomainListQueryHandler<UserRoleListQuery, UserRole, IUserRoleRepository, UserRoleListDto>(unitOfWork, mapper, cacheProvider) {
+    /// <summary>
+    /// 缓存键前缀
+    /// </summary>
+    protected override string CacheKeyPrefix => "userrole";
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<UserRole, bool>>> BuildPredicates(UserRoleListQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (query.UserId.HasValue) {
+            predicates.Add(t => t.UserId == query.UserId.Value);
+        }
+        if (query.RoleId.HasValue) {
+            predicates.Add(t => t.RoleId == query.RoleId.Value);
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(UserRoleListQuery query) {
+        var parts = new List<string>();
+
+        if (query.UserId.HasValue) {
+            parts.Add($"UserId={query.UserId.Value}");
+        }
+        if (query.RoleId.HasValue) {
+            parts.Add($"RoleId={query.RoleId.Value}");
+        }
+
+        return string.Join("|", parts);
+    }
+}
+
+/// <summary>
+/// 用户角色关联分页查询处理器
+/// <para>用于处理用户角色关联关系的分页查询操作，支持缓存</para>
+/// </summary>
+public class UserRolePagedQueryHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    ICacheProvider cacheProvider) : DomainPagedQueryHandler<UserRolePagedQuery, UserRole, IUserRoleRepository, UserRolePagedDto>(unitOfWork, mapper, cacheProvider) {
+    /// <summary>
+    /// 缓存键前缀
+    /// </summary>
+    protected override string CacheKeyPrefix => "userrole";
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<UserRole, bool>>> BuildPredicates(UserRolePagedQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (query.UserId.HasValue) {
+            predicates.Add(t => t.UserId == query.UserId.Value);
+        }
+        if (query.RoleId.HasValue) {
+            predicates.Add(t => t.RoleId == query.RoleId.Value);
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(UserRolePagedQuery query) {
+        var parts = new List<string>();
+
+        if (query.UserId.HasValue) {
+            parts.Add($"UserId={query.UserId.Value}");
+        }
+        if (query.RoleId.HasValue) {
+            parts.Add($"RoleId={query.RoleId.Value}");
+        }
+
+        return string.Join("|", parts);
     }
 }

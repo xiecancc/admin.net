@@ -2,7 +2,7 @@
  * 文件名称: UserController.cs
  * 功能描述: 用户控制器，处理用户相关的CRUD操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using API.Filters;
@@ -39,7 +39,7 @@ public class UserController(IMediator mediator) : ControllerBase {
     [HttpGet]
     [Permission("user:view")]
     public async Task<ActionResult<List<User>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new UserListQuery(new UserQueryParameters());
+        var query = new UserListQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -59,13 +59,12 @@ public class UserController(IMediator mediator) : ControllerBase {
     /// <summary>
     /// 分页获取用户
     /// </summary>
-    /// <param name="parameters">查询参数</param>
+    /// <param name="query">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("user:view")]
-    public async Task<ActionResult<PagedResponse<User>>> GetPagedAsync([FromQuery] UserQueryParameters parameters, CancellationToken cancellationToken = default) {
-        var query = new UserPagedQuery(parameters);
+    public async Task<ActionResult<PagedResponse<User>>> GetPagedAsync([FromQuery] UserPagedQuery query, CancellationToken cancellationToken = default) {
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

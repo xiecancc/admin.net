@@ -1,14 +1,12 @@
-﻿/*
+/*
  * 文件名称: MenuPermissionCommands.cs
  * 功能描述: 菜单权限相关命令类，包含菜单权限的所有命令操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions.Commands;
 using Application.Contracts.Dtos;
-using Domain.Entities;
-using Domain.Repositories;
 
 namespace Application.Contracts.Commands;
 
@@ -20,7 +18,7 @@ namespace Application.Contracts.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="menuPermissionCreateDtos">菜单权限创建DTO列表</param>
-public class MenuPermissionCreateCommand(List<MenuPermissionCreateDto> menuPermissionCreateDtos) : DomainCreateCommands<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionCreateDto>(menuPermissionCreateDtos) {
+public class MenuPermissionCreateCommand(List<MenuPermissionCreateDto> menuPermissionCreateDtos) : AggregateCreateCommand<MenuPermissionCreateDto>(menuPermissionCreateDtos) {
 }
 
 /// <summary>
@@ -31,7 +29,7 @@ public class MenuPermissionCreateCommand(List<MenuPermissionCreateDto> menuPermi
 /// 构造函数
 /// </remarks>
 /// <param name="menuPermissionUpdateDtos">菜单权限更新DTO列表</param>
-public class MenuPermissionUpdateCommand(List<MenuPermissionUpdateDto> menuPermissionUpdateDtos) : AggregateUpdateCommand<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionUpdateDto>(menuPermissionUpdateDtos) {
+public class MenuPermissionUpdateCommand(List<MenuPermissionUpdateDto> menuPermissionUpdateDtos) : AggregateUpdateCommand<MenuPermissionUpdateDto>(menuPermissionUpdateDtos) {
 }
 
 /// <summary>
@@ -42,7 +40,7 @@ public class MenuPermissionUpdateCommand(List<MenuPermissionUpdateDto> menuPermi
 /// 构造函数
 /// </remarks>
 /// <param name="menuPermissionIds">菜单权限ID列表</param>
-public class MenuPermissionDeleteCommand(List<Guid> menuPermissionIds) : AggregateDeleteCommand<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionActionDto>(menuPermissionIds.Select(id => new MenuPermissionActionDto { Id = id }).ToList()) {
+public class MenuPermissionDeleteCommand(List<Guid> menuPermissionIds) : AggregateDeleteCommand<MenuPermissionActionDto>(menuPermissionIds.Select(id => new MenuPermissionActionDto { Id = id }).ToList()) {
 }
 
 /// <summary>
@@ -53,5 +51,5 @@ public class MenuPermissionDeleteCommand(List<Guid> menuPermissionIds) : Aggrega
 /// 构造函数
 /// </remarks>
 /// <param name="menuPermissionIds">菜单权限ID列表</param>
-public class MenuPermissionRestoreCommand(List<Guid> menuPermissionIds) : AggregateRestoreCommand<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionActionDto>(menuPermissionIds.Select(id => new MenuPermissionActionDto { Id = id }).ToList()) {
+public class MenuPermissionRestoreCommand(List<Guid> menuPermissionIds) : AggregateRestoreCommand<MenuPermissionActionDto>(menuPermissionIds.Select(id => new MenuPermissionActionDto { Id = id }).ToList()) {
 }

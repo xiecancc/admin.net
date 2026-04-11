@@ -2,12 +2,12 @@
  * 文件名称: UserRoleQueries.cs
  * 功能描述: 用户角色关联查询类，包含用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-08
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions.Queries;
+using Application.Contracts.Dtos;
 using Domain.Entities;
-using Domain.Repositories;
 using MediatR;
 
 namespace Application.Contracts.Queries;
@@ -67,4 +67,36 @@ public class UserRoleIdsQuery : IRequest<List<Guid>> {
     public UserRoleIdsQuery(Guid userId) {
         UserId = userId;
     }
+}
+
+/// <summary>
+/// 用户角色关联列表查询
+/// <para>用于查询用户角色关联关系的列表数据</para>
+/// </summary>
+public class UserRoleListQuery : DomainListQuery<UserRoleListDto> {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    public Guid? UserId { get; set; }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    public Guid? RoleId { get; set; }
+}
+
+/// <summary>
+/// 用户角色关联分页查询
+/// <para>用于查询用户角色关联关系的分页数据</para>
+/// </summary>
+public class UserRolePagedQuery : DomainPagedQuery<UserRolePagedDto> {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    public Guid? UserId { get; set; }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    public Guid? RoleId { get; set; }
 }

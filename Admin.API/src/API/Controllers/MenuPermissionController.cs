@@ -2,7 +2,7 @@
  * 文件名称: MenuPermissionController.cs
  * 功能描述: 菜单权限控制器，处理菜单权限相关的 CRUD 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using API.Filters;
@@ -37,7 +37,7 @@ public class MenuPermissionController(IMediator mediator) : ControllerBase {
     [HttpGet]
     [Permission("permission:menu:view")]
     public async Task<ActionResult<List<MenuPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new MenuPermissionListQuery(new MenuPermissionQueryParameters());
+        var query = new MenuPermissionListQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -57,13 +57,35 @@ public class MenuPermissionController(IMediator mediator) : ControllerBase {
     /// <summary>
     /// 分页获取菜单权限
     /// </summary>
-    /// <param name="parameters">查询参数</param>
+    /// <param name="page">页码</param>
+    /// <param name="size">每页大小</param>
+    /// <param name="code">权限编码</param>
+    /// <param name="name">权限名称</param>
+    /// <param name="path">菜单路径</param>
+    /// <param name="isVisible">是否可见</param>
+    /// <param name="parentId">父权限ID</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:menu:view")]
-    public async Task<ActionResult<PagedResponse<MenuPermission>>> GetPagedAsync([FromQuery] MenuPermissionQueryParameters parameters, CancellationToken cancellationToken = default) {
-        var query = new MenuPermissionPagedQuery(parameters);
+    public async Task<ActionResult<PagedResponse<MenuPermission>>> GetPagedAsync(
+        [FromQuery] int page = 1,
+        [FromQuery] int size = 10,
+        [FromQuery] string? code = null,
+        [FromQuery] string? name = null,
+        [FromQuery] string? path = null,
+        [FromQuery] bool? isVisible = null,
+        [FromQuery] Guid? parentId = null,
+        CancellationToken cancellationToken = default) {
+        var query = new MenuPermissionPagedQuery {
+            Page = page,
+            Size = size,
+            Code = code,
+            Name = name,
+            Path = path,
+            IsVisible = isVisible,
+            ParentId = parentId
+        };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

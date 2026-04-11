@@ -1,14 +1,12 @@
-﻿/*
+/*
  * 文件名称: ButtonPermissionCommands.cs
  * 功能描述: 按钮权限相关命令类，包含按钮权限的所有命令操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
 
 using Application.Contracts.Abstractions.Commands;
 using Application.Contracts.Dtos;
-using Domain.Entities;
-using Domain.Repositories;
 
 namespace Application.Contracts.Commands;
 
@@ -20,7 +18,7 @@ namespace Application.Contracts.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="buttonPermissionCreateDtos">按钮权限创建DTO列表</param>
-public class ButtonPermissionCreateCommand(List<ButtonPermissionCreateDto> buttonPermissionCreateDtos) : DomainCreateCommands<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionCreateDto>(buttonPermissionCreateDtos) {
+public class ButtonPermissionCreateCommand(List<ButtonPermissionCreateDto> buttonPermissionCreateDtos) : AggregateCreateCommand<ButtonPermissionCreateDto>(buttonPermissionCreateDtos) {
 }
 
 /// <summary>
@@ -31,7 +29,7 @@ public class ButtonPermissionCreateCommand(List<ButtonPermissionCreateDto> butto
 /// 构造函数
 /// </remarks>
 /// <param name="buttonPermissionUpdateDtos">按钮权限更新DTO列表</param>
-public class ButtonPermissionUpdateCommand(List<ButtonPermissionUpdateDto> buttonPermissionUpdateDtos) : AggregateUpdateCommand<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionUpdateDto>(buttonPermissionUpdateDtos) {
+public class ButtonPermissionUpdateCommand(List<ButtonPermissionUpdateDto> buttonPermissionUpdateDtos) : AggregateUpdateCommand<ButtonPermissionUpdateDto>(buttonPermissionUpdateDtos) {
 }
 
 /// <summary>
@@ -42,7 +40,7 @@ public class ButtonPermissionUpdateCommand(List<ButtonPermissionUpdateDto> butto
 /// 构造函数
 /// </remarks>
 /// <param name="buttonPermissionIds">按钮权限ID列表</param>
-public class ButtonPermissionDeleteCommand(List<Guid> buttonPermissionIds) : AggregateDeleteCommand<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionActionDto>(buttonPermissionIds.Select(id => new ButtonPermissionActionDto { Id = id }).ToList()) {
+public class ButtonPermissionDeleteCommand(List<Guid> buttonPermissionIds) : AggregateDeleteCommand<ButtonPermissionActionDto>(buttonPermissionIds.Select(id => new ButtonPermissionActionDto { Id = id }).ToList()) {
 }
 
 /// <summary>
@@ -53,5 +51,5 @@ public class ButtonPermissionDeleteCommand(List<Guid> buttonPermissionIds) : Agg
 /// 构造函数
 /// </remarks>
 /// <param name="buttonPermissionIds">按钮权限ID列表</param>
-public class ButtonPermissionRestoreCommand(List<Guid> buttonPermissionIds) : AggregateRestoreCommand<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionActionDto>(buttonPermissionIds.Select(id => new ButtonPermissionActionDto { Id = id }).ToList()) {
+public class ButtonPermissionRestoreCommand(List<Guid> buttonPermissionIds) : AggregateRestoreCommand<ButtonPermissionActionDto>(buttonPermissionIds.Select(id => new ButtonPermissionActionDto { Id = id }).ToList()) {
 }

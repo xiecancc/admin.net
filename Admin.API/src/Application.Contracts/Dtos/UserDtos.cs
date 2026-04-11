@@ -2,10 +2,8 @@
  * 文件名称: UserDtos.cs
  * 功能描述: 用户相关数据传输对象，包含创建、更新、列表等模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-01
+ * 最近修订: 2026-04-11
  */
-
-using Domain.Shared.Enums;
 
 namespace Application.Contracts.Dtos;
 
@@ -238,67 +236,4 @@ public class UserPagedDto : AggregatePagedDto {
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
 public class UserActionDto : AggregateActionDto {
-}
-
-/// <summary>
-/// 用户查询参数
-/// <para>用于用户列表查询的参数</para>
-/// </summary>
-public class UserQueryParameters : AggregateQueryParameters<Domain.Entities.User> {
-    /// <summary>
-    /// 邮箱
-    /// </summary>
-    /// <value>用户邮箱，用于模糊搜索</value>
-    public string? Email {
-        get; set;
-    }
-
-    /// <summary>
-    /// 昵称
-    /// </summary>
-    /// <value>用户昵称，用于模糊搜索</value>
-    public string? NickName {
-        get; set;
-    }
-
-    /// <summary>
-    /// 手机号
-    /// </summary>
-    /// <value>用户手机号，用于模糊搜索</value>
-    public string? Phone {
-        get; set;
-    }
-
-    /// <summary>
-    /// 状态
-    /// </summary>
-    /// <value>用户状态，用于筛选</value>
-    public bool? Status {
-        get; set;
-    }
-
-    /// <summary>
-    /// 查询条件列表
-    /// </summary>
-    public override List<System.Linq.Expressions.Expression<System.Func<Domain.Entities.User, bool>>> Predicates() {
-        var predicates = base.Predicates();
-
-        if (!string.IsNullOrWhiteSpace(Email)) {
-            predicates.Add(u => u.Email.Contains(Email!));
-        }
-
-        if (!string.IsNullOrWhiteSpace(NickName)) {
-            predicates.Add(u => u.NickName != null && u.NickName.Contains(NickName!));
-        }
-
-        if (!string.IsNullOrWhiteSpace(Phone)) {
-            predicates.Add(u => u.Phone != null && u.Phone.Contains(Phone!));
-        }
-
-        if (Status.HasValue) {
-            predicates.Add(u => u.Status == (Status.Value ? UserStatus.Normal : UserStatus.Disabled));
-        }
-
-        return predicates;
-    }
 }

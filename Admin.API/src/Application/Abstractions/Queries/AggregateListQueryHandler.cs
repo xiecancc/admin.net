@@ -1,10 +1,11 @@
 /*
- * 文件名称: DomainListQueryHandler.cs
- * 功能描述: 通用列表查询处理器，用于处理所有领域实体的列表查询操作
+ * 文件名称: AggregateListQueryHandler.cs
+ * 功能描述: 聚合根列表查询处理器，用于处理聚合根实体的列表查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
  * 最近修订: 2026-04-11
  */
 
+using Application.Contracts.Abstractions.Queries;
 using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
@@ -13,30 +14,29 @@ using Infrastructure.Shared.Units;
 using AutoMapper;
 using SqlSugar;
 using System.Linq.Expressions;
-using Application.Contracts.Abstractions.Queries;
 
 namespace Application.Abstractions.Queries;
 
 /// <summary>
-/// 通用列表查询处理器
-/// <para>用于处理所有领域实体的列表查询操作，包括聚合根和关系表，支持缓存</para>
+/// 聚合根列表查询处理器
+/// <para>用于处理聚合根实体的列表查询操作，包含通用查询条件构建逻辑</para>
 /// </summary>
-/// <typeparam name="TQuery">查询命令类型</typeparam>
-/// <typeparam name="TDomain">实体类型</typeparam>
+/// <typeparam name="TQuery">查询类型</typeparam>
+/// <typeparam name="TAggregate">聚合根类型</typeparam>
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TListDto">列表DTO类型</typeparam>
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
 /// <exception cref="ArgumentNullException">当工作单元、映射器或缓存提供者为 null 时抛出</exception>
-public abstract class DomainListQueryHandler<TQuery, TDomain, TRepository, TListDto>(
+public abstract class AggregateListQueryHandler<TQuery, TAggregate, TRepository, TListDto>(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainQueryHandler<TQuery, TDomain, TRepository, List<TListDto>>(unitOfWork, mapper, cacheProvider)
-    where TQuery : DomainListQuery<TListDto>
-    where TDomain : DomainBase, new()
-    where TRepository : IDomainRepository<TDomain>
-    where TListDto : DomainListDto {
+    ICacheProvider cacheProvider) : AggregateQueryHandler<TQuery, TAggregate, TRepository, List<TListDto>>(unitOfWork, mapper, cacheProvider)
+    where TQuery : AggregateListQuery<TListDto>
+    where TAggregate : AggregateBase, new()
+    where TRepository : IAggregateRepository<TAggregate>
+    where TListDto : AggregateListDto {
     /// <summary>
     /// 处理列表查询命令
     /// </summary>
@@ -62,8 +62,8 @@ public abstract class DomainListQueryHandler<TQuery, TDomain, TRepository, TList
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>查询条件列表</returns>
-    protected virtual List<Expression<Func<TDomain, bool>>> BuildPredicates(TQuery query) {
-        return [];
+    protected virtual List<Expression<Func<TAggregate, bool>>> BuildPredicates(TQuery query) {
+        return BuildAggregatePredicates(query);
     }
 
     /// <summary>
@@ -71,8 +71,8 @@ public abstract class DomainListQueryHandler<TQuery, TDomain, TRepository, TList
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>排序条件字典</returns>
-    protected virtual IDictionary<Expression<Func<TDomain, object>>, OrderByType> BuildOrders(TQuery query) {
-        return new Dictionary<Expression<Func<TDomain, object>>, OrderByType>();
+    protected virtual IDictionary<Expression<Func<TAggregate, object>>, OrderByType> BuildOrders(TQuery query) {
+        return BuildAggregateOrders();
     }
 
     /// <summary>
@@ -81,6 +81,6 @@ public abstract class DomainListQueryHandler<TQuery, TDomain, TRepository, TList
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
     protected virtual string BuildCacheKey(TQuery query) {
-        return string.Empty;
+        return BuildAggregateCacheKey(query);
     }
 }

@@ -2,7 +2,7 @@
  * 文件名称: RoleQueryHandlers.cs
  * 功能描述: 角色相关查询处理器，包含角色的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-05
+ * 最近修订: 2026-04-11
  */
 
 using Application.Abstractions.Queries;
@@ -14,6 +14,8 @@ using Domain.Shared.Constants;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using AutoMapper;
+using SqlSugar;
+using System.Linq.Expressions;
 
 namespace Application.Queries;
 
@@ -44,11 +46,59 @@ public class RoleByIdQueryHandler(
 public class RoleListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainListQueryHandler<RoleListQuery, Role, IRoleRepository, RoleListDto, RoleQueryParameters>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : AggregateListQueryHandler<RoleListQuery, Role, IRoleRepository, RoleListDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
     protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<Role, bool>>> BuildPredicates(RoleListQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (!string.IsNullOrWhiteSpace(query.Code)) {
+            predicates.Add(r => r.Code.Contains(query.Code!));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Name)) {
+            predicates.Add(r => r.Name.Contains(query.Name!));
+        }
+
+        if (query.ParentId.HasValue) {
+            predicates.Add(r => r.ParentId == query.ParentId.Value);
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(RoleListQuery query) {
+        var parts = new List<string>();
+        var baseKey = base.BuildCacheKey(query);
+        if (!string.IsNullOrEmpty(baseKey)) {
+            parts.Add(baseKey);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Code)) {
+            parts.Add($"Code={query.Code}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.Name)) {
+            parts.Add($"Name={query.Name}");
+        }
+        if (query.ParentId.HasValue) {
+            parts.Add($"ParentId={query.ParentId.Value}");
+        }
+
+        return string.Join("|", parts);
+    }
 }
 
 /// <summary>
@@ -61,9 +111,57 @@ public class RoleListQueryHandler(
 public class RolePagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainPagedQueryHandler<RolePagedQuery, Role, IRoleRepository, RolePagedDto, RoleQueryParameters>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : AggregatePagedQueryHandler<RolePagedQuery, Role, IRoleRepository, RolePagedDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
     protected override string CacheKeyPrefix => CacheKeyConstants.Role.Prefix;
+
+    /// <summary>
+    /// 构建查询条件
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>查询条件列表</returns>
+    protected override List<Expression<Func<Role, bool>>> BuildPredicates(RolePagedQuery query) {
+        var predicates = base.BuildPredicates(query);
+
+        if (!string.IsNullOrWhiteSpace(query.Code)) {
+            predicates.Add(r => r.Code.Contains(query.Code!));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Name)) {
+            predicates.Add(r => r.Name.Contains(query.Name!));
+        }
+
+        if (query.ParentId.HasValue) {
+            predicates.Add(r => r.ParentId == query.ParentId.Value);
+        }
+
+        return predicates;
+    }
+
+    /// <summary>
+    /// 构建缓存键参数部分
+    /// </summary>
+    /// <param name="query">查询请求</param>
+    /// <returns>缓存键参数部分</returns>
+    protected override string BuildCacheKey(RolePagedQuery query) {
+        var parts = new List<string>();
+        var baseKey = base.BuildCacheKey(query);
+        if (!string.IsNullOrEmpty(baseKey)) {
+            parts.Add(baseKey);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Code)) {
+            parts.Add($"Code={query.Code}");
+        }
+        if (!string.IsNullOrWhiteSpace(query.Name)) {
+            parts.Add($"Name={query.Name}");
+        }
+        if (query.ParentId.HasValue) {
+            parts.Add($"ParentId={query.ParentId.Value}");
+        }
+
+        return string.Join("|", parts);
+    }
 }
