@@ -42,10 +42,10 @@ public abstract class RelationDtoValidatorBase<T> : DtoValidatorBase<T> {
         string id2Name = "关联 ID 2")
         where TId1 : struct
         where TId2 : struct {
-        _ = RuleFor(id1Selector)
+        RuleFor(id1Selector)
             .NotEmpty().WithMessage($"{id1Name}不能为空");
 
-        _ = RuleFor(id2Selector)
+        RuleFor(id2Selector)
             .NotEmpty().WithMessage($"{id2Name}不能为空");
     }
 }

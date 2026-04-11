@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserQueryHandlers.cs
  * 功能描述: 用户相关查询处理器，包含用户的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,12 +11,12 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Constants;
-using Domain.Shared.Enums;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using AutoMapper;
 using SqlSugar;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -73,10 +73,6 @@ public class UserListQueryHandler(
             predicates.Add(u => u.Phone != null && u.Phone.Contains(query.Phone));
         }
 
-        if (query.Status.HasValue) {
-            predicates.Add(u => u.Status == (query.Status.Value ? UserStatus.Normal : UserStatus.Disabled));
-        }
-
         return predicates;
     }
 
@@ -85,27 +81,20 @@ public class UserListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(UserListQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(UserListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Email)) {
-            parts.Add($"Email={query.Email}");
+            builder.Append($"|Email={query.Email}");
         }
         if (!string.IsNullOrWhiteSpace(query.NickName)) {
-            parts.Add($"NickName={query.NickName}");
+            builder.Append($"|NickName={query.NickName}");
         }
         if (!string.IsNullOrWhiteSpace(query.Phone)) {
-            parts.Add($"Phone={query.Phone}");
-        }
-        if (query.Status.HasValue) {
-            parts.Add($"Status={query.Status.Value}");
+            builder.Append($"|Phone={query.Phone}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 
@@ -145,10 +134,6 @@ public class UserPagedQueryHandler(
             predicates.Add(u => u.Phone != null && u.Phone.Contains(query.Phone));
         }
 
-        if (query.Status.HasValue) {
-            predicates.Add(u => u.Status == (query.Status.Value ? UserStatus.Normal : UserStatus.Disabled));
-        }
-
         return predicates;
     }
 
@@ -157,26 +142,19 @@ public class UserPagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(UserPagedQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(UserPagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Email)) {
-            parts.Add($"Email={query.Email}");
+            builder.Append($"|Email={query.Email}");
         }
         if (!string.IsNullOrWhiteSpace(query.NickName)) {
-            parts.Add($"NickName={query.NickName}");
+            builder.Append($"|NickName={query.NickName}");
         }
         if (!string.IsNullOrWhiteSpace(query.Phone)) {
-            parts.Add($"Phone={query.Phone}");
-        }
-        if (query.Status.HasValue) {
-            parts.Add($"Status={query.Status.Value}");
+            builder.Append($"|Phone={query.Phone}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }

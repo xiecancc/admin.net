@@ -47,12 +47,6 @@ public class UserListQuery : AggregateListQuery<UserListDto> {
     /// </summary>
     /// <value>用户手机号，用于模糊搜索</value>
     public string? Phone { get; set; }
-
-    /// <summary>
-    /// 状态
-    /// </summary>
-    /// <value>用户状态，用于筛选</value>
-    public bool? Status { get; set; }
 }
 
 /// <summary>
@@ -77,10 +71,4 @@ public class UserPagedQuery : AggregatePagedQuery<UserPagedDto> {
     /// </summary>
     /// <value>用户手机号，用于模糊搜索</value>
     public string? Phone { get; set; }
-
-    /// <summary>
-    /// 状态
-    /// </summary>
-    /// <value>用户状态，用于筛选</value>
-    public bool? Status { get; set; }
 }

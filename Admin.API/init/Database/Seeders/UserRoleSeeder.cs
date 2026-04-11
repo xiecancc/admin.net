@@ -41,7 +41,7 @@ public class UserRoleSeeder(ISqlSugarClient client) : Seeder<UserRole>(client) {
                         RoleId = role.Id
                     };
 
-                    _ = await _client.Insertable(userRole).ExecuteCommandAsync();
+                    await _client.Insertable(userRole).ExecuteCommandAsync();
                     LogInfo("用户角色关系创建完成");
                 }
                 else {

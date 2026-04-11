@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: IUserRepository.cs
  * 功能描述: 用户仓储接口，定义用户相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -62,4 +62,6 @@ public interface IUserRepository : IAggregateRepository<User> {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>是否存在</returns>
     Task<bool> IsEmailExistsAsync(string email, CancellationToken cancellationToken = default);
+
+
 }

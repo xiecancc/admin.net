@@ -30,13 +30,13 @@ public static class RequestConfigExtensions {
             return services;
         }
 
-        _ = services.AddRequestTimeouts(options => {
+        services.AddRequestTimeouts(options => {
             options.DefaultPolicy = new RequestTimeoutPolicy {
                 Timeout = TimeSpan.FromSeconds(timeoutOption.DefaultTimeoutSeconds)
             };
 
             foreach (var policy in timeoutOption.EndpointPolicies) {
-                _ = options.AddPolicy(policy.Name, new RequestTimeoutPolicy {
+                options.AddPolicy(policy.Name, new RequestTimeoutPolicy {
                     Timeout = TimeSpan.FromSeconds(policy.TimeoutSeconds)
                 });
             }
@@ -59,11 +59,11 @@ public static class RequestConfigExtensions {
             return services;
         }
 
-        _ = services.Configure<KestrelServerOptions>(options => {
+        services.Configure<KestrelServerOptions>(options => {
             options.Limits.MaxRequestBodySize = sizeLimitOption.MaxRequestBodySizeBytes;
         });
 
-        _ = services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options => {
+        services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options => {
             options.MultipartBodyLengthLimit = sizeLimitOption.MultipartBodyLengthLimitBytes;
             options.ValueLengthLimit = (int)sizeLimitOption.MultipartBodyLengthLimitBytes;
         });
@@ -77,7 +77,7 @@ public static class RequestConfigExtensions {
     /// <param name="app">Web 应用程序</param>
     /// <returns>Web 应用程序</returns>
     public static WebApplication UseRequestTimeoutMiddleware(this WebApplication app) {
-        _ = app.UseRequestTimeouts();
+        app.UseRequestTimeouts();
         return app;
     }
 }

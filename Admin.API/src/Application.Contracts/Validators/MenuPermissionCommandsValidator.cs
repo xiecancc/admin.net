@@ -18,10 +18,10 @@ public class MenuPermissionCreateCommandValidator : DtoValidatorBase<MenuPermiss
     /// 初始化菜单权限创建命令验证器
     /// </summary>
     public MenuPermissionCreateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("菜单权限创建数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new MenuPermissionCreateDtoValidator());
     }
 }
@@ -34,10 +34,10 @@ public class MenuPermissionUpdateCommandValidator : DtoValidatorBase<MenuPermiss
     /// 初始化菜单权限更新命令验证器
     /// </summary>
     public MenuPermissionUpdateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("菜单权限更新数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new MenuPermissionUpdateDtoValidator());
     }
 }
@@ -50,7 +50,7 @@ public class MenuPermissionDeleteCommandValidator : DtoValidatorBase<MenuPermiss
     /// 初始化菜单权限删除命令验证器
     /// </summary>
     public MenuPermissionDeleteCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("菜单权限删除数据不能为空");
     }
 }
@@ -63,7 +63,7 @@ public class MenuPermissionRestoreCommandValidator : DtoValidatorBase<MenuPermis
     /// 初始化菜单权限恢复命令验证器
     /// </summary>
     public MenuPermissionRestoreCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("菜单权限恢复数据不能为空");
     }
 }

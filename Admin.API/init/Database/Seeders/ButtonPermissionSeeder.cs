@@ -56,7 +56,7 @@ public class ButtonPermissionSeeder(ISqlSugarClient client) : Seeder<ButtonPermi
                 }
             };
 
-            _ = await _client.Insertable(buttonPermissions.ToArray()).ExecuteCommandAsync();
+            await _client.Insertable(buttonPermissions.ToArray()).ExecuteCommandAsync();
             LogInfo("按钮权限初始化完成，共 {0} 个按钮权限", buttonPermissions.Count);
         }
         catch (Exception ex) {

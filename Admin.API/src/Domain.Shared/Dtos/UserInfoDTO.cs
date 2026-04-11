@@ -5,8 +5,6 @@
  * 最近修订: 2026-04-04
  */
 
-using Domain.Shared.Enums;
-
 namespace Domain.Shared.Dtos;
 
 /// <summary>
@@ -46,12 +44,6 @@ public class UserInfoDTO {
     public string? NickName {
         get; init;
     }
-
-    /// <summary>
-    /// 用户状态
-    /// </summary>
-    /// <value>用户的状态，默认为正常状态</value>
-    public UserStatus Status { get; init; } = UserStatus.Normal;
 
     /// <summary>
     /// 角色列表

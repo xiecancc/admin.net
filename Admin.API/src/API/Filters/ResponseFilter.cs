@@ -165,7 +165,7 @@ public class ResponseFilter(ILogger<ResponseFilter> logger) : IAsyncExceptionFil
                 break;
         }
 
-        _ = await next();
+        await next();
     }
 
     /// <summary>

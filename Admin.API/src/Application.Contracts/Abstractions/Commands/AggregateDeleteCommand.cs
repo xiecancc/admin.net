@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateDeleteCommand.cs
  * 功能描述: 通用删除命令，用于所有领域实体的删除操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -19,8 +19,10 @@ namespace Application.Contracts.Abstractions.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="data">操作数据</param>
-public class AggregateDeleteCommand<TActionDto>(List<TActionDto> data) : DomainCommand<bool>
-    where TActionDto : AggregateActionDto {
+public class AggregateDeleteCommand<TActionDto>(List<TActionDto> data)
+    : Command<bool>
+    where TActionDto : AggregateActionDto
+{
     /// <summary>
     /// 操作数据
     /// </summary>

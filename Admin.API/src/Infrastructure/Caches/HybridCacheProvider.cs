@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: HybridCacheProvider.cs
  * 功能描述: 基于 HybridCache 的缓存提供者实现
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -128,7 +128,7 @@ public sealed class HybridCacheProvider(
             var keys = server.Keys(pattern: prefixedPattern).ToArray();
 
             if (keys.Length > 0) {
-                _ = await db.KeyDeleteAsync(keys);
+                await db.KeyDeleteAsync(keys);
                 _logger.LogDebug("按模式删除缓存: {Pattern}, 数量: {Count}", pattern, keys.Length);
                 return keys.Length;
             }
@@ -184,7 +184,7 @@ public sealed class HybridCacheProvider(
             var value = await db.StringIncrementAsync(GetPrefixedKey(key));
 
             if (value == 1 && expiration.HasValue) {
-                _ = await db.KeyExpireAsync(GetPrefixedKey(key), expiration.Value);
+                await db.KeyExpireAsync(GetPrefixedKey(key), expiration.Value);
             }
 
             _logger.LogDebug("分布式限流: {Key}, 值: {Value}", key, value);

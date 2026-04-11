@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateByIdQueryHandler.cs
  * 功能描述: 聚合根详情查询处理器，用于处理聚合根实体的详情获取操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -48,6 +48,6 @@ public abstract class AggregateByIdQueryHandler<TQuery, TAggregate, TRepository,
             return Mapper.Map<TResponseDto>(entity);
         });
 
-        return result == null ? throw new ArgumentException($"实体不存在，ID: {request.Id}") : result;
+        return result ?? throw new ArgumentException($"实体不存在，ID: {request.Id}");
     }
 }

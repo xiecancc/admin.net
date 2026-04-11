@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: PermissionDomainEventHandlers.cs
  * 功能描述: 权限领域事件处理器，处理权限相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -32,7 +32,7 @@ public class MenuPermissionCreatedEventHandler(
 
         LogEvent("创建", "菜单权限", @event.Description, @event.Domains.Count());
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -65,7 +65,7 @@ public class MenuPermissionUpdatedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -98,7 +98,7 @@ public class MenuPermissionDeletedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -131,7 +131,7 @@ public class MenuPermissionRestoredEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.MenuPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -161,7 +161,7 @@ public class ApiPermissionCreatedEventHandler(
 
         LogEvent("创建", "API权限", @event.Description, @event.Domains.Count());
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -194,7 +194,7 @@ public class ApiPermissionUpdatedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -227,7 +227,7 @@ public class ApiPermissionDeletedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -260,7 +260,7 @@ public class ApiPermissionRestoredEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ApiPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -290,7 +290,7 @@ public class ButtonPermissionCreatedEventHandler(
 
         LogEvent("创建", "按钮权限", @event.Description, @event.Domains.Count());
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -323,7 +323,7 @@ public class ButtonPermissionUpdatedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -356,7 +356,7 @@ public class ButtonPermissionDeletedEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")
@@ -389,7 +389,7 @@ public class ButtonPermissionRestoredEventHandler(
 
         await Task.WhenAll(permissionTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.ButtonPrefix}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Permission.Prefix}:paged*")

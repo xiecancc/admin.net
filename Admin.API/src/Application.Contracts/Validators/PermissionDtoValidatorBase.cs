@@ -45,19 +45,19 @@ public abstract class PermissionDtoValidatorBase<T> : DtoValidatorBase<T> {
         Expression<Func<T, string>> codeSelector,
         Expression<Func<T, int>> typeSelector,
         Expression<Func<T, int>> sortSelector) {
-        _ = RuleFor(nameSelector)
+        RuleFor(nameSelector)
             .NotEmpty().WithMessage("权限名称不能为空")
             .MaximumLength(50).WithMessage("权限名称长度不能超过 50 个字符");
 
-        _ = RuleFor(codeSelector)
+        RuleFor(codeSelector)
             .NotEmpty().WithMessage("权限编码不能为空")
             .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
             .Matches(@"^[a-zA-Z0-9_:]+$").WithMessage("权限编码只能包含字母、数字、下划线和冒号");
 
-        _ = RuleFor(typeSelector)
+        RuleFor(typeSelector)
             .InclusiveBetween(1, 3).WithMessage("权限类型必须在 1-3 之间");
 
-        _ = RuleFor(sortSelector)
+        RuleFor(sortSelector)
             .GreaterThanOrEqualTo(0).WithMessage("排序值不能小于 0");
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: SwaggerExtensions.cs
  * 功能描述: Swagger 扩展方法，配置 Swagger 文档服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -24,7 +24,7 @@ public static class SwaggerExtensions {
     /// <param name="services">服务集合</param>
     /// <returns>服务集合</returns>
     public static IServiceCollection AddSwaggerServices(this IServiceCollection services) {
-        _ = services.AddSwaggerGen(options => {
+        services.AddSwaggerGen(options => {
             options.SwaggerDoc("v1", new OpenApiInfo {
                 Title = "Admin.NET API",
                 Version = "v1.0.0",
@@ -165,12 +165,12 @@ public static class SwaggerExtensions {
             var c = input[i];
             if (char.IsUpper(c)) {
                 if (i > 0) {
-                    _ = result.Append('-');
+                    result.Append('-');
                 }
-                _ = result.Append(char.ToLower(c));
+                result.Append(char.ToLower(c));
             }
             else {
-                _ = result.Append(c);
+                result.Append(c);
             }
         }
         return result.ToString();
@@ -182,9 +182,9 @@ public static class SwaggerExtensions {
     /// <param name="app">Web 应用构建器</param>
     /// <returns>Web 应用构建器</returns>
     public static WebApplication UseSwaggerMiddlewares(this WebApplication app) {
-        _ = app.UseSwagger();
+        app.UseSwagger();
 
-        _ = app.UseSwaggerUI(options => {
+        app.UseSwaggerUI(options => {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin.NET API v1");
             options.SwaggerEndpoint("/swagger/v2/swagger.json", "Admin.NET API v2 (预留");
             options.RoutePrefix = "swagger";
@@ -202,7 +202,7 @@ public static class SwaggerExtensions {
             options.InjectJavascript("/swagger-initializer.js");
         });
 
-        _ = app.MapGet("/", () => Results.Redirect("/swagger"));
+        app.MapGet("/", () => Results.Redirect("/swagger"));
 
         return app;
     }
@@ -221,15 +221,9 @@ public class ReplaceApiVersionFilter : IOperationFilter {
         var apiDescription = context.ApiDescription;
         var groupName = apiDescription.GroupName ?? "v1";
 
-        var relativePath = apiDescription.RelativePath;
-        if (!string.IsNullOrEmpty(relativePath)) {
+        if (operation.OperationId != null) {
             var versionNumber = groupName.Replace("v", string.Empty);
-
-            _ = relativePath.Replace("{version:apiVersion}", versionNumber);
-
-            if (operation.OperationId != null) {
-                operation.OperationId = operation.OperationId.Replace("{version:apiVersion}", versionNumber);
-            }
+            operation.OperationId = operation.OperationId.Replace("{version:apiVersion}", versionNumber);
         }
     }
 }
@@ -257,7 +251,7 @@ public class KebabCaseDocumentFilter : IDocumentFilter {
 
         foreach (var kvp in pathsToRename) {
             var oldPath = swaggerDoc.Paths[kvp.Key];
-            _ = swaggerDoc.Paths.Remove(kvp.Key);
+            swaggerDoc.Paths.Remove(kvp.Key);
             swaggerDoc.Paths[kvp.Value] = oldPath;
         }
     }
@@ -298,12 +292,12 @@ public class KebabCaseDocumentFilter : IDocumentFilter {
             var c = input[i];
             if (char.IsUpper(c)) {
                 if (i > 0) {
-                    _ = result.Append('-');
+                    result.Append('-');
                 }
-                _ = result.Append(char.ToLower(c));
+                result.Append(char.ToLower(c));
             }
             else {
-                _ = result.Append(c);
+                result.Append(c);
             }
         }
         return result.ToString();

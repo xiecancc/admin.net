@@ -24,7 +24,7 @@ public class DatabaseCreator(ISqlSugarClient client) : Creator(client) {
     public override void Create() {
         try {
             LogInfo("正在创建数据库...");
-            _ = _client.DbMaintenance.CreateDatabase();
+            _client.DbMaintenance.CreateDatabase();
             LogInfo("数据库创建完成");
         }
         catch (Exception ex) {

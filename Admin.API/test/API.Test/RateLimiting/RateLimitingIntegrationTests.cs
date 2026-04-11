@@ -107,7 +107,7 @@ public class RateLimitingIntegrationTests(TestWebApplicationFactory factory) : I
         using var client = factory.CreateClient();
 
         for (int i = 0; i < 50; i++) {
-            _ = await client.GetAsync("/api/v1/user");
+            await client.GetAsync("/api/v1/user");
         }
 
         var rolesResponse = await client.GetAsync("/api/v1/role");
@@ -128,7 +128,7 @@ public class RateLimitingIntegrationTests(TestWebApplicationFactory factory) : I
         using var client2 = factory2.CreateClient();
 
         for (int i = 0; i < 50; i++) {
-            _ = await client1.GetAsync("/api/v1/user");
+            await client1.GetAsync("/api/v1/user");
         }
 
         var response = await client2.GetAsync("/api/v1/user");

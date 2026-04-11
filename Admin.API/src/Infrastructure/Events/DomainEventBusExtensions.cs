@@ -34,7 +34,7 @@ public static class DomainEventBusExtensions {
     public static IServiceCollection AddDomainEventHandlerBinding(
         this IServiceCollection services,
         params Assembly[] assemblies) {
-        _ = services.AddHostedService<DomainEventHandlerBindingService>(sp => {
+        services.AddHostedService<DomainEventHandlerBindingService>(sp => {
             var eventBus = sp.GetRequiredService<IDomainEventBus>();
             var logger = sp.GetRequiredService<ILogger<DomainEventHandlerBindingService>>();
             return new DomainEventHandlerBindingService(eventBus, logger, sp, assemblies);

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RoleQueryHandlers.cs
  * 功能描述: 角色相关查询处理器，包含角色的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,6 +16,7 @@ using Infrastructure.Shared.Units;
 using AutoMapper;
 using SqlSugar;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -80,24 +81,20 @@ public class RoleListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(RoleListQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(RoleListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (query.ParentId.HasValue) {
-            parts.Add($"ParentId={query.ParentId.Value}");
+            builder.Append($"|ParentId={query.ParentId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 
@@ -145,23 +142,19 @@ public class RolePagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(RolePagedQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(RolePagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (query.ParentId.HasValue) {
-            parts.Add($"ParentId={query.ParentId.Value}");
+            builder.Append($"|ParentId={query.ParentId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }

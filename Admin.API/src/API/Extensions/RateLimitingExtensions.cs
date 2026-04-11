@@ -38,7 +38,7 @@ public static class RateLimitingExtensions {
     /// <para>配置注册：在 Infrastructure 层的 DependencyExtensions 中统一注册</para>
     /// </remarks>
     public static IServiceCollection AddRateLimitingServices(this IServiceCollection services) {
-        _ = services.ConfigureOptions<ConfigureRateLimiterOptions>();
+        services.ConfigureOptions<ConfigureRateLimiterOptions>();
         return services;
     }
 }
@@ -87,7 +87,7 @@ public sealed class ConfigureRateLimiterOptions(IOptions<RateLimitOption> rateLi
     }
 
     private void AddRateLimitPolicy(RateLimiterOptions options, string policyName, EndpointRateLimitOption endpointPolicy) {
-        _ = options.AddPolicy(policyName, httpContext => {
+        options.AddPolicy(policyName, httpContext => {
             var partitionKey = GetPartitionKey(httpContext);
             return CreateRateLimitPartition(partitionKey, endpointPolicy);
         });

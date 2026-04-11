@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: IRepository.cs
  * 功能描述: 泛型仓储接口，所有仓储接口的基接口
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,7 +7,6 @@
 
 using Domain.Shared.Dtos;
 using Domain.Shared.Entities;
-using SqlSugar;
 using System.Linq.Expressions;
 
 namespace Domain.Shared.Repositories;
@@ -44,7 +43,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的实体列表</returns>
-    Task<List<TDomain>> GetListAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default);
+    Task<List<TDomain>> GetListAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件表达式获取实体列表（非集合版本）
@@ -53,7 +52,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的实体列表</returns>
-    Task<List<TDomain>> GetListAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default);
+    Task<List<TDomain>> GetListAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据分页参数获取分页实体列表
@@ -64,7 +63,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含数据列表和分页信息</returns>
-    Task<PagedResponse<TDomain>> GetPagedAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
+    Task<PagedResponse<TDomain>> GetPagedAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据分页参数获取分页实体列表（非集合版本）
@@ -75,7 +74,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含数据列表和分页信息</returns>
-    Task<PagedResponse<TDomain>> GetPagedAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
+    Task<PagedResponse<TDomain>> GetPagedAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件表达式和投影获取单个 DTO
@@ -106,7 +105,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的投影结果列表</returns>
-    Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default);
+    Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件表达式和投影获取 DTO 列表（非集合版本）
@@ -117,7 +116,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的投影结果列表</returns>
-    Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default);
+    Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据分页参数和投影获取分页 DTO 列表
@@ -130,7 +129,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含投影结果列表和分页信息</returns>
-    Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
+    Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据分页参数和投影获取分页 DTO 列表（非集合版本）
@@ -143,7 +142,7 @@ public interface IRepository<TDomain> where TDomain : DomainBase, new() {
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含投影结果列表和分页信息</returns>
-    Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
+    Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 检查实体是否存在

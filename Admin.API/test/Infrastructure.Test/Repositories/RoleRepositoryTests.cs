@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RoleRepositoryTests.cs
  * 功能描述: 角色仓储测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -51,10 +51,10 @@ public class RoleRepositoryTests {
         var role = new Role { Id = Guid.NewGuid(), Code = code, Name = RoleConstants.Administrator.Name };
 
         var mockQueryable = new Mock<ISugarQueryable<Role>>();
-        _ = mockQueryable.Setup(x => x.FirstAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
+        mockQueryable.Setup(x => x.FirstAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Role?)role);
 
-        _ = _mockClient.Setup(x => x.Queryable<Role>())
+        _mockClient.Setup(x => x.Queryable<Role>())
             .Returns(mockQueryable.Object);
 
         var result = await _roleRepository.FindByCodeAsync(code);
@@ -73,10 +73,10 @@ public class RoleRepositoryTests {
         var code = "NONEXISTENT";
 
         var mockQueryable = new Mock<ISugarQueryable<Role>>();
-        _ = mockQueryable.Setup(x => x.FirstAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
+        mockQueryable.Setup(x => x.FirstAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(Role));
 
-        _ = _mockClient.Setup(x => x.Queryable<Role>())
+        _mockClient.Setup(x => x.Queryable<Role>())
             .Returns(mockQueryable.Object);
 
         var result = await _roleRepository.FindByCodeAsync(code);
@@ -93,10 +93,10 @@ public class RoleRepositoryTests {
         var code = "ADMIN";
 
         var mockQueryable = new Mock<ISugarQueryable<Role>>();
-        _ = mockQueryable.Setup(x => x.AnyAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
+        mockQueryable.Setup(x => x.AnyAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
-        _ = _mockClient.Setup(x => x.Queryable<Role>())
+        _mockClient.Setup(x => x.Queryable<Role>())
             .Returns(mockQueryable.Object);
 
         var result = await _roleRepository.IsCodeExistsAsync(code);
@@ -113,10 +113,10 @@ public class RoleRepositoryTests {
         var code = "NONEXISTENT";
 
         var mockQueryable = new Mock<ISugarQueryable<Role>>();
-        _ = mockQueryable.Setup(x => x.AnyAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
+        mockQueryable.Setup(x => x.AnyAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Role, bool>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
-        _ = _mockClient.Setup(x => x.Queryable<Role>())
+        _mockClient.Setup(x => x.Queryable<Role>())
             .Returns(mockQueryable.Object);
 
         var result = await _roleRepository.IsCodeExistsAsync(code);

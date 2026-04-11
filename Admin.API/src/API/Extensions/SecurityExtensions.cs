@@ -18,7 +18,7 @@ public static class SecurityExtensions {
     /// <param name="app">Web 应用程序</param>
     /// <returns>Web 应用程序</returns>
     public static WebApplication UseSecurityHeaders(this WebApplication app) {
-        _ = app.Use(async (context, next) => {
+        app.Use(async (context, next) => {
             context.Response.Headers.XFrameOptions = "DENY";
             context.Response.Headers.XContentTypeOptions = "nosniff";
             context.Response.Headers.XXSSProtection = "1; mode=block";

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称：UserDtosValidator.cs
  * 功能描述：用户相关 DTO 验证器，包含用户创建、更新等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
@@ -39,16 +39,16 @@ public abstract class UserDtoValidatorBase<T> : DtoValidatorBase<T> {
         Expression<Func<T, string?>> nickNameSelector,
         Expression<Func<T, string?>> phoneSelector,
         Expression<Func<T, string?>> avatarSelector) {
-        _ = RuleFor(nickNameSelector)
+        RuleFor(nickNameSelector)
             .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(nickNameSelector.Compile()(x)));
 
-        _ = RuleFor(phoneSelector)
+        RuleFor(phoneSelector)
             .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
             .Matches(@"^1[3-9]\d{9}$").WithMessage("手机号格式无效")
             .When(x => !string.IsNullOrEmpty(phoneSelector.Compile()(x)));
 
-        _ = RuleFor(avatarSelector)
+        RuleFor(avatarSelector)
             .MaximumLength(500).WithMessage("头像 URL 长度不能超过 500 个字符")
             .Must(url => string.IsNullOrEmpty(url) || Uri.TryCreate(url, UriKind.Absolute, out _))
             .WithMessage("头像 URL 格式无效")
@@ -75,12 +75,12 @@ public abstract class UserCreateDtoValidatorBase<T> : UserDtoValidatorBase<T> {
     protected void AddUserRequiredRules(
         Expression<Func<T, string>> emailSelector,
         Expression<Func<T, string>> passwordSelector) {
-        _ = RuleFor(emailSelector)
+        RuleFor(emailSelector)
             .NotEmpty().WithMessage("邮箱不能为空")
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符");
 
-        _ = RuleFor(passwordSelector)
+        RuleFor(passwordSelector)
             .NotEmpty().WithMessage("密码不能为空")
             .MinimumLength(8).WithMessage("密码长度至少为 8 个字符")
             .MaximumLength(100).WithMessage("密码长度不能超过 100 个字符")
@@ -150,16 +150,16 @@ public class UserListQueryValidator : DtoValidatorBase<UserListQuery> {
     /// 初始化用户列表查询验证器
     /// </summary>
     public UserListQueryValidator() {
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")
             .When(x => !string.IsNullOrEmpty(x.Email));
 
-        _ = RuleFor(x => x.NickName)
+        RuleFor(x => x.NickName)
             .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(x.NickName));
 
-        _ = RuleFor(x => x.Phone)
+        RuleFor(x => x.Phone)
             .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
             .When(x => !string.IsNullOrEmpty(x.Phone));
     }
@@ -173,23 +173,23 @@ public class UserPagedQueryValidator : DtoValidatorBase<UserPagedQuery> {
     /// 初始化用户分页查询验证器
     /// </summary>
     public UserPagedQueryValidator() {
-        _ = RuleFor(x => x.Page)
+        RuleFor(x => x.Page)
             .GreaterThanOrEqualTo(1).WithMessage("页码必须大于等于 1");
 
-        _ = RuleFor(x => x.Size)
+        RuleFor(x => x.Size)
             .GreaterThanOrEqualTo(1).WithMessage("每页大小必须大于等于 1")
             .LessThanOrEqualTo(100).WithMessage("每页大小不能超过 100");
 
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")
             .When(x => !string.IsNullOrEmpty(x.Email));
 
-        _ = RuleFor(x => x.NickName)
+        RuleFor(x => x.NickName)
             .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(x.NickName));
 
-        _ = RuleFor(x => x.Phone)
+        RuleFor(x => x.Phone)
             .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
             .When(x => !string.IsNullOrEmpty(x.Phone));
     }

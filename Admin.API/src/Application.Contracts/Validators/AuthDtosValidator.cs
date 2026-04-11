@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AuthDtosValidator.cs
  * 功能描述: 认证相关 DTO 验证器，包含登录、注册、刷新令牌等验证规则
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -18,12 +18,12 @@ public class LoginRequestDtoValidator : DtoValidatorBase<LoginRequestDto> {
     /// 初始化登录请求 DTO 验证器
     /// </summary>
     public LoginRequestDtoValidator() {
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty().WithMessage("邮箱不能为空")
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符");
 
-        _ = RuleFor(x => x.Password)
+        RuleFor(x => x.Password)
             .NotEmpty().WithMessage("密码不能为空")
             .MaximumLength(100).WithMessage("密码长度不能超过 100 个字符");
     }
@@ -37,12 +37,12 @@ public class RegisterRequestDtoValidator : DtoValidatorBase<RegisterRequestDto> 
     /// 初始化注册请求 DTO 验证器
     /// </summary>
     public RegisterRequestDtoValidator() {
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty().WithMessage("邮箱不能为空")
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符");
 
-        _ = RuleFor(x => x.Password)
+        RuleFor(x => x.Password)
             .NotEmpty().WithMessage("密码不能为空")
             .MinimumLength(8).WithMessage("密码长度至少为 8 个字符")
             .MaximumLength(100).WithMessage("密码长度不能超过 100 个字符")
@@ -50,11 +50,11 @@ public class RegisterRequestDtoValidator : DtoValidatorBase<RegisterRequestDto> 
             .Matches(@"[a-z]").WithMessage("密码必须包含至少一个小写字母")
             .Matches(@"[0-9]").WithMessage("密码必须包含至少一个数字");
 
-        _ = RuleFor(x => x.NickName)
+        RuleFor(x => x.NickName)
             .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
             .When(x => !string.IsNullOrEmpty(x.NickName));
 
-        _ = RuleFor(x => x.Phone)
+        RuleFor(x => x.Phone)
             .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
             .Matches(@"^1[3-9]\d{9}$").WithMessage("手机号格式无效")
             .When(x => !string.IsNullOrEmpty(x.Phone));
@@ -69,10 +69,10 @@ public class RefreshTokenRequestDtoValidator : DtoValidatorBase<RefreshTokenRequ
     /// 初始化刷新令牌请求 DTO 验证器
     /// </summary>
     public RefreshTokenRequestDtoValidator() {
-        _ = RuleFor(x => x.AccessToken)
+        RuleFor(x => x.AccessToken)
             .NotEmpty().WithMessage("访问令牌不能为空");
 
-        _ = RuleFor(x => x.RefreshToken)
+        RuleFor(x => x.RefreshToken)
             .NotEmpty().WithMessage("刷新令牌不能为空");
     }
 }

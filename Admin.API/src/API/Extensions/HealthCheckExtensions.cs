@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: HealthCheckExtensions.cs
  * 功能描述: 健康检查扩展方法，使用 ASP.NET Core 10 增强的健康检查框架
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -38,15 +38,15 @@ public static class HealthCheckExtensions {
     /// <para>配置注册：在 Infrastructure 层的 DependencyExtensions 中统一注册</para>
     /// </remarks>
     public static IServiceCollection AddHealthCheckServices(this IServiceCollection services) {
-        _ = services.AddScoped<DatabaseHealthCheck>();
-        _ = services.AddScoped<MemoryHealthCheck>();
-        _ = services.AddScoped<RedisHealthCheck>();
+        services.AddScoped<DatabaseHealthCheck>();
+        services.AddScoped<MemoryHealthCheck>();
+        services.AddScoped<RedisHealthCheck>();
 
-        _ = services.AddHealthChecks()
+        services.AddHealthChecks()
             .AddCheck<DatabaseHealthCheck>("database", tags: ["database", "infrastructure"])
             .AddCheck<MemoryHealthCheck>("memory", tags: ["system", "memory"]);
 
-        _ = services.ConfigureOptions<ConfigureHealthCheckOptions>();
+        services.ConfigureOptions<ConfigureHealthCheckOptions>();
         return services;
     }
 
@@ -56,7 +56,7 @@ public static class HealthCheckExtensions {
     /// <param name="app">Web 应用程序</param>
     /// <returns>Web 应用程序</returns>
     public static WebApplication UseHealthCheckEndpoints(this WebApplication app) {
-        _ = app.MapHealthChecks("/health", new HealthCheckOptions {
+        app.MapHealthChecks("/health", new HealthCheckOptions {
             ResponseWriter = WriteHealthCheckResponse,
             AllowCachingResponses = false,
             ResultStatusCodes = HealthStatusCodes
@@ -151,7 +151,7 @@ public class RedisHealthCheck(IRedisConnectionManager redisConnection) : IHealth
             }
 
             var database = redisConnection.GetDatabase();
-            _ = await database.PingAsync();
+            await database.PingAsync();
 
             return HealthCheckResult.Healthy("Redis 连接正常");
         }

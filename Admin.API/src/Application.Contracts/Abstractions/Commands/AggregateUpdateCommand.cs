@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateUpdateCommand.cs
  * 功能描述: 聚合根更新命令，用于聚合根实体的更新操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -19,8 +19,10 @@ namespace Application.Contracts.Abstractions.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="data">请求数据</param>
-public class AggregateUpdateCommand<TUpdateDto>(List<TUpdateDto> data) : DomainCommand<bool>
-    where TUpdateDto : AggregateUpdateDto {
+public class AggregateUpdateCommand<TUpdateDto>(List<TUpdateDto> data)
+    : Command<bool>
+    where TUpdateDto : AggregateUpdateDto
+{
     /// <summary>
     /// 请求数据
     /// </summary>

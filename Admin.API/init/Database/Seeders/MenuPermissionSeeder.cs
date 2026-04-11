@@ -87,7 +87,7 @@ public class MenuPermissionSeeder(ISqlSugarClient client) : Seeder<MenuPermissio
                 }
             };
 
-            _ = await _client.Insertable(menuPermissions.ToArray()).ExecuteCommandAsync();
+            await _client.Insertable(menuPermissions.ToArray()).ExecuteCommandAsync();
             LogInfo("菜单权限初始化完成，共 {0} 个菜单", menuPermissions.Count);
         }
         catch (Exception ex) {

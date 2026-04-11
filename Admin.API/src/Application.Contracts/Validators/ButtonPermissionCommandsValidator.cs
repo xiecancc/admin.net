@@ -18,10 +18,10 @@ public class ButtonPermissionCreateCommandValidator : DtoValidatorBase<ButtonPer
     /// 初始化按钮权限创建命令验证器
     /// </summary>
     public ButtonPermissionCreateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("按钮权限创建数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new ButtonPermissionCreateDtoValidator());
     }
 }
@@ -34,10 +34,10 @@ public class ButtonPermissionUpdateCommandValidator : DtoValidatorBase<ButtonPer
     /// 初始化按钮权限更新命令验证器
     /// </summary>
     public ButtonPermissionUpdateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("按钮权限更新数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new ButtonPermissionUpdateDtoValidator());
     }
 }
@@ -50,7 +50,7 @@ public class ButtonPermissionDeleteCommandValidator : DtoValidatorBase<ButtonPer
     /// 初始化按钮权限删除命令验证器
     /// </summary>
     public ButtonPermissionDeleteCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("按钮权限删除数据不能为空");
     }
 }
@@ -63,7 +63,7 @@ public class ButtonPermissionRestoreCommandValidator : DtoValidatorBase<ButtonPe
     /// 初始化按钮权限恢复命令验证器
     /// </summary>
     public ButtonPermissionRestoreCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("按钮权限恢复数据不能为空");
     }
 }

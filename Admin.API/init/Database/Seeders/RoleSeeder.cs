@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RoleSeeder.cs
  * 功能描述: 角色数据初始化器，负责初始化系统默认角色
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -51,7 +51,7 @@ public class RoleSeeder(ISqlSugarClient client) : Seeder<Role>(client) {
                 }
             };
 
-            _ = await _client.Insertable(roles.ToArray()).ExecuteCommandAsync();
+            await _client.Insertable(roles.ToArray()).ExecuteCommandAsync();
             LogInfo("角色数据初始化完成，共 {0} 个角色", roles.Count);
         }
         catch (Exception ex) {

@@ -49,8 +49,8 @@ public static class DomainEventHandlerExtensions {
                     continue;
                 }
 
-                _ = services.AddScoped(handlerType);
-                _ = registeredHandlers.Add(handlerType);
+                services.AddScoped(handlerType);
+                registeredHandlers.Add(handlerType);
             }
         }
 
@@ -101,7 +101,7 @@ public static class DomainEventHandlerExtensions {
 
                     try {
                         var genericRegisterMethod = registerMethod.MakeGenericMethod(eventType, handlerType);
-                        _ = genericRegisterMethod.Invoke(eventBus, null);
+                        genericRegisterMethod.Invoke(eventBus, null);
                         registeredCount++;
                     }
                     catch (ArgumentException) {
@@ -145,7 +145,7 @@ public static class DomainEventHandlerExtensions {
                 .Where(t => t is { IsClass: true, IsAbstract: false } && domainEventType.IsAssignableFrom(t));
 
             foreach (var eventType in eventTypes) {
-                _ = allEventTypes.Add(eventType);
+                allEventTypes.Add(eventType);
             }
 
             var handlerTypes = assembly.GetTypes()
@@ -157,7 +157,7 @@ public static class DomainEventHandlerExtensions {
 
                 foreach (var handlerInterface in handlerInterfaces) {
                     var eventType = handlerInterface.GetGenericArguments()[0];
-                    _ = handledEventTypes.Add(eventType);
+                    handledEventTypes.Add(eventType);
                 }
             }
         }

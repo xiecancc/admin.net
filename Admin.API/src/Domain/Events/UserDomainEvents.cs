@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserDomainEvents.cs
  * 功能描述: 用户领域事件类，定义用户相关的领域事件
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -6,24 +6,9 @@
  */
 
 using Domain.Entities;
-using Domain.Shared.Enums;
 using Domain.Shared.Events;
 
 namespace Domain.Events;
-
-/// <summary>
-/// 用户状态变更事件
-/// <para>当用户状态发生变更时触发</para>
-/// </summary>
-/// <param name="users">用户集合</param>
-/// <param name="newStatus">新状态</param>
-public class UserStatusChangedEvent(IEnumerable<User> users, UserStatus newStatus) : DomainEventWithDomains<User>(users, "变更了状态") {
-    /// <summary>
-    /// 新状态
-    /// </summary>
-    /// <value>用户的新状态</value>
-    public UserStatus NewStatus { get; } = newStatus;
-}
 
 /// <summary>
 /// 用户角色分配事件

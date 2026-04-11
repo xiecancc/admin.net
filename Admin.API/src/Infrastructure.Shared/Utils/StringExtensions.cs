@@ -203,12 +203,12 @@ public static partial class StringExtensions {
         foreach (var c in value) {
             if (char.IsUpper(c)) {
                 if (builder.Length > 0) {
-                    _ = builder.Append('_');
+                    builder.Append('_');
                 }
-                _ = builder.Append(char.ToLowerInvariant(c));
+                builder.Append(char.ToLowerInvariant(c));
             }
             else {
-                _ = builder.Append(c);
+                builder.Append(c);
             }
         }
 

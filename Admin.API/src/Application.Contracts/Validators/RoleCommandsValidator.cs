@@ -18,10 +18,10 @@ public class RoleCreateCommandValidator : DtoValidatorBase<RoleCreateCommand> {
     /// 初始化角色创建命令验证器
     /// </summary>
     public RoleCreateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("角色创建数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new RoleCreateDtoValidator());
     }
 }
@@ -34,10 +34,10 @@ public class RoleUpdateCommandValidator : DtoValidatorBase<RoleUpdateCommand> {
     /// 初始化角色更新命令验证器
     /// </summary>
     public RoleUpdateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("角色更新数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new RoleUpdateDtoValidator());
     }
 }
@@ -50,7 +50,7 @@ public class RoleDeleteCommandValidator : DtoValidatorBase<RoleDeleteCommand> {
     /// 初始化角色删除命令验证器
     /// </summary>
     public RoleDeleteCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("角色删除数据不能为空");
     }
 }
@@ -63,7 +63,7 @@ public class RoleRestoreCommandValidator : DtoValidatorBase<RoleRestoreCommand> 
     /// 初始化角色恢复命令验证器
     /// </summary>
     public RoleRestoreCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("角色恢复数据不能为空");
     }
 }

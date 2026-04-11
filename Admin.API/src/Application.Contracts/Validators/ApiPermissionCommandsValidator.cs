@@ -18,10 +18,10 @@ public class ApiPermissionCreateCommandValidator : DtoValidatorBase<ApiPermissio
     /// 初始化API权限创建命令验证器
     /// </summary>
     public ApiPermissionCreateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("API权限创建数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new ApiPermissionCreateDtoValidator());
     }
 }
@@ -34,10 +34,10 @@ public class ApiPermissionUpdateCommandValidator : DtoValidatorBase<ApiPermissio
     /// 初始化API权限更新命令验证器
     /// </summary>
     public ApiPermissionUpdateCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("API权限更新数据不能为空");
 
-        _ = RuleForEach(x => x.Data)
+        RuleForEach(x => x.Data)
             .SetValidator(new ApiPermissionUpdateDtoValidator());
     }
 }
@@ -50,7 +50,7 @@ public class ApiPermissionDeleteCommandValidator : DtoValidatorBase<ApiPermissio
     /// 初始化API权限删除命令验证器
     /// </summary>
     public ApiPermissionDeleteCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("API权限删除数据不能为空");
     }
 }
@@ -63,7 +63,7 @@ public class ApiPermissionRestoreCommandValidator : DtoValidatorBase<ApiPermissi
     /// 初始化API权限恢复命令验证器
     /// </summary>
     public ApiPermissionRestoreCommandValidator() {
-        _ = RuleFor(x => x.Data)
+        RuleFor(x => x.Data)
             .NotEmpty().WithMessage("API权限恢复数据不能为空");
     }
 }

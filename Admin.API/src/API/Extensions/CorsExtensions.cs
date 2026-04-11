@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: CorsExtensions.cs
  * 功能描述: 跨域扩展方法，配置跨域资源共享（CORS）服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -27,7 +27,7 @@ public static class CorsExtensions {
     /// <para>配置注册：在 Infrastructure 层的 DependencyExtensions 中统一注册</para>
     /// </remarks>
     public static IServiceCollection AddCorsServices(this IServiceCollection services) {
-        _ = services.ConfigureOptions<ConfigureCorsOptions>();
+        services.ConfigureOptions<ConfigureCorsOptions>();
         return services;
     }
 }
@@ -44,22 +44,34 @@ public sealed class ConfigureCorsOptions(IOptions<CorsOption> corsOption) : ICon
     /// </summary>
     public void Configure(CorsOptions options) {
         options.AddDefaultPolicy(builder => {
-            _ = _corsOption.AllowAnyOrigin ? builder.AllowAnyOrigin() : builder.WithOrigins([.. _corsOption.AllowedOrigins]);
+            if (_corsOption.AllowAnyOrigin) {
+                builder.AllowAnyOrigin();
+            } else {
+                builder.WithOrigins([.. _corsOption.AllowedOrigins]);
+            }
 
-            _ = _corsOption.AllowedMethods.Count == 0 ? builder.AllowAnyMethod() : builder.WithMethods([.. _corsOption.AllowedMethods]);
+            if (_corsOption.AllowedMethods.Count == 0) {
+                builder.AllowAnyMethod();
+            } else {
+                builder.WithMethods([.. _corsOption.AllowedMethods]);
+            }
 
-            _ = _corsOption.AllowedHeaders.Count == 0 ? builder.AllowAnyHeader() : builder.WithHeaders([.. _corsOption.AllowedHeaders]);
+            if (_corsOption.AllowedHeaders.Count == 0) {
+                builder.AllowAnyHeader();
+            } else {
+                builder.WithHeaders([.. _corsOption.AllowedHeaders]);
+            }
 
             if (_corsOption.AllowCredentials) {
-                _ = builder.AllowCredentials();
+                builder.AllowCredentials();
             }
 
             if (_corsOption.ExposedHeaders.Count > 0) {
-                _ = builder.WithExposedHeaders([.. _corsOption.ExposedHeaders]);
+                builder.WithExposedHeaders([.. _corsOption.ExposedHeaders]);
             }
 
             if (_corsOption.PreflightMaxAge > 0) {
-                _ = builder.SetPreflightMaxAge(TimeSpan.FromSeconds(_corsOption.PreflightMaxAge));
+                builder.SetPreflightMaxAge(TimeSpan.FromSeconds(_corsOption.PreflightMaxAge));
             }
         });
     }

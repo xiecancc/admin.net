@@ -46,8 +46,7 @@ public abstract class AggregateListQueryHandler<TQuery, TAggregate, TRepository,
     public override async Task<List<TListDto>> Handle(TQuery request, CancellationToken cancellationToken) {
         var predicates = BuildPredicates(request);
         var orders = BuildOrders(request);
-        var queryCacheKey = BuildCacheKey(request);
-        var cacheKey = $"{CacheKeyPrefix}:list:{queryCacheKey}";
+        var cacheKey = $"{CacheKeyPrefix}:list:{BuildCacheParams(request)}";
 
         var result = await GetOrSetCacheAsync(cacheKey, async () => {
             var entities = await Repository.GetListAsync(predicates, orders, cancellationToken);
@@ -57,30 +56,5 @@ public abstract class AggregateListQueryHandler<TQuery, TAggregate, TRepository,
         return result ?? [];
     }
 
-    /// <summary>
-    /// 构建查询条件
-    /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>查询条件列表</returns>
-    protected virtual List<Expression<Func<TAggregate, bool>>> BuildPredicates(TQuery query) {
-        return BuildAggregatePredicates(query);
-    }
 
-    /// <summary>
-    /// 构建排序条件
-    /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>排序条件字典</returns>
-    protected virtual IDictionary<Expression<Func<TAggregate, object>>, OrderByType> BuildOrders(TQuery query) {
-        return BuildAggregateOrders();
-    }
-
-    /// <summary>
-    /// 构建缓存键参数部分
-    /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>缓存键参数部分</returns>
-    protected virtual string BuildCacheKey(TQuery query) {
-        return BuildAggregateCacheKey(query);
-    }
 }

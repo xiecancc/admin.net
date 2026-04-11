@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateRestoreCommand.cs
  * 功能描述: 聚合根恢复命令，用于聚合根实体的恢复操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -19,8 +19,10 @@ namespace Application.Contracts.Abstractions.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="data">实体ID列表</param>
-public class AggregateRestoreCommand<TActionDto>(List<TActionDto> data) : DomainCommand<bool>
-    where TActionDto : AggregateActionDto {
+public class AggregateRestoreCommand<TActionDto>(List<TActionDto> data)
+    : Command<bool>
+    where TActionDto : AggregateActionDto
+{
     /// <summary>
     /// 要恢复的实体ID列表
     /// </summary>

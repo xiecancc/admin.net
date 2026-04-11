@@ -35,9 +35,9 @@ public static class TelemetryExtensions {
             return services;
         }
 
-        _ = services.AddOpenTelemetry()
+        services.AddOpenTelemetry()
             .WithTracing(tracing => {
-                _ = tracing
+                tracing
                     .AddAspNetCoreInstrumentation(options => {
                         options.RecordException = true;
                         options.Filter = httpContext => {
@@ -50,25 +50,25 @@ public static class TelemetryExtensions {
                     .AddSqlClientInstrumentation();
 
                 if (!string.IsNullOrEmpty(telemetryOption.OtlpEndpoint)) {
-                    _ = tracing.AddOtlpExporter(exporterOptions => {
+                    tracing.AddOtlpExporter(exporterOptions => {
                         exporterOptions.Endpoint = new Uri(telemetryOption.OtlpEndpoint);
                     });
                 }
             })
             .WithMetrics(metrics => {
-                _ = metrics
+                metrics
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation();
 
                 if (!string.IsNullOrEmpty(telemetryOption.OtlpEndpoint)) {
-                    _ = metrics.AddOtlpExporter(exporterOptions => {
+                    metrics.AddOtlpExporter(exporterOptions => {
                         exporterOptions.Endpoint = new Uri(telemetryOption.OtlpEndpoint);
                     });
                 }
             });
 
-        _ = services.AddSingleton<Instrumentation>();
+        services.AddSingleton<Instrumentation>();
 
         return services;
     }

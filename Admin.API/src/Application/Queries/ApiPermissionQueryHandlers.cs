@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: ApiPermissionQueryHandlers.cs
  * 功能描述: API权限查询处理器，处理API权限相关的查询
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -15,6 +15,7 @@ using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using AutoMapper;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -91,33 +92,29 @@ public class ApiPermissionListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(ApiPermissionListQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(ApiPermissionListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (!string.IsNullOrWhiteSpace(query.ApiPath)) {
-            parts.Add($"ApiPath={query.ApiPath}");
+            builder.Append($"|ApiPath={query.ApiPath}");
         }
         if (!string.IsNullOrWhiteSpace(query.HttpMethod)) {
-            parts.Add($"HttpMethod={query.HttpMethod}");
+            builder.Append($"|HttpMethod={query.HttpMethod}");
         }
         if (!string.IsNullOrWhiteSpace(query.ModuleName)) {
-            parts.Add($"ModuleName={query.ModuleName}");
+            builder.Append($"|ModuleName={query.ModuleName}");
         }
         if (query.MenuId.HasValue) {
-            parts.Add($"MenuId={query.MenuId.Value}");
+            builder.Append($"|MenuId={query.MenuId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 
@@ -177,32 +174,28 @@ public class ApiPermissionPagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(ApiPermissionPagedQuery query) {
-        var parts = new List<string>();
-        var baseKey = base.BuildCacheKey(query);
-        if (!string.IsNullOrEmpty(baseKey)) {
-            parts.Add(baseKey);
-        }
+    protected override StringBuilder BuildCacheParams(ApiPermissionPagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (!string.IsNullOrWhiteSpace(query.ApiPath)) {
-            parts.Add($"ApiPath={query.ApiPath}");
+            builder.Append($"|ApiPath={query.ApiPath}");
         }
         if (!string.IsNullOrWhiteSpace(query.HttpMethod)) {
-            parts.Add($"HttpMethod={query.HttpMethod}");
+            builder.Append($"|HttpMethod={query.HttpMethod}");
         }
         if (!string.IsNullOrWhiteSpace(query.ModuleName)) {
-            parts.Add($"ModuleName={query.ModuleName}");
+            builder.Append($"|ModuleName={query.ModuleName}");
         }
         if (query.MenuId.HasValue) {
-            parts.Add($"MenuId={query.MenuId.Value}");
+            builder.Append($"|MenuId={query.MenuId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }

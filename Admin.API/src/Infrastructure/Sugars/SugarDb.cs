@@ -1,4 +1,4 @@
-using SqlSugar;
+﻿using SqlSugar;
 using Infrastructure.Shared.Options;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -78,6 +78,6 @@ public class SugarDb {
     }
 
     private static void ConfigureGlobalFilters(ISqlSugarClient db) {
-        _ = db.QueryFilter.Add(new TableFilterItem<Domain.Shared.Entities.AggregateBase>(it => it.IsDeleted == false));
+        db.QueryFilter.Add(new TableFilterItem<Domain.Shared.Entities.AggregateBase>(it => it.IsDeleted == false));
     }
 }

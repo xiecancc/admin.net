@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserDomainEventHandlers.cs
  * 功能描述: 用户领域事件处理器，处理用户相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -13,35 +13,6 @@ using Infrastructure.Shared.Caches;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Events;
-
-/// <summary>
-/// 用户状态变更事件处理器
-/// <para>处理用户状态变更后的缓存清除</para>
-/// </summary>
-public class UserStatusChangedEventHandler(
-    ICacheProvider cacheProvider,
-    ILogger<UserStatusChangedEventHandler> logger) : DomainEventHandlerBase<UserStatusChangedEventHandler>(logger), IDomainEventHandler<UserStatusChangedEvent> {
-    /// <summary>
-    /// 处理用户状态变更事件
-    /// </summary>
-    /// <param name="event">领域事件</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    public async Task HandleAsync(UserStatusChangedEvent @event, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(@event);
-
-        LogEvent("状态变更", @event.Description, @event.Domains.Count());
-
-        var tasks = @event.Domains.Select(user => Task.Run(async () => {
-            await Task.WhenAll(
-                cacheProvider.RemoveAsync(CacheKeyConstants.User.Info(user.Id)),
-                cacheProvider.RemoveAsync(CacheKeyConstants.User.Status(user.Id))
-            );
-            Logger.LogInformation("已清除用户 {UserId} 的缓存（状态变更）", user.Id);
-        }));
-
-        await Task.WhenAll(tasks);
-    }
-}
 
 /// <summary>
 /// 用户角色分配事件处理器
@@ -110,7 +81,7 @@ public class UserCreatedEventHandler(
 
         LogEvent("创建", @event.Description, @event.Domains.Count());
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
@@ -138,7 +109,6 @@ public class UserUpdatedEventHandler(
         var userTasks = @event.Domains.Select(user => Task.Run(async () => {
             await Task.WhenAll(
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Info(user.Id)),
-                cacheProvider.RemoveAsync(CacheKeyConstants.User.Status(user.Id)),
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Detail(user.Id))
             );
             Logger.LogInformation("已清除用户 {UserId} 的缓存", user.Id);
@@ -146,7 +116,7 @@ public class UserUpdatedEventHandler(
 
         await Task.WhenAll(userTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
@@ -174,7 +144,6 @@ public class UserDeletedEventHandler(
         var userTasks = @event.Domains.Select(user => Task.Run(async () => {
             await Task.WhenAll(
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Info(user.Id)),
-                cacheProvider.RemoveAsync(CacheKeyConstants.User.Status(user.Id)),
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Detail(user.Id))
             );
             Logger.LogInformation("已清除用户 {UserId} 的缓存", user.Id);
@@ -182,7 +151,7 @@ public class UserDeletedEventHandler(
 
         await Task.WhenAll(userTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );
@@ -210,7 +179,6 @@ public class UserRestoredEventHandler(
         var userTasks = @event.Domains.Select(user => Task.Run(async () => {
             await Task.WhenAll(
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Info(user.Id)),
-                cacheProvider.RemoveAsync(CacheKeyConstants.User.Status(user.Id)),
                 cacheProvider.RemoveAsync(CacheKeyConstants.User.Detail(user.Id))
             );
             Logger.LogInformation("已清除用户 {UserId} 的缓存", user.Id);
@@ -218,7 +186,7 @@ public class UserRestoredEventHandler(
 
         await Task.WhenAll(userTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.User.Prefix}:paged*")
         );

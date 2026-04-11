@@ -9,8 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Domain.Entities;
 using Domain.Repositories;
-using Domain.Shared.Enums;
-using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Options;
 using Infrastructure.Shared.Units;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,26 +33,18 @@ public static class JwtAuthenticationExtensions {
     /// <list type="number">
     ///   <item>验证 JWT 令牌的签名、颁发者、受众和有效期</item>
     ///   <item>从令牌中提取用户 ID</item>
-    ///   <item>优先从缓存获取用户状态</item>
-    ///   <item>缓存未命中时从数据库获取用户状态并缓存</item>
-    ///   <item>验证用户状态是否为正常状态</item>
-    /// </list>
-    /// <para>用户状态缓存策略：</para>
-    /// <list type="bullet">
-    ///   <item>缓存键格式：user_status:{userId}</item>
-    ///   <item>缓存过期时间：5 分钟</item>
-    ///   <item>仅缓存状态为 Normal、Disabled、Locked 的用户</item>
+    ///   <item>验证用户是否存在</item>
     /// </list>
     /// </remarks>
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services) {
-        _ = services.AddAuthorization();
+        services.AddAuthorization();
 
-        _ = services.AddAuthentication(options => {
+        services.AddAuthentication(options => {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        _ = services.ConfigureOptions<ConfigureJwtBearerOptions>();
+        services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         return services;
     }
@@ -111,23 +101,11 @@ public sealed class ConfigureJwtBearerOptions(IOptions<JwtOption> jwtOption) : I
                     return;
                 }
 
-                var cacheProvider = context.HttpContext.RequestServices.GetRequiredService<ICacheProvider>();
-                var cacheKey = $"user_status:{userId}";
-                var userStatus = await cacheProvider.GetAsync<UserStatus?>(cacheKey);
-
-                if (userStatus == null) {
-                    var unitOfWork = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
-                    var userRepository = unitOfWork.GetRepository<IUserRepository, User>();
-                    var user = await userRepository.GetAsync(userId);
-                    userStatus = user?.Status;
-
-                    if (userStatus.HasValue) {
-                        await cacheProvider.SetAsync(cacheKey, userStatus.Value, TimeSpan.FromMinutes(5));
-                    }
-                }
-
-                if (userStatus != UserStatus.Normal) {
-                    context.Fail("用户已禁用");
+                var unitOfWork = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
+                var userRepository = unitOfWork.GetRepository<IUserRepository, User>();
+                var user = await userRepository.GetAsync(userId);
+                if (user == null) {
+                    context.Fail("用户不存在");
                 }
             }
         };

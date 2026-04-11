@@ -21,22 +21,22 @@ public class ButtonPermissionProfile : Profile {
     /// </summary>
     public ButtonPermissionProfile() {
         // 按钮权限实体到按钮权限列表 DTO 的映射
-        _ = CreateMap<ButtonPermission, ButtonPermissionListDto>()
+        CreateMap<ButtonPermission, ButtonPermissionListDto>()
             .IncludeBase<Permission, PermissionListDto>();
 
         // 按钮权限实体到按钮权限详情 DTO 的映射
-        _ = CreateMap<ButtonPermission, ButtonPermissionDetailDto>()
+        CreateMap<ButtonPermission, ButtonPermissionDetailDto>()
             .IncludeBase<Permission, PermissionDetailDto>();
 
         // 按钮权限实体到按钮权限分页 DTO 的映射
-        _ = CreateMap<ButtonPermission, ButtonPermissionPagedDto>()
+        CreateMap<ButtonPermission, ButtonPermissionPagedDto>()
             .IncludeBase<Permission, PermissionPagedDto>();
 
         // 按钮权限创建 DTO 到按钮权限实体的映射
-        _ = CreateMap<ButtonPermissionCreateDto, ButtonPermission>()
+        CreateMap<ButtonPermissionCreateDto, ButtonPermission>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => PermissionType.Button));
 
         // 按钮权限更新 DTO 到按钮权限实体的映射
-        _ = CreateMap<ButtonPermissionUpdateDto, ButtonPermission>();
+        CreateMap<ButtonPermissionUpdateDto, ButtonPermission>();
     }
 }

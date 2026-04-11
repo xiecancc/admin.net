@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using Domain.Shared.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -71,7 +71,7 @@ public class DomainEventBus(IServiceProvider serviceProvider, ILogger<DomainEven
             await handler.HandleAsync((TEvent)eventObj, cancellationToken);
         };
 
-        _ = _handlers.AddOrUpdate(
+        _handlers.AddOrUpdate(
             eventType,
             _ => [handlerDelegate],
             (_, existing) => {

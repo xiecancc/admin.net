@@ -22,7 +22,7 @@ public static class PerformanceExtensions {
     /// <param name="services">服务集合</param>
     /// <returns>服务集合</returns>
     public static IServiceCollection AddPerformanceServices(this IServiceCollection services) {
-        _ = services.AddResponseCompression(options => {
+        services.AddResponseCompression(options => {
             options.EnableForHttps = true;
             options.Providers.Add<BrotliCompressionProvider>();
             options.Providers.Add<GzipCompressionProvider>();
@@ -40,15 +40,15 @@ public static class PerformanceExtensions {
             ]);
         });
 
-        _ = services.Configure<BrotliCompressionProviderOptions>(options => {
+        services.Configure<BrotliCompressionProviderOptions>(options => {
             options.Level = CompressionLevel.Optimal;
         });
 
-        _ = services.Configure<GzipCompressionProviderOptions>(options => {
+        services.Configure<GzipCompressionProviderOptions>(options => {
             options.Level = CompressionLevel.Optimal;
         });
 
-        _ = services.AddOutputCache(options => {
+        services.AddOutputCache(options => {
             options.AddBasePolicy(policy =>
                 policy.Expire(TimeSpan.FromSeconds(60)));
 
@@ -65,7 +65,7 @@ public static class PerformanceExtensions {
                 policy.Expire(TimeSpan.FromHours(1)));
         });
 
-        _ = services.AddResponseCaching();
+        services.AddResponseCaching();
 
         return services;
     }
@@ -77,9 +77,9 @@ public static class PerformanceExtensions {
     /// <param name="app">Web 应用程序</param>
     /// <returns>Web 应用程序</returns>
     public static WebApplication UsePerformanceMiddlewares(this WebApplication app) {
-        _ = app.UseResponseCompression();
-        _ = app.UseResponseCaching();
-        _ = app.UseOutputCache();
+        app.UseResponseCompression();
+        app.UseResponseCaching();
+        app.UseOutputCache();
 
         return app;
     }
@@ -91,7 +91,7 @@ public static class PerformanceExtensions {
     /// <param name="app">Web 应用程序</param>
     /// <returns>Web 应用程序</returns>
     public static WebApplication MapOptimizedStaticAssets(this WebApplication app) {
-        _ = app.MapStaticAssets();
+        app.MapStaticAssets();
         return app;
     }
 }

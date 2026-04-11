@@ -20,14 +20,14 @@ public class RolePermissionProfile : Profile {
     /// </summary>
     public RolePermissionProfile() {
         // 角色权限关联创建 DTO 到角色权限关联实体的映射
-        _ = CreateMap<RolePermissionCreateDto, RolePermission>();
+        CreateMap<RolePermissionCreateDto, RolePermission>();
 
         // 角色权限关联实体到角色权限关联列表 DTO 的映射
-        _ = CreateMap<RolePermission, RolePermissionListDto>()
-            .IncludeBase<Domain.Shared.Entities.DomainBase, DomainListDto>();
+        CreateMap<RolePermission, RolePermissionListDto>()
+            .IncludeBase<Domain.Shared.Entities.DomainBase, ListDto>();
 
         // 角色权限关联实体到角色权限关联分页 DTO 的映射
-        _ = CreateMap<RolePermission, RolePermissionPagedDto>()
-            .IncludeBase<Domain.Shared.Entities.DomainBase, DomainPagedDto>();
+        CreateMap<RolePermission, RolePermissionPagedDto>()
+            .IncludeBase<Domain.Shared.Entities.DomainBase, PagedDto>();
     }
 }

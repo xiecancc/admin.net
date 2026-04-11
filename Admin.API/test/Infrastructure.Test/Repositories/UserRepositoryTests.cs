@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRepositoryTests.cs
  * 功能描述: 用户仓储测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -50,11 +50,11 @@ public class UserRepositoryTests {
         var user = new User { Id = Guid.NewGuid(), Email = email, NickName = "Test User" };
 
         var mockQueryable = new Mock<ISugarQueryable<User>>();
-        _ = _mockClient.Setup(c => c.Queryable<User>()).Returns(mockQueryable.Object);
-        _ = mockQueryable.Setup(c => c.Where(It.IsAny<System.Linq.Expressions.Expression<Func<User, bool>>>())).Returns(mockQueryable.Object);
-        _ = mockQueryable.Setup(c => c.FirstAsync(It.IsAny<CancellationToken>())).ReturnsAsync(user);
+        _mockClient.Setup(c => c.Queryable<User>()).Returns(mockQueryable.Object);
+        mockQueryable.Setup(c => c.Where(It.IsAny<System.Linq.Expressions.Expression<Func<User, bool>>>())).Returns(mockQueryable.Object);
+        mockQueryable.Setup(c => c.FirstAsync(It.IsAny<CancellationToken>())).ReturnsAsync(user);
 
-        _ = _mockEventBus.Setup(c => c.PublishAsync(It.IsAny<DomainEvent>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _mockEventBus.Setup(c => c.PublishAsync(It.IsAny<DomainEvent>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         var result = await _userRepository.FindByEmailAsync(email);
 

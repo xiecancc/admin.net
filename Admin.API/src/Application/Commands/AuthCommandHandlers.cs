@@ -10,7 +10,6 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
-using Domain.Shared.Enums;
 using Infrastructure.Shared.Services;
 using Infrastructure.Shared.Units;
 using Infrastructure.Shared.Utils;
@@ -55,11 +54,6 @@ public class LoginCommandHandler(
         if (user == null || !PasswordUtil.VerifyPassword(user.PasswordHash, request.Password)) {
             _logger.LogWarning("登录失败: 邮箱或密码错误 | Email: {Email}", request.Email);
             throw new ArgumentException("邮箱或密码错误");
-        }
-
-        if (user.Status != UserStatus.Normal) {
-            _logger.LogWarning("登录失败: 用户已被禁用 | UserId: {UserId} | Email: {Email}", user.Id, request.Email);
-            throw new ArgumentException("用户已被禁用");
         }
 
         var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
@@ -127,8 +121,7 @@ public class RegisterCommandHandler(IUnitOfWork unitOfWork, ILogger<RegisterComm
             Email = request.Email,
             PasswordHash = PasswordUtil.HashPassword(request.Password),
             NickName = request.NickName,
-            Phone = request.Phone,
-            Status = UserStatus.Normal
+            Phone = request.Phone
         };
 
         var result = await userRepository.InsertAsync([user], cancellationToken);
@@ -176,9 +169,9 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtS
         var userRepository = _unitOfWork.GetRepository<IUserRepository, User>();
         var user = await userRepository.GetAsync(userId, cancellationToken);
 
-        if (user == null || user.Status != UserStatus.Normal) {
-            _logger.LogWarning("刷新令牌失败: 用户不存在或已被禁用 | UserId: {UserId}", userId);
-            throw new ArgumentException("用户不存在或已被禁用");
+        if (user == null) {
+            _logger.LogWarning("刷新令牌失败: 用户不存在 | UserId: {UserId}", userId);
+            throw new ArgumentException("用户不存在");
         }
 
         var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();

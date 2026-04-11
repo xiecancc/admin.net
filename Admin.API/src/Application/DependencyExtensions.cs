@@ -23,12 +23,12 @@ public static class DependencyExtensions {
     /// <param name="services">服务集合</param>
     /// <returns>服务集合</returns>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
-        _ = services.AddMediatR(config => {
-            _ = config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            _ = config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddMediatR(config => {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
-        _ = services.AddAutoMapper(config => {
+        services.AddAutoMapper(config => {
             config.AddMaps(Assembly.GetExecutingAssembly());
         });
 

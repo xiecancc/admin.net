@@ -21,22 +21,22 @@ public class ApiPermissionProfile : Profile {
     /// </summary>
     public ApiPermissionProfile() {
         // API 权限实体到 API 权限列表 DTO 的映射
-        _ = CreateMap<ApiPermission, ApiPermissionListDto>()
+        CreateMap<ApiPermission, ApiPermissionListDto>()
             .IncludeBase<Permission, PermissionListDto>();
 
         // API 权限实体到 API 权限详情 DTO 的映射
-        _ = CreateMap<ApiPermission, ApiPermissionDetailDto>()
+        CreateMap<ApiPermission, ApiPermissionDetailDto>()
             .IncludeBase<Permission, PermissionDetailDto>();
 
         // API 权限实体到 API 权限分页 DTO 的映射
-        _ = CreateMap<ApiPermission, ApiPermissionPagedDto>()
+        CreateMap<ApiPermission, ApiPermissionPagedDto>()
             .IncludeBase<Permission, PermissionPagedDto>();
 
         // API 权限创建 DTO 到 API 权限实体的映射
-        _ = CreateMap<ApiPermissionCreateDto, ApiPermission>()
+        CreateMap<ApiPermissionCreateDto, ApiPermission>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => PermissionType.Api));
 
         // API 权限更新 DTO 到 API 权限实体的映射
-        _ = CreateMap<ApiPermissionUpdateDto, ApiPermission>();
+        CreateMap<ApiPermissionUpdateDto, ApiPermission>();
     }
 }

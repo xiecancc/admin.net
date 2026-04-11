@@ -87,7 +87,7 @@ public class ApiPermissionSeeder(ISqlSugarClient client) : Seeder<ApiPermission>
             ]);
 
             if (apiPermissions.Count > 0) {
-                _ = await _client.Insertable(apiPermissions.ToArray()).ExecuteCommandAsync();
+                await _client.Insertable(apiPermissions.ToArray()).ExecuteCommandAsync();
                 LogInfo("API 权限初始化完成，共 {0} 个 API", apiPermissions.Count);
             }
         }

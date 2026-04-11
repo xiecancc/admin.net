@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRoleDtos.cs
  * 功能描述: 用户角色关联关系DTO类，用于用户角色关系的数据传输
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,7 +11,7 @@ namespace Application.Contracts.Dtos;
 /// 用户角色关联创建 DTO
 /// <para>用于创建用户角色关联关系的数据传输</para>
 /// </summary>
-public class UserRoleCreateDto : DomainCreateDto {
+public class UserRoleCreateDto : CreateDto {
     /// <summary>
     /// 用户 ID
     /// </summary>
@@ -33,7 +33,7 @@ public class UserRoleCreateDto : DomainCreateDto {
 /// 用户角色关联操作 DTO
 /// <para>用于用户角色关联关系的操作（如删除）</para>
 /// </summary>
-public class UserRoleActionDto : DomainActionDto {
+public class UserRoleActionDto : ActionDto {
     /// <summary>
     /// 用户 ID
     /// </summary>
@@ -55,7 +55,7 @@ public class UserRoleActionDto : DomainActionDto {
 /// 用户角色关联列表 DTO
 /// <para>用于用户角色关联关系的列表展示</para>
 /// </summary>
-public class UserRoleListDto : DomainListDto {
+public class UserRoleListDto : ListDto {
     /// <summary>
     /// 用户 ID
     /// </summary>
@@ -93,7 +93,7 @@ public class UserRoleListDto : DomainListDto {
 /// 用户角色关联分页 DTO
 /// <para>用于用户角色关联关系的分页展示</para>
 /// </summary>
-public class UserRolePagedDto : DomainPagedDto {
+public class UserRolePagedDto : PagedDto {
     /// <summary>
     /// 用户 ID
     /// </summary>

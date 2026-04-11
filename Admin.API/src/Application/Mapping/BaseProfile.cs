@@ -20,18 +20,18 @@ public class BaseProfile : Profile {
     /// </summary>
     public BaseProfile() {
         // 基础映射配置
-        _ = CreateMap<Domain.Shared.Entities.DomainBase, DomainDetailDto>();
-        _ = CreateMap<DomainCreateDto, Domain.Shared.Entities.DomainBase>();
-        _ = CreateMap<DomainUpdateDto, Domain.Shared.Entities.DomainBase>();
-        _ = CreateMap<DomainActionDto, Domain.Shared.Entities.DomainBase>();
+        CreateMap<Domain.Shared.Entities.DomainBase, DetailDto>();
+        CreateMap<CreateDto, Domain.Shared.Entities.DomainBase>();
+        CreateMap<UpdateDto, Domain.Shared.Entities.DomainBase>();
+        CreateMap<ActionDto, Domain.Shared.Entities.DomainBase>();
 
         // 聚合根映射配置
-        _ = CreateMap<AggregateBase, AggregateListDto>();
-        _ = CreateMap<AggregateBase, AggregateDetailDto>();
-        _ = CreateMap<AggregateBase, AggregatePagedDto>();
-        _ = CreateMap<AggregateCreateDto, AggregateBase>();
-        _ = CreateMap<AggregateUpdateDto, AggregateBase>();
-        _ = CreateMap<AggregateActionDto, AggregateBase>();
+        CreateMap<AggregateBase, AggregateListDto>();
+        CreateMap<AggregateBase, AggregateDetailDto>();
+        CreateMap<AggregateBase, AggregatePagedDto>();
+        CreateMap<AggregateCreateDto, AggregateBase>();
+        CreateMap<AggregateUpdateDto, AggregateBase>();
+        CreateMap<AggregateActionDto, AggregateBase>();
 
         // 分页结果 DTO 的映射
         CreateMap(typeof(PagedResponse<>), typeof(PagedResponse<>))

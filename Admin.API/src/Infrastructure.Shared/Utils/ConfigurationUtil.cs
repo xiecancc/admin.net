@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: ConfigurationUtil.cs
  * 功能描述: 配置工具类，封装配置读取和验证功能
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -73,7 +73,7 @@ public static class ConfigurationUtil {
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
 
         var option = GetOption<TOption>(configuration, sectionName);
-        _ = services.Configure<TOption>(options => configuration.GetSection(sectionName).Bind(options));
+        services.Configure<TOption>(options => configuration.GetSection(sectionName).Bind(options));
         return services;
     }
 }

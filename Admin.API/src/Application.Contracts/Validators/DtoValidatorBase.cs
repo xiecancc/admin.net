@@ -227,7 +227,7 @@ public abstract class DtoValidatorBase<T> : AbstractValidator<T> {
             .MaximumLength(100).WithMessage("密码长度不能超过 100 个字符");
 
         if (requireComplexity) {
-            _ = builder
+            builder
                 .Matches(@"[A-Z]").WithMessage("密码必须包含至少一个大写字母")
                 .Matches(@"[a-z]").WithMessage("密码必须包含至少一个小写字母")
                 .Matches(@"[0-9]").WithMessage("密码必须包含至少一个数字");

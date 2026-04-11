@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: DomainDeleteCommandHandler.cs
  * 功能描述: 通用删除命令处理器，用于处理所有领域实体的删除操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -27,7 +27,7 @@ namespace Application.Abstractions.Commands;
 /// </remarks>
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
-public abstract class AggregateDeleteCommandHandler<TCommand, TAggregate, TRepository, TActionDto>(IUnitOfWork unitOfWork, IMapper mapper) : DomainCommandHandler<TCommand, TAggregate, TRepository, bool>(unitOfWork, mapper)
+public abstract class AggregateDeleteCommandHandler<TCommand, TAggregate, TRepository, TActionDto>(IUnitOfWork unitOfWork, IMapper mapper) : CommandHandler<TCommand, TAggregate, TRepository, bool>(unitOfWork, mapper)
     where TCommand : AggregateDeleteCommand<TActionDto>
     where TAggregate : AggregateBase, new()
     where TRepository : IAggregateRepository<TAggregate>

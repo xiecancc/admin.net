@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: ButtonPermissionQueryHandlers.cs
  * 功能描述: 按钮权限相关查询处理器，包含按钮权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -15,6 +15,7 @@ using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using System.Linq.Expressions;
 using AutoMapper;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -83,23 +84,23 @@ public class ButtonPermissionListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(ButtonPermissionListQuery query) {
-        var parts = new List<string> { base.BuildCacheKey(query) };
+    protected override StringBuilder BuildCacheParams(ButtonPermissionListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            parts.Add($"ActionType={query.ActionType}");
+            builder.Append($"|ActionType={query.ActionType}");
         }
         if (query.MenuId.HasValue) {
-            parts.Add($"MenuId={query.MenuId.Value}");
+            builder.Append($"|MenuId={query.MenuId.Value}");
         }
 
-        return string.Join("|", parts.Where(p => !string.IsNullOrEmpty(p)));
+        return builder;
     }
 }
 
@@ -151,22 +152,22 @@ public class ButtonPermissionPagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(ButtonPermissionPagedQuery query) {
-        var parts = new List<string> { base.BuildCacheKey(query) };
+    protected override StringBuilder BuildCacheParams(ButtonPermissionPagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (!string.IsNullOrWhiteSpace(query.Code)) {
-            parts.Add($"Code={query.Code}");
+            builder.Append($"|Code={query.Code}");
         }
         if (!string.IsNullOrWhiteSpace(query.Name)) {
-            parts.Add($"Name={query.Name}");
+            builder.Append($"|Name={query.Name}");
         }
         if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            parts.Add($"ActionType={query.ActionType}");
+            builder.Append($"|ActionType={query.ActionType}");
         }
         if (query.MenuId.HasValue) {
-            parts.Add($"MenuId={query.MenuId.Value}");
+            builder.Append($"|MenuId={query.MenuId.Value}");
         }
 
-        return string.Join("|", parts.Where(p => !string.IsNullOrEmpty(p)));
+        return builder;
     }
 }

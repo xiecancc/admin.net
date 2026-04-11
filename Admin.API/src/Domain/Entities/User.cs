@@ -7,7 +7,6 @@
 
 using SqlSugar;
 using Domain.Shared.Entities;
-using Domain.Shared.Enums;
 
 namespace Domain.Entities;
 
@@ -20,7 +19,6 @@ namespace Domain.Entities;
 /// <list type="bullet">
 ///   <item>Email：邮箱，作为登录账号</item>
 ///   <item>PasswordHash：密码哈希值</item>
-///   <item>Status：用户状态</item>
 ///   <item>NickName：用户昵称</item>
 ///   <item>AvatarUrl：头像URL</item>
 ///   <item>Phone：手机号</item>
@@ -32,7 +30,6 @@ namespace Domain.Entities;
 /// </remarks>
 [SugarTable("Users", "用户表")]
 [SugarIndex("IX_Users_Email", nameof(Email), OrderByType.Asc, true)]
-[SugarIndex("IX_Users_Status", nameof(Status), OrderByType.Asc)]
 public class User : AggregateBase {
     /// <summary>
     /// 邮箱（登录账号）
@@ -47,13 +44,6 @@ public class User : AggregateBase {
     /// <value>密码的哈希值，长度不超过255个字符，不能为空</value>
     [SugarColumn(ColumnDescription = "密码哈希", Length = 255, IsNullable = false)]
     public string PasswordHash { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 用户状态
-    /// </summary>
-    /// <value>用户的状态，默认为正常状态</value>
-    [SugarColumn(ColumnDescription = "用户状态", DefaultValue = "0", IsNullable = false)]
-    public UserStatus Status { get; set; } = UserStatus.Normal;
 
     /// <summary>
     /// 昵称

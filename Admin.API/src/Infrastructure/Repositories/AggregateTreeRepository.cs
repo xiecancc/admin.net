@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateTreeRepository.cs
  * 功能描述: 树形结构仓储实现，支持具有父子关系的聚合根实体
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -64,7 +64,7 @@ public class AggregateTreeRepository<TAggregate>(
                     break;
 
                 nodes.Add(node);
-                _ = visitedIds.Add(currentNodeId);
+                visitedIds.Add(currentNodeId);
                 currentNodeId = node.ParentId ?? Guid.Empty;
             }
 
@@ -104,7 +104,7 @@ public class AggregateTreeRepository<TAggregate>(
                     return true;
                 }
 
-                _ = visitedIds.Add(currentParentId);
+                visitedIds.Add(currentParentId);
 
                 if (!nodeDict.TryGetValue(currentParentId, out var parentNode))
                     break;

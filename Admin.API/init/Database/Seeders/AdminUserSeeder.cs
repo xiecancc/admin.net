@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AdminUserSeeder.cs
  * 功能描述: 管理员用户数据初始化器，负责创建系统管理员账号
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -38,12 +38,11 @@ public class AdminUserSeeder(ISqlSugarClient client) : Seeder<User>(client) {
                 Email = UserConstants.Administrator.Email,
                 PasswordHash = PasswordUtil.HashPassword(UserConstants.Administrator.Password),
                 NickName = UserConstants.Administrator.NickName,
-                Status = Domain.Shared.Enums.UserStatus.Normal,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _ = await _client.Insertable(adminUser).ExecuteCommandAsync();
+            await _client.Insertable(adminUser).ExecuteCommandAsync();
 
             LogInfo("管理员用户创建完成，账号：{0}，密码：{1}", UserConstants.Administrator.Email, UserConstants.Administrator.Password);
         }

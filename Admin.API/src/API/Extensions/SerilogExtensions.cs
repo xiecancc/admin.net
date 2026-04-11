@@ -20,8 +20,8 @@ public static class SerilogExtensions {
     /// <param name="builder">Web 应用构建器</param>
     /// <returns>Web 应用构建器</returns>
     public static WebApplicationBuilder AddSerilogLogging(this WebApplicationBuilder builder) {
-        _ = builder.Host.UseSerilog((ctx, services, cfg) => {
-            _ = cfg
+        builder.Host.UseSerilog((ctx, services, cfg) => {
+            cfg
                 .ReadFrom.Configuration(ctx.Configuration)
                 .ReadFrom.Services(services)
                 .Enrich.FromLogContext();
@@ -35,7 +35,7 @@ public static class SerilogExtensions {
     /// <param name="app">Web 应用</param>
     /// <returns>Web 应用</returns>
     public static WebApplication UseSerilogLogging(this WebApplication app) {
-        _ = app.UseMiddleware<Middlewares.RequestLoggingMiddleware>();
+        app.UseMiddleware<Middlewares.RequestLoggingMiddleware>();
         return app;
     }
 }

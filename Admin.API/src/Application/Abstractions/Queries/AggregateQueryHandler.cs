@@ -1,19 +1,18 @@
-/*
+﻿/*
  * 文件名称: AggregateQueryHandler.cs
  * 功能描述: 聚合根查询处理器基类，包含通用查询条件构建逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
  * 最近修订: 2026-04-11
  */
 
-using Application.Contracts.Abstractions;
-using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
-using SqlSugar;
 using System.Linq.Expressions;
 using AutoMapper;
+using Application.Contracts.Abstractions.Queries;
+using System.Text;
 
 namespace Application.Abstractions.Queries;
 
@@ -32,7 +31,7 @@ namespace Application.Abstractions.Queries;
 public abstract class AggregateQueryHandler<TQuery, TAggregate, TRepository, TResponse>(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainQueryHandler<TQuery, TAggregate, TRepository, TResponse>(unitOfWork, mapper, cacheProvider)
+    ICacheProvider cacheProvider) : QueryHandler<TQuery, TAggregate, TRepository, TResponse>(unitOfWork, mapper, cacheProvider)
     where TQuery : AggregateQuery<TResponse>
     where TAggregate : AggregateBase, new()
     where TRepository : IAggregateRepository<TAggregate> {
@@ -41,12 +40,8 @@ public abstract class AggregateQueryHandler<TQuery, TAggregate, TRepository, TRe
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>查询条件列表</returns>
-    protected List<Expression<Func<TAggregate, bool>>> BuildAggregatePredicates(TQuery query) {
+    protected override List<Expression<Func<TAggregate, bool>>> BuildPredicates(TQuery query) {
         var predicates = new List<Expression<Func<TAggregate, bool>>>();
-
-        if (query.Id.HasValue) {
-            predicates.Add(t => t.Id == query.Id.Value);
-        }
         if (!string.IsNullOrWhiteSpace(query.Description)) {
             predicates.Add(t => t.Description != null && t.Description.Contains(query.Description));
         }
@@ -87,10 +82,13 @@ public abstract class AggregateQueryHandler<TQuery, TAggregate, TRepository, TRe
     /// <summary>
     /// 构建聚合根通用排序条件
     /// </summary>
-    /// <returns>排序条件字典</returns>
-    protected IDictionary<Expression<Func<TAggregate, object>>, OrderByType> BuildAggregateOrders() {
-        var orders = new Dictionary<Expression<Func<TAggregate, object>>, OrderByType>();
-        orders.Add(t => t.CreatedAt, OrderByType.Desc);
+    /// <param name="query">查询请求</param>
+    /// <returns>排序条件字典，bool值为true代表倒序，false代表正序</returns>
+    protected override IDictionary<Expression<Func<TAggregate, object>>, bool> BuildOrders(TQuery query) {
+        var orders = new Dictionary<Expression<Func<TAggregate, object>>, bool>
+        {
+            { t => t.CreatedAt, true } // true 代表倒序
+        };
         return orders;
     }
 
@@ -99,46 +97,43 @@ public abstract class AggregateQueryHandler<TQuery, TAggregate, TRepository, TRe
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected string BuildAggregateCacheKey(TQuery query) {
-        var parts = new List<string>();
-
-        if (query.Id.HasValue) {
-            parts.Add($"Id={query.Id.Value}");
-        }
+    protected override StringBuilder BuildCacheParams(TQuery query) {
+        var builder = base.BuildCacheParams(query);
+        
         if (!string.IsNullOrWhiteSpace(query.Description)) {
-            parts.Add($"Description={query.Description}");
+            builder.Append($"|Description={query.Description}");
         }
         if (query.IsDeleted.HasValue) {
-            parts.Add($"IsDeleted={query.IsDeleted.Value}");
+            builder.Append($"|IsDeleted={query.IsDeleted.Value}");
         }
         if (query.CreatedAtStart.HasValue) {
-            parts.Add($"CreatedAtStart={query.CreatedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|CreatedAtStart={query.CreatedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (query.CreatedAtEnd.HasValue) {
-            parts.Add($"CreatedAtEnd={query.CreatedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|CreatedAtEnd={query.CreatedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (query.UpdatedAtStart.HasValue) {
-            parts.Add($"UpdatedAtStart={query.UpdatedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|UpdatedAtStart={query.UpdatedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (query.UpdatedAtEnd.HasValue) {
-            parts.Add($"UpdatedAtEnd={query.UpdatedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|UpdatedAtEnd={query.UpdatedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (query.DeletedAtStart.HasValue) {
-            parts.Add($"DeletedAtStart={query.DeletedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|DeletedAtStart={query.DeletedAtStart.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (query.DeletedAtEnd.HasValue) {
-            parts.Add($"DeletedAtEnd={query.DeletedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
+            builder.Append($"|DeletedAtEnd={query.DeletedAtEnd.Value:yyyy-MM-dd HH:mm:ss}");
         }
         if (!string.IsNullOrWhiteSpace(query.CreatedBy)) {
-            parts.Add($"CreatedBy={query.CreatedBy}");
+            builder.Append($"|CreatedBy={query.CreatedBy}");
         }
         if (!string.IsNullOrWhiteSpace(query.UpdatedBy)) {
-            parts.Add($"UpdatedBy={query.UpdatedBy}");
+            builder.Append($"|UpdatedBy={query.UpdatedBy}");
         }
         if (!string.IsNullOrWhiteSpace(query.DeletedBy)) {
-            parts.Add($"DeletedBy={query.DeletedBy}");
+            builder.Append($"|DeletedBy={query.DeletedBy}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }

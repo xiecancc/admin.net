@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RolePermissionQueryHandlers.cs
  * 功能描述: 角色权限关联查询处理器，处理角色权限查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -15,8 +15,8 @@ using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using SqlSugar;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -28,7 +28,7 @@ public class RolePermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionPagedQueryHandler> logger) : DomainPagedQueryHandler<RolePermissionPagedQuery, RolePermission, IRolePermissionRepository, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
+    ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermissionPagedQuery, RolePermission, IRolePermissionRepository, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
     private readonly ILogger<RolePermissionPagedQueryHandler> _logger = logger;
 
     /// <summary>
@@ -62,9 +62,9 @@ public class RolePermissionPagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>排序条件字典</returns>
-    protected override IDictionary<Expression<Func<RolePermission, object>>, OrderByType> BuildOrders(RolePermissionPagedQuery query) {
+    protected override IDictionary<Expression<Func<RolePermission, object>>, bool> BuildOrders(RolePermissionPagedQuery query) {
         var orders = base.BuildOrders(query);
-        orders.Add(t => t.RoleId, OrderByType.Asc);
+        orders.Add(t => t.RoleId, false); // false 代表正序
         return orders;
     }
 
@@ -73,17 +73,17 @@ public class RolePermissionPagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(RolePermissionPagedQuery query) {
-        var parts = new List<string>();
+    protected override StringBuilder BuildCacheParams(RolePermissionPagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (query.RoleId.HasValue) {
-            parts.Add($"RoleId={query.RoleId.Value}");
+            builder.Append($"|RoleId={query.RoleId.Value}");
         }
         if (query.PermissionId.HasValue) {
-            parts.Add($"PermissionId={query.PermissionId.Value}");
+            builder.Append($"|PermissionId={query.PermissionId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 
@@ -95,7 +95,7 @@ public class RolePermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionListQueryHandler> logger) : DomainListQueryHandler<RolePermissionListQuery, RolePermission, IRolePermissionRepository, RolePermissionListDto>(unitOfWork, mapper, cacheProvider) {
+    ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermissionListQuery, RolePermission, IRolePermissionRepository, RolePermissionListDto>(unitOfWork, mapper, cacheProvider) {
     private readonly ILogger<RolePermissionListQueryHandler> _logger = logger;
 
     /// <summary>
@@ -129,9 +129,9 @@ public class RolePermissionListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>排序条件字典</returns>
-    protected override IDictionary<Expression<Func<RolePermission, object>>, OrderByType> BuildOrders(RolePermissionListQuery query) {
+    protected override IDictionary<Expression<Func<RolePermission, object>>, bool> BuildOrders(RolePermissionListQuery query) {
         var orders = base.BuildOrders(query);
-        orders.Add(t => t.RoleId, OrderByType.Asc);
+        orders.Add(t => t.RoleId, false); // false 代表正序
         return orders;
     }
 
@@ -140,17 +140,17 @@ public class RolePermissionListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(RolePermissionListQuery query) {
-        var parts = new List<string>();
+    protected override StringBuilder BuildCacheParams(RolePermissionListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (query.RoleId.HasValue) {
-            parts.Add($"RoleId={query.RoleId.Value}");
+            builder.Append($"|RoleId={query.RoleId.Value}");
         }
         if (query.PermissionId.HasValue) {
-            parts.Add($"PermissionId={query.PermissionId.Value}");
+            builder.Append($"|PermissionId={query.PermissionId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RoleDomainEventHandlers.cs
  * 功能描述: 角色领域事件处理器，处理角色相关事件并清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -32,7 +32,7 @@ public class RoleCreatedEventHandler(
 
         LogEvent("创建", @event.Description, @event.Domains.Count());
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
@@ -64,7 +64,7 @@ public class RoleUpdatedEventHandler(
 
         await Task.WhenAll(roleTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
@@ -96,7 +96,7 @@ public class RoleDeletedEventHandler(
 
         await Task.WhenAll(roleTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );
@@ -128,7 +128,7 @@ public class RoleRestoredEventHandler(
 
         await Task.WhenAll(roleTasks);
 
-        _ = await Task.WhenAll(
+        await Task.WhenAll(
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.List}*"),
             cacheProvider.RemoveByPatternAsync($"{CacheKeyConstants.Role.Prefix}:paged*")
         );

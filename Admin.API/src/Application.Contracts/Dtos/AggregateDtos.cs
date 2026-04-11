@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateDtos.cs
  * 功能描述: 聚合根数据传输对象基类，包含基础模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,13 +11,13 @@ namespace Application.Contracts.Dtos;
 /// 聚合根创建 DTO
 /// <para>用于所有创建操作的数据传输对象</para>
 /// </summary>
-public abstract class AggregateCreateDto : DomainCreateDto;
+public abstract class AggregateCreateDto : CreateDto;
 
 /// <summary>
 /// 聚合根更新 DTO
 /// <para>用于所有更新操作的数据传输对象</para>
 /// </summary>
-public abstract class AggregateUpdateDto : DomainUpdateDto {
+public abstract class AggregateUpdateDto : UpdateDto {
     /// <summary>
     /// 主键 ID
     /// </summary>
@@ -29,7 +29,7 @@ public abstract class AggregateUpdateDto : DomainUpdateDto {
 /// 聚合根列表 DTO
 /// <para>用于列表展示的数据传输对象</para>
 /// </summary>
-public abstract class AggregateListDto : DomainListDto {
+public abstract class AggregateListDto : ListDto {
     /// <summary>
     /// 主键 ID
     /// </summary>
@@ -93,7 +93,7 @@ public abstract class AggregateListDto : DomainListDto {
 /// 聚合根详情 DTO
 /// <para>用于详细信息展示的数据传输对象</para>
 /// </summary>
-public abstract class AggregateDetailDto : DomainDetailDto {
+public abstract class AggregateDetailDto : DetailDto {
     /// <summary>
     /// 主键 ID
     /// </summary>
@@ -157,7 +157,7 @@ public abstract class AggregateDetailDto : DomainDetailDto {
 /// 聚合根分页 DTO
 /// <para>用于分页响应中的数据传输对象</para>
 /// </summary>
-public abstract class AggregatePagedDto : DomainPagedDto {
+public abstract class AggregatePagedDto : PagedDto {
     /// <summary>
     /// 主键 ID
     /// </summary>
@@ -221,7 +221,7 @@ public abstract class AggregatePagedDto : DomainPagedDto {
 /// 聚合根操作 DTO
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
-public class AggregateActionDto : DomainActionDto {
+public abstract class AggregateActionDto : ActionDto {
     /// <summary>
     /// 主键 ID
     /// </summary>

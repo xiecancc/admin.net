@@ -120,31 +120,7 @@ public class UserController(IMediator mediator) : ControllerBase {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    /// <summary>
-    /// 启用用户
-    /// </summary>
-    /// <param name="id">用户ID</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>操作结果</returns>
-    [HttpPost("{id:guid}/enable")]
-    [Permission("user:update")]
-    public async Task<ActionResult<bool>> EnableAsync(Guid id, CancellationToken cancellationToken = default) {
-        var command = new UserEnableCommand([id]);
-        return Ok(await _mediator.Send(command, cancellationToken));
-    }
 
-    /// <summary>
-    /// 禁用用户
-    /// </summary>
-    /// <param name="id">用户ID</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>操作结果</returns>
-    [HttpPost("{id:guid}/disable")]
-    [Permission("user:update")]
-    public async Task<ActionResult<bool>> DisableAsync(Guid id, CancellationToken cancellationToken = default) {
-        var command = new UserDisableCommand([id]);
-        return Ok(await _mediator.Send(command, cancellationToken));
-    }
 
     #region 用户角色关联操作
 

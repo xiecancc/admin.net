@@ -24,13 +24,13 @@ public class TestWebApplicationFactory : WebApplicationFactory<API.Program> {
     /// <param name="builder">Web 主机构建器</param>
     protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder) {
         ArgumentNullException.ThrowIfNull(builder);
-        _ = builder.ConfigureAppConfiguration((context, config) => {
-            _ = config.AddJsonFile("appsettings.Test.json", optional: true)
+        builder.ConfigureAppConfiguration((context, config) => {
+            config.AddJsonFile("appsettings.Test.json", optional: true)
                   .AddEnvironmentVariables();
         });
 
-        _ = builder.ConfigureServices(services => {
-            _ = services.Configure<DatabaseOption>(options => {
+        builder.ConfigureServices(services => {
+            services.Configure<DatabaseOption>(options => {
                 options.ConnectionString = "Data Source=:memory:";
             });
         });

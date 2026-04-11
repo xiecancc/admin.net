@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserCommandHandlers.cs
  * 功能描述: 用户命令处理器，处理用户相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -12,6 +12,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Shared.Units;
 using AutoMapper;
+using MediatR;
 
 namespace Application.Commands;
 

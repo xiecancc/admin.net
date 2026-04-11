@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,6 +16,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using AutoMapper;
+using System.Text;
 
 namespace Application.Queries;
 
@@ -113,7 +114,7 @@ public class UserRoleIdsQueryHandler(
 public class UserRoleListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainListQueryHandler<UserRoleListQuery, UserRole, IUserRoleRepository, UserRoleListDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : ListQueryHandler<UserRoleListQuery, UserRole, IUserRoleRepository, UserRoleListDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
@@ -142,17 +143,17 @@ public class UserRoleListQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(UserRoleListQuery query) {
-        var parts = new List<string>();
+    protected override StringBuilder BuildCacheParams(UserRoleListQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (query.UserId.HasValue) {
-            parts.Add($"UserId={query.UserId.Value}");
+            builder.Append($"|UserId={query.UserId.Value}");
         }
         if (query.RoleId.HasValue) {
-            parts.Add($"RoleId={query.RoleId.Value}");
+            builder.Append($"|RoleId={query.RoleId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }
 
@@ -163,7 +164,7 @@ public class UserRoleListQueryHandler(
 public class UserRolePagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : DomainPagedQueryHandler<UserRolePagedQuery, UserRole, IUserRoleRepository, UserRolePagedDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider) : PagedQueryHandler<UserRolePagedQuery, UserRole, IUserRoleRepository, UserRolePagedDto>(unitOfWork, mapper, cacheProvider) {
     /// <summary>
     /// 缓存键前缀
     /// </summary>
@@ -192,16 +193,16 @@ public class UserRolePagedQueryHandler(
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
-    protected override string BuildCacheKey(UserRolePagedQuery query) {
-        var parts = new List<string>();
+    protected override StringBuilder BuildCacheParams(UserRolePagedQuery query) {
+        var builder = base.BuildCacheParams(query);
 
         if (query.UserId.HasValue) {
-            parts.Add($"UserId={query.UserId.Value}");
+            builder.Append($"|UserId={query.UserId.Value}");
         }
         if (query.RoleId.HasValue) {
-            parts.Add($"RoleId={query.RoleId.Value}");
+            builder.Append($"|RoleId={query.RoleId.Value}");
         }
 
-        return string.Join("|", parts);
+        return builder;
     }
 }

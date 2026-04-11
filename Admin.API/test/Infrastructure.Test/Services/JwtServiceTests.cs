@@ -33,7 +33,7 @@ public class JwtServiceTests {
         };
 
         _mockJwtOptions = new Mock<IOptions<JwtOption>>();
-        _ = _mockJwtOptions.Setup(x => x.Value).Returns(_jwtOption);
+        _mockJwtOptions.Setup(x => x.Value).Returns(_jwtOption);
 
         _mockCacheProvider = new Mock<ICacheProvider>();
     }
@@ -126,7 +126,7 @@ public class JwtServiceTests {
         };
         var token = jwtService.GenerateToken(claims);
 
-        _ = _mockCacheProvider.Setup(x => x.GetAsync<string>(It.IsAny<string>()))
+        _mockCacheProvider.Setup(x => x.GetAsync<string>(It.IsAny<string>()))
             .ReturnsAsync((string?)null);
 
         var principal = await jwtService.ValidateTokenAsync(token);
@@ -151,7 +151,7 @@ public class JwtServiceTests {
         };
         var token = jwtService.GenerateToken(claims);
 
-        _ = _mockCacheProvider.Setup(x => x.GetAsync<bool>(It.IsAny<string>()))
+        _mockCacheProvider.Setup(x => x.GetAsync<bool>(It.IsAny<string>()))
             .ReturnsAsync(true);
 
         var principal = await jwtService.ValidateTokenAsync(token);
@@ -254,7 +254,7 @@ public class JwtServiceTests {
         var token = "test_token";
         var expiration = DateTime.UtcNow.AddHours(1);
 
-        _ = _mockCacheProvider.Setup(x => x.SetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>()))
+        _mockCacheProvider.Setup(x => x.SetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>()))
             .Returns(Task.FromResult(true));
 
         var result = await jwtService.AddTokenToBlacklistAsync(token, expiration);
@@ -272,7 +272,7 @@ public class JwtServiceTests {
         var token = "test_token";
         var expiration = DateTime.UtcNow.AddHours(1);
 
-        _ = _mockCacheProvider.Setup(x => x.SetAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<TimeSpan>()))
+        _mockCacheProvider.Setup(x => x.SetAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<TimeSpan>()))
             .ThrowsAsync(new Exception("Cache failed"));
 
         var result = await jwtService.AddTokenToBlacklistAsync(token, expiration);
@@ -289,7 +289,7 @@ public class JwtServiceTests {
         var jwtService = new JwtService(_mockJwtOptions.Object, _mockCacheProvider.Object);
         var token = "test_token";
 
-        _ = _mockCacheProvider.Setup(x => x.GetAsync<bool>(It.IsAny<string>()))
+        _mockCacheProvider.Setup(x => x.GetAsync<bool>(It.IsAny<string>()))
             .ReturnsAsync(true);
 
         var result = await jwtService.IsTokenInBlacklistAsync(token);
@@ -306,7 +306,7 @@ public class JwtServiceTests {
         var jwtService = new JwtService(_mockJwtOptions.Object, _mockCacheProvider.Object);
         var token = "test_token";
 
-        _ = _mockCacheProvider.Setup(x => x.GetAsync<string>(It.IsAny<string>()))
+        _mockCacheProvider.Setup(x => x.GetAsync<string>(It.IsAny<string>()))
             .ReturnsAsync((string?)null);
 
         var result = await jwtService.IsTokenInBlacklistAsync(token);

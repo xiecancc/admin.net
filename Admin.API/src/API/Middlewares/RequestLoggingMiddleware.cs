@@ -47,11 +47,12 @@ public class RequestLoggingMiddleware(
 
         var startTime = DateTime.UtcNow.ToTimestampMs();
 
-        using var _ = logger?.BeginScope(new Dictionary<string, object?> {
-            ["TraceId"] = traceId,
-            ["RequestId"] = requestId,
-            ["UserId"] = userId,
-            ["ClientIp"] = clientIp,
+        if (logger != null) {
+            using var scope = logger.BeginScope(new Dictionary<string, object?> {
+                ["TraceId"] = traceId,
+                ["RequestId"] = requestId,
+                ["UserId"] = userId,
+                ["ClientIp"] = clientIp,
             ["UserAgent"] = userAgent,
             ["RequestPath"] = requestPath,
             ["RequestMethod"] = requestMethod
@@ -66,5 +67,6 @@ public class RequestLoggingMiddleware(
 
         logger?.LogInformation("请求结束: {RequestMethod} {RequestPath} | 状态码: {StatusCode} | 响应耗时: {ResponseTime:F2}ms",
             requestMethod, requestPath, ctx.Response.StatusCode, responseTime);
+        }
     }
 }

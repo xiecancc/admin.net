@@ -21,22 +21,22 @@ public class MenuPermissionProfile : Profile {
     /// </summary>
     public MenuPermissionProfile() {
         // 菜单权限实体到菜单权限列表 DTO 的映射
-        _ = CreateMap<MenuPermission, MenuPermissionListDto>()
+        CreateMap<MenuPermission, MenuPermissionListDto>()
             .IncludeBase<Permission, PermissionListDto>();
 
         // 菜单权限实体到菜单权限详情 DTO 的映射
-        _ = CreateMap<MenuPermission, MenuPermissionDetailDto>()
+        CreateMap<MenuPermission, MenuPermissionDetailDto>()
             .IncludeBase<Permission, PermissionDetailDto>();
 
         // 菜单权限实体到菜单权限分页 DTO 的映射
-        _ = CreateMap<MenuPermission, MenuPermissionPagedDto>()
+        CreateMap<MenuPermission, MenuPermissionPagedDto>()
             .IncludeBase<Permission, PermissionPagedDto>();
 
         // 菜单权限创建 DTO 到菜单权限实体的映射
-        _ = CreateMap<MenuPermissionCreateDto, MenuPermission>()
+        CreateMap<MenuPermissionCreateDto, MenuPermission>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => PermissionType.Menu));
 
         // 菜单权限更新 DTO 到菜单权限实体的映射
-        _ = CreateMap<MenuPermissionUpdateDto, MenuPermission>();
+        CreateMap<MenuPermissionUpdateDto, MenuPermission>();
     }
 }

@@ -20,14 +20,14 @@ public class UserRoleProfile : Profile {
     /// </summary>
     public UserRoleProfile() {
         // 用户角色关联创建 DTO 到用户角色关联实体的映射
-        _ = CreateMap<UserRoleCreateDto, UserRole>();
+        CreateMap<UserRoleCreateDto, UserRole>();
 
         // 用户角色关联实体到用户角色关联列表 DTO 的映射
-        _ = CreateMap<UserRole, UserRoleListDto>()
-            .IncludeBase<Domain.Shared.Entities.DomainBase, DomainListDto>();
+        CreateMap<UserRole, UserRoleListDto>()
+            .IncludeBase<Domain.Shared.Entities.DomainBase, ListDto>();
 
         // 用户角色关联实体到用户角色关联分页 DTO 的映射
-        _ = CreateMap<UserRole, UserRolePagedDto>()
-            .IncludeBase<Domain.Shared.Entities.DomainBase, DomainPagedDto>();
+        CreateMap<UserRole, UserRolePagedDto>()
+            .IncludeBase<Domain.Shared.Entities.DomainBase, PagedDto>();
     }
 }

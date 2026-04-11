@@ -80,7 +80,7 @@ public class Repository<TDomain>(
     /// <returns>构建的参数对象</returns>
     protected (ISugarQueryable<TDomain>, (int, int)) BuildQueryable(
         List<Expression<Func<TDomain, bool>>>? predicates = null,
-        IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null,
+        IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null,
         int page = 1, int size = 10) {
         var queryable = _client.Queryable<TDomain>();
         if (predicates != null) {
@@ -90,7 +90,8 @@ public class Repository<TDomain>(
         }
         if (orders != null) {
             foreach (var order in orders) {
-                queryable = queryable.OrderBy(order.Key, order.Value);
+                var sugarOrderType = order.Value ? OrderByType.Desc : OrderByType.Asc; // true 代表倒序
+                queryable = queryable.OrderBy(order.Key, sugarOrderType);
             }
         }
         page = page <= 0 ? 1 : page;
@@ -124,7 +125,7 @@ public class Repository<TDomain>(
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的实体列表</returns>
-    public virtual async Task<List<TDomain>> GetListAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default) {
+    public virtual async Task<List<TDomain>> GetListAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
         try {
             var (queryable, _) = BuildQueryable(predicates, orders);
             return await queryable.ToListAsync(cancellationToken);
@@ -144,7 +145,7 @@ public class Repository<TDomain>(
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含数据列表和分页信息</returns>
-    public virtual async Task<PagedResponse<TDomain>> GetPagedAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
+    public virtual async Task<PagedResponse<TDomain>> GetPagedAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
         try {
             var (queryable, (validPage, validSize)) = BuildQueryable(predicates, orders, page, size);
             RefAsync<int> total = 0;
@@ -187,7 +188,7 @@ public class Repository<TDomain>(
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的投影结果列表</returns>
-    public virtual async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default) {
+    public virtual async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
 
         try {
@@ -211,7 +212,7 @@ public class Repository<TDomain>(
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含投影结果列表和分页信息</returns>
-    public virtual async Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
+    public virtual async Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, List<Expression<Func<TDomain, bool>>>? predicates = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
 
         try {
@@ -278,7 +279,7 @@ public class Repository<TDomain>(
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的实体列表</returns>
-    public virtual async Task<List<TDomain>> GetListAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default) {
+    public virtual async Task<List<TDomain>> GetListAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
         var predicates = predicate != null ? new List<Expression<Func<TDomain, bool>>> { predicate } : null;
         return await GetListAsync(predicates, orders, cancellationToken);
     }
@@ -292,7 +293,7 @@ public class Repository<TDomain>(
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含数据列表和分页信息</returns>
-    public virtual async Task<PagedResponse<TDomain>> GetPagedAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
+    public virtual async Task<PagedResponse<TDomain>> GetPagedAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
         var predicates = predicate != null ? new List<Expression<Func<TDomain, bool>>> { predicate } : null;
         return await GetPagedAsync(predicates, orders, page, size, cancellationToken);
     }
@@ -320,7 +321,7 @@ public class Repository<TDomain>(
     /// <param name="orders">排序表达式字典，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的投影结果列表</returns>
-    public virtual async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, CancellationToken cancellationToken = default) {
+    public virtual async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
         var predicates = predicate != null ? new List<Expression<Func<TDomain, bool>>> { predicate } : null;
         return await GetListAsync(selector, predicates, orders, cancellationToken);
@@ -337,7 +338,7 @@ public class Repository<TDomain>(
     /// <param name="size">每页大小，默认值为 10</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页响应对象，包含投影结果列表和分页信息</returns>
-    public virtual async Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, OrderByType>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
+    public virtual async Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
         var predicates = predicate != null ? new List<Expression<Func<TDomain, bool>>> { predicate } : null;
         return await GetPagedAsync(selector, predicates, orders, page, size, cancellationToken);

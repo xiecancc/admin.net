@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: DomainCreateCommands.cs
  * 功能描述: 通用创建命令，用于所有领域实体的创建操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -18,24 +18,13 @@ namespace Application.Contracts.Abstractions.Commands;
 /// 构造函数
 /// </remarks>
 /// <param name="data">请求数据</param>
-public class DomainCreateCommand<TCreateDto>(List<TCreateDto> data) : DomainCommand<bool>
-    where TCreateDto : DomainCreateDto {
+public class CreateCommand<TCreateDto>(List<TCreateDto> data)
+    : Command<bool>
+    where TCreateDto : CreateDto
+{
     /// <summary>
     /// 请求数据
     /// </summary>
     /// <value>创建操作的请求数据</value>
     public List<TCreateDto> Data { get; set; } = data;
-}
-
-/// <summary>
-/// 聚合根创建命令
-/// <para>用于聚合根实体的创建操作</para>
-/// </summary>
-/// <typeparam name="TCreateDto">请求DTO类型</typeparam>
-/// <remarks>
-/// 构造函数
-/// </remarks>
-/// <param name="data">请求数据</param>
-public class AggregateCreateCommand<TCreateDto>(List<TCreateDto> data) : DomainCreateCommand<TCreateDto>(data)
-    where TCreateDto : AggregateCreateDto {
 }

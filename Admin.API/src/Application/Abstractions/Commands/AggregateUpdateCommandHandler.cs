@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateUpdateCommandHandler.cs
  * 功能描述: 通用更新命令处理器，用于处理所有聚合根实体的更新操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -27,7 +27,7 @@ namespace Application.Abstractions.Commands;
 /// </remarks>
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
-public abstract class AggregateUpdateCommandHandler<TCommand, TDomain, TRepository, TUpdateDto>(IUnitOfWork unitOfWork, IMapper mapper) : DomainCommandHandler<TCommand, TDomain, TRepository, bool>(unitOfWork, mapper)
+public abstract class AggregateUpdateCommandHandler<TCommand, TDomain, TRepository, TUpdateDto>(IUnitOfWork unitOfWork, IMapper mapper) : CommandHandler<TCommand, TDomain, TRepository, bool>(unitOfWork, mapper)
     where TCommand : AggregateUpdateCommand<TUpdateDto>
     where TDomain : AggregateBase, new()
     where TRepository : IAggregateRepository<TDomain>
@@ -59,6 +59,6 @@ public abstract class AggregateUpdateCommandHandler<TCommand, TDomain, TReposito
     /// <param name="entity">实体对象</param>
     /// <param name="dto">更新DTO</param>
     protected virtual void UpdateEntity(TDomain entity, TUpdateDto dto) {
-        _ = Mapper.Map(dto, entity);
+        Mapper.Map(dto, entity);
     }
 }

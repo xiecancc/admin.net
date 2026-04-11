@@ -19,6 +19,6 @@ public class AuthProfile : Profile {
     /// 构造函数
     /// </summary>
     public AuthProfile() {
-        _ = CreateMap<Role, RoleListDto>();
+        CreateMap<Role, RoleListDto>();
     }
 }
