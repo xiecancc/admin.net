@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AuthCommandHandlers.cs
  * 功能描述: 认证相关的命令处理器，包含登录、注册、刷新令牌、登出等命令的处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,9 +10,9 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
-using Infrastructure.Shared.Services;
-using Infrastructure.Shared.Units;
-using Infrastructure.Shared.Utils;
+using Domain.Shared.Services;
+using Domain.Shared.Units;
+using Domain.Shared.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.IdentityModel.Tokens.Jwt;

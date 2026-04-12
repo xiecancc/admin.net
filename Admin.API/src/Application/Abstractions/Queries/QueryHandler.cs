@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: QueryHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,8 +9,8 @@ using Application.Contracts.Abstractions.Queries;
 using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using AutoMapper;
 using System.Linq.Expressions;
 using System.Text;

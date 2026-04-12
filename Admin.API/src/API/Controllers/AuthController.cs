@@ -25,9 +25,8 @@ namespace API.Controllers;
 [Route("api/v{version:apiVersion}/auth")]
 [ApiVersion("1.0")]
 [EnableRateLimiting("AuthPolicy")]
-public class AuthController(ILogger<AuthController> logger, IMediator mediator) : ControllerBase {
-    private readonly ILogger<AuthController> _logger = logger;
-    private readonly IMediator _mediator = mediator;
+public class AuthController(ILogger<AuthController> _logger, IMediator _mediator) : ControllerBase
+{
 
     /// <summary>
     /// 用户登录

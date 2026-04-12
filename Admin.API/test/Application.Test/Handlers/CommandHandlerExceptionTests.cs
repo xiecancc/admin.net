@@ -12,7 +12,7 @@ using AutoMapper;
 using Domain.Shared.Entities;
 using Domain.Shared.Events;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -45,7 +45,7 @@ public class CommandHandlerExceptionTests {
     public async Task Handle_WithNullRequest_ShouldThrowArgumentNullException() {
         var handler = CreateHandler();
 
-        await Assert.ThrowsAsync<ArgumentNullException>(() => handler.HandleTest(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => handler.Handle(null!, CancellationToken.None));
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class CommandHandlerExceptionTests {
         var cts = new CancellationTokenSource();
         cts.Cancel();
 
-        await Assert.ThrowsAsync<OperationCanceledException>(() => handler.HandleTest(command, cts.Token));
+        await Assert.ThrowsAsync<OperationCanceledException>(() => handler.Handle(command, cts.Token));
     }
 
     #endregion
@@ -223,7 +223,7 @@ public class CommandHandlerExceptionTests {
 
         var handler = CreateHandler();
 
-        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => handler.HandleTest(command));
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(command, CancellationToken.None));
 
         Assert.Contains("Database error", exception.Message);
     }
@@ -253,7 +253,7 @@ public class CommandHandlerExceptionTests {
 
         var handler = CreateHandler();
 
-        await Assert.ThrowsAsync<OperationCanceledException>(() => handler.HandleTest(command, cts.Token));
+        await Assert.ThrowsAsync<OperationCanceledException>(() => handler.Handle(command, cts.Token));
     }
 
     /// <summary>
@@ -280,7 +280,7 @@ public class CommandHandlerExceptionTests {
 
         var handler = CreateHandler();
 
-        var result = await handler.HandleTest(command);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.True(result);
     }
@@ -335,33 +335,32 @@ internal class TestCommand : CreateCommand<TestCreateDto> {
 }
 
 /// <summary>
-/// 测试命令处理器
+/// 测试命令处理器（Template Method 模式）
 /// </summary>
 internal class TestCommandHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ILogger<TestCommandHandler> logger)
-    : CommandHandler<TestDomain, IDomainRepository<TestDomain>, TestCommand, bool>(unitOfWork, mapper, logger) {
+    : CommandHandler<TestDomain, IDomainRepository<TestDomain>, TestCommand>(unitOfWork, mapper, logger) {
 
-    public async Task<bool> HandleTest(TestCommand request, CancellationToken cancellationToken = default) {
-        ValidateRequest(request, cancellationToken);
-
-        try {
-            var entities = Mapper.Map<List<TestDomain>>(request.Data);
-            return await Repository.InsertAsync(entities, cancellationToken);
-        }
-        catch (Exception ex) {
-            LogException(ex, "创建", $"数量: {request.Data.Count}");
-            throw HandleException(ex, "创建", $"数量: {request.Data.Count}");
-        }
-    }
-
-    public override Task<bool> Handle(TestCommand request, CancellationToken cancellationToken) {
-        return HandleTest(request, cancellationToken);
+    /// <inheritdoc/>
+    protected override Task<bool> ExecuteInTransactionAsync(TestCommand request, CancellationToken cancellationToken) {
+        var entities = Mapper.Map<List<TestDomain>>(request.Data);
+        return Repository.InsertAsync(entities, cancellationToken);
     }
 
     public Exception HandleExceptionTest(Exception ex, string operation, string? context = null) {
-        return HandleException(ex, operation, context);
+        var errorMessage = string.IsNullOrEmpty(context)
+            ? $"TestDomain {operation}操作失败"
+            : $"TestDomain {operation}操作失败: {context}";
+
+        return ex switch {
+            ArgumentNullException or ArgumentException or InvalidOperationException
+                or KeyNotFoundException => ex,
+            OperationCanceledException => new OperationCanceledException($"操作被取消: {errorMessage}", ex),
+            TimeoutException => new InvalidOperationException($"{errorMessage}，操作超时", ex),
+            _ => new InvalidOperationException(errorMessage, ex)
+        };
     }
 }
 

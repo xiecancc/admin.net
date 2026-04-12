@@ -475,33 +475,33 @@ public class CacheInvalidationIntegrationTests(TestWebApplicationFactory factory
 
     private async Task WarmupUserPermissionCacheAsync(Guid userId) {
         using var scope = _factory.Services.CreateScope();
-        var permissionCacheService = scope.ServiceProvider.GetRequiredService<Infrastructure.Shared.Services.IPermissionCacheService>();
+        var permissionCacheService = scope.ServiceProvider.GetRequiredService<Domain.Shared.Services.IPermissionCacheService>();
         await permissionCacheService.WarmupUserPermissionsAsync(userId);
     }
 
     private async Task WarmupRoleInheritedPermissionCacheAsync(Guid roleId) {
         using var scope = _factory.Services.CreateScope();
-        var permissionCacheService = scope.ServiceProvider.GetRequiredService<Infrastructure.Shared.Services.IPermissionCacheService>();
+        var permissionCacheService = scope.ServiceProvider.GetRequiredService<Domain.Shared.Services.IPermissionCacheService>();
         await permissionCacheService.WarmupRoleInheritedPermissionsAsync(roleId);
     }
 
     private async Task<bool> IsUserPermissionCachedAsync(Guid userId) {
         using var scope = _factory.Services.CreateScope();
-        var cacheProvider = scope.ServiceProvider.GetRequiredService<Infrastructure.Shared.Caches.ICacheProvider>();
+        var cacheProvider = scope.ServiceProvider.GetRequiredService<Domain.Shared.Caches.ICacheProvider>();
         var cacheKey = CacheKeyConstants.User.Permissions(userId);
         return await cacheProvider.ExistsAsync(cacheKey);
     }
 
     private async Task<bool> IsRoleInheritedPermissionCachedAsync(Guid roleId) {
         using var scope = _factory.Services.CreateScope();
-        var cacheProvider = scope.ServiceProvider.GetRequiredService<Infrastructure.Shared.Caches.ICacheProvider>();
+        var cacheProvider = scope.ServiceProvider.GetRequiredService<Domain.Shared.Caches.ICacheProvider>();
         var cacheKey = CacheKeyConstants.Role.InheritedPermissions(roleId);
         return await cacheProvider.ExistsAsync(cacheKey);
     }
 
     private async Task<HashSet<string>?> GetCachedUserPermissionsAsync(Guid userId) {
         using var scope = _factory.Services.CreateScope();
-        var cacheProvider = scope.ServiceProvider.GetRequiredService<Infrastructure.Shared.Caches.ICacheProvider>();
+        var cacheProvider = scope.ServiceProvider.GetRequiredService<Domain.Shared.Caches.ICacheProvider>();
         var cacheKey = CacheKeyConstants.User.Permissions(userId);
         return await cacheProvider.GetAsync<HashSet<string>>(cacheKey);
     }

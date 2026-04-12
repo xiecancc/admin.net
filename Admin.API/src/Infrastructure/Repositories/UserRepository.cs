@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRepository.cs
  * 功能描述: 用户仓储实现类，实现用户相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Events;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

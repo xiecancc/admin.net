@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RolePermissionQueryHandlers.cs
  * 功能描述: 角色权限关联查询处理器，处理角色权限查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -12,8 +12,8 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;

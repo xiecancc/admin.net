@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: DependencyExtensions.cs
  * 功能描述: Infrastructure 层依赖注入扩展类，注册基础设施层所有服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,9 +11,10 @@ using Infrastructure.Events;
 using Infrastructure.Repositories;
 using Infrastructure.Caches;
 using Infrastructure.Services;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Infrastructure.Shared.Contexts;
 using Infrastructure.Shared.Options;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
@@ -24,9 +25,9 @@ using Microsoft.Extensions.Options;
 using Domain.Shared.Events;
 using Domain.Repositories;
 using Domain.Services;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using System.Reflection;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Services;
 
 namespace Infrastructure;
 

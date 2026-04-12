@@ -28,9 +28,8 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("ButtonPermissionPolicy")]
-public class ButtonPermissionController(IMediator mediator) : ControllerBase
+public class ButtonPermissionController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取按钮权限列表

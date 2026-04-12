@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: IJwtService.cs
  * 功能描述: JWT服务接口
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,7 +7,7 @@
 
 using System.Security.Claims;
 
-namespace Infrastructure.Shared.Services;
+namespace Domain.Shared.Services;
 
 /// <summary>
 /// JWT服务接口

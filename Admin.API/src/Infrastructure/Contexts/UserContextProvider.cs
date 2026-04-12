@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserContextProvider.cs
  * 功能描述: 用户上下文提供者实现，从 HttpContext 中获取用户信息和验证权限
  * 作者信息: 谢灿软件 <492384481@qq.com>

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: ButtonPermissionQueryHandlers.cs
  * 功能描述: 按钮权限相关查询处理器，包含按钮权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,8 +11,8 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Constants;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using AutoMapper;

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: DomainListQueryHandler.cs
  * 功能描述: 通用列表查询处理器，用于处理所有领域实体的列表查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,8 +10,8 @@ using Application.Contracts.Dtos;
 using AutoMapper;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 

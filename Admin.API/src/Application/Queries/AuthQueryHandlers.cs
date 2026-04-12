@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AuthQueryHandlers.cs
  * 功能描述: 认证相关的查询处理器，包含获取当前用户信息等查询的处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,7 +9,7 @@ using Application.Contracts.Dtos;
 using Application.Contracts.Queries;
 using Domain.Entities;
 using Domain.Repositories;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using MediatR;
 
 namespace Application.Queries;

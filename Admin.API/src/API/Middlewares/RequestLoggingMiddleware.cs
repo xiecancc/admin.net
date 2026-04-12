@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RequestLoggingMiddleware.cs
  * 功能描述: 请求日志中间件，记录请求开始和结束信息
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -6,6 +6,7 @@
  */
 
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 
 namespace API.Middlewares;
@@ -14,12 +15,12 @@ namespace API.Middlewares;
 /// 请求日志中间件
 /// <para>记录请求开始和结束信息</para>
 /// </summary>
-/// <param name="next">下一个中间件委托</param>
+/// <param name="_next">下一个中间件委托</param>
 /// <param name="logger">日志记录器</param>
 public class RequestLoggingMiddleware(
-    RequestDelegate next,
-    ILogger<RequestLoggingMiddleware>? logger) {
-    private readonly RequestDelegate _next = next;
+    RequestDelegate _next,
+    ILogger<RequestLoggingMiddleware>? logger)
+{
 
     /// <summary>
     /// 处理请求

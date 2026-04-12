@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: PermissionCacheEventHandler.cs
  * 功能描述: 权限缓存事件处理器,处理权限变更时清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,8 +10,8 @@ using Domain.Repositories;
 using Domain.Shared.Constants;
 using Domain.Shared.Enums;
 using Domain.Shared.Events;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Caches;
+using Domain.Shared.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Events;

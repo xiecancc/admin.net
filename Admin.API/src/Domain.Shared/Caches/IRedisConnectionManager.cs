@@ -1,7 +1,7 @@
-﻿using System.Net;
+using System.Net;
 using StackExchange.Redis;
 
-namespace Infrastructure.Shared.Caches;
+namespace Domain.Shared.Caches;
 
 /// <summary>
 /// Redis 连接管理服务

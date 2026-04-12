@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRoleCommandHandlers.cs
  * 功能描述: 用户角色关联命令处理器，处理用户角色的分配和移除操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -8,7 +8,7 @@
 using Application.Contracts.Commands;
 using Domain.Entities;
 using Domain.Repositories;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

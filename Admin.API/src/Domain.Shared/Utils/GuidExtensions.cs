@@ -8,7 +8,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Shared.Utils;
+namespace Domain.Shared.Utils;
 
 /// <summary>
 /// GUID 扩展方法

@@ -1,4 +1,4 @@
-namespace Infrastructure.Shared.Caches;
+namespace Domain.Shared.Caches;
 
 /// <summary>
 /// 缓存提供者接口

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,8 +10,8 @@ using Application.Contracts.Dtos;
 using Application.Contracts.Queries;
 using Domain.Entities;
 using Domain.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;

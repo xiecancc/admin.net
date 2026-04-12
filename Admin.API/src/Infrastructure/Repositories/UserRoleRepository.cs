@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserRoleRepository.cs
  * 功能描述: 用户角色关联仓储实现，用于处理用户和角色之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Events;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

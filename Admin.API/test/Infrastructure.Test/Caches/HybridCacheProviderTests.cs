@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: HybridCacheProviderTests.cs
  * 功能描述: 混合缓存提供者测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,7 +7,7 @@
 
 using System.Net;
 using Infrastructure.Caches;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Infrastructure.Shared.Options;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;

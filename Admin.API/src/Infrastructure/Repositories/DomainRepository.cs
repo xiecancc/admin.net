@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: DomainRepository.cs
  * 功能描述: 领域仓储实现，支持所有实体（包括聚合根和关系表）的基本操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,6 +9,7 @@ using Domain.Shared.Entities;
 using Domain.Shared.Events;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

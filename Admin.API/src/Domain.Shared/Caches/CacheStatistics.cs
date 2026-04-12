@@ -5,7 +5,7 @@
  * 最近修订: 2026-04-11
  */
 
-namespace Infrastructure.Shared.Caches;
+namespace Domain.Shared.Caches;
 
 /// <summary>
 /// 缓存统计数据
@@ -53,7 +53,7 @@ public sealed class CacheStatistics {
     public double HitRate {
         get {
             var total = _hitCount + _missCount;
-            return total == 0 ? 0 : (double)_hitCount / total;
+            return total == 0 ? 0 : (double)_hitCount / total * 100;
         }
     }
 

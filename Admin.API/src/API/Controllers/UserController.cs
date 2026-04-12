@@ -28,9 +28,8 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("UserPolicy")]
-public class UserController(IMediator mediator) : ControllerBase
+public class UserController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取用户列表

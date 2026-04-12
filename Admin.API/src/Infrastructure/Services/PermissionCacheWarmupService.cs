@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: PermissionCacheWarmupService.cs
  * 功能描述: 权限缓存预热服务，在应用启动时预热权限缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -8,7 +8,7 @@
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Enums;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

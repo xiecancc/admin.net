@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateQueryHandler.cs
  * 功能描述: 聚合根查询处理器基类，包含通用查询条件构建逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,8 +7,8 @@
 
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using System.Linq.Expressions;
 using AutoMapper;
 using Application.Contracts.Abstractions.Queries;

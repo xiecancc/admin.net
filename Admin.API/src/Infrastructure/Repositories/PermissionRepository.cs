@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: PermissionRepository.cs
  * 功能描述: 权限仓储实现类，实现权限相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,6 +10,7 @@ using Domain.Repositories;
 using Domain.Shared.Entities;
 using Domain.Shared.Events;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

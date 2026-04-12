@@ -28,9 +28,8 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("ApiPermissionPolicy")]
-public class ApiPermissionController(IMediator mediator) : ControllerBase
+public class ApiPermissionController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取API权限列表

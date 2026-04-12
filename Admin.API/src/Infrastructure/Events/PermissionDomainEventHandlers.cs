@@ -8,7 +8,7 @@
 using Domain.Entities;
 using Domain.Shared.Constants;
 using Domain.Shared.Events;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Events;

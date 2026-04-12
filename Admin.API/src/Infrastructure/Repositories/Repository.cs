@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: Repository.cs
  * 功能描述: 泛型仓储实现，提供通用的实体操作和依赖注入
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,6 +10,7 @@ using Domain.Shared.Entities;
 using Domain.Shared.Events;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

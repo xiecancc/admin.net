@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RequestHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,7 +7,7 @@
 
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using MediatR;
 using AutoMapper;
 

@@ -28,9 +28,8 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("RolePolicy")]
-public class RoleController(IMediator mediator) : ControllerBase
+public class RoleController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取角色列表

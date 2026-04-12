@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Infrastructure.Services;
 using Infrastructure.Shared.Options;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 
 namespace API.Test.Infrastructure;
 

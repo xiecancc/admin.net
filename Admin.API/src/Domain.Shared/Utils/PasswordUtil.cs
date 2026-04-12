@@ -5,7 +5,7 @@
  * 最近修订: 2026-03-30
  */
 
-namespace Infrastructure.Shared.Utils;
+namespace Domain.Shared.Utils;
 
 /// <summary>
 /// 密码加密工具类
@@ -36,7 +36,7 @@ namespace Infrastructure.Shared.Utils;
 /// // 哈希密码
 /// var plainPassword = "MySecretPassword123!";
 /// var hashedPassword = PasswordUtil.HashPassword(plainPassword);
-/// // 返回类似：$2a$12$N9qo8uLOickgx2ZMRZoMy.MrqJ3W4F8Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6
+/// // 返回类似：$2a$12$N9qo8uLOickgx2ZMRZoMy.MrqJ3W4F8Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6Z6
 /// 
 /// // 验证密码
 /// var isValid = PasswordUtil.VerifyPassword(hashedPassword, plainPassword); // 返回：true

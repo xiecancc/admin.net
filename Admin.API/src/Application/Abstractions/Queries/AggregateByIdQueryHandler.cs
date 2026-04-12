@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateByIdQueryHandler.cs
  * 功能描述: 聚合根详情查询处理器，用于处理聚合根实体的详情获取操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,8 +9,8 @@ using Application.Contracts.Abstractions.Queries;
 using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 

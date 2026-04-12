@@ -1,7 +1,7 @@
-﻿using Domain.Shared.Entities;
+using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 
-namespace Infrastructure.Shared.Units;
+namespace Domain.Shared.Units;
 
 /// <summary>
 /// 工作单元接口

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregateRepository.cs
  * 功能描述: 聚合根仓储实现，继承 DomainRepository 并添加软删除支持
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,6 +9,7 @@ using Domain.Shared.Entities;
 using Domain.Shared.Events;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Contexts;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

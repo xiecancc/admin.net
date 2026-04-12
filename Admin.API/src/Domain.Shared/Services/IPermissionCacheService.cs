@@ -5,7 +5,7 @@
  * 最近修订: 2026-04-11
  */
 
-namespace Infrastructure.Shared.Services;
+namespace Domain.Shared.Services;
 
 /// <summary>
 /// 权限缓存服务接口
@@ -156,7 +156,7 @@ public interface IPermissionCacheService {
     ///   <item>所有受影响角色的用户权限缓存</item>
     /// </list>
     /// </remarks>
-    Task<bool> ClearRoleInheritanceTypeChangeCacheAsync(Guid roleId, Domain.Shared.Enums.InheritanceType oldInheritanceType, Domain.Shared.Enums.InheritanceType newInheritanceType, CancellationToken cancellationToken = default);
+    Task<bool> ClearRoleInheritanceTypeChangeCacheAsync(Guid roleId, Enums.InheritanceType oldInheritanceType, Enums.InheritanceType newInheritanceType, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 批量清除角色相关的所有缓存

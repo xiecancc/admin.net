@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: PermissionCacheService.cs
  * 功能描述: 权限缓存服务实现,提供权限缓存操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -8,8 +8,9 @@
 using Domain.Repositories;
 using Domain.Services;
 using Domain.Shared.Constants;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Caches;
+using Domain.Shared.Enums;
+using Domain.Shared.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Services;
@@ -297,8 +298,8 @@ public class PermissionCacheService(
     /// </remarks>
     public async Task<bool> ClearRoleInheritanceTypeChangeCacheAsync(
         Guid roleId,
-        Domain.Shared.Enums.InheritanceType oldInheritanceType,
-        Domain.Shared.Enums.InheritanceType newInheritanceType,
+        InheritanceType oldInheritanceType,
+        InheritanceType newInheritanceType,
         CancellationToken cancellationToken = default) {
         try {
             var affectedRoleIds = new HashSet<Guid> { roleId };

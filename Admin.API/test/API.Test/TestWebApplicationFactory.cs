@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: TestWebApplicationFactory.cs
  * 功能描述: 测试 Web 应用程序工厂类
  * 作者信息: 谢灿软件 <492384481@qq.com>

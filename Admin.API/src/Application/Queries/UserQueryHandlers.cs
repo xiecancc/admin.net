@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserQueryHandlers.cs
  * 功能描述: 用户相关查询处理器，包含用户的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,8 +11,8 @@ using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared.Constants;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SqlSugar;

@@ -10,7 +10,7 @@ using System.Text;
 using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Shared.Options;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Units;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: JwtService.cs
  * 功能描述: JWT服务实现
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,9 +7,10 @@
 
 using System.Security.Claims;
 using Infrastructure.Shared.Options;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Services;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services;

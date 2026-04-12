@@ -9,7 +9,7 @@ using SqlSugar;
 using Domain.Entities;
 using Domain.Shared.Constants;
 using Database.Bases;
-using Infrastructure.Shared.Utils;
+using Domain.Shared.Utils;
 
 namespace Database.Seeders;
 

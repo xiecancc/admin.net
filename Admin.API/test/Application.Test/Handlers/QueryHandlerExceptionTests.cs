@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: QueryHandlerExceptionTests.cs
  * 功能描述: 查询处理器异常处理测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -11,8 +11,8 @@ using Application.Contracts.Dtos;
 using AutoMapper;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;

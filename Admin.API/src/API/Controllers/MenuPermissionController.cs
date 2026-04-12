@@ -28,8 +28,8 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("MenuPermissionPolicy")]
-public class MenuPermissionController(IMediator mediator) : ControllerBase {
-    private readonly IMediator _mediator = mediator;
+public class MenuPermissionController(IMediator _mediator) : ControllerBase
+{
 
     /// <summary>
     /// 获取菜单权限列表

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: UserCommandHandlers.cs
  * 功能描述: 用户命令处理器，处理用户相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,8 +10,8 @@ using Application.Contracts.Commands;
 using Application.Contracts.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
-using Infrastructure.Shared.Units;
-using Infrastructure.Shared.Utils;
+using Domain.Shared.Units;
+using Domain.Shared.Utils;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -29,64 +29,32 @@ public class UserCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IL
     : DomainCreateCommandHandler<User, IUserRepository, UserCreateCommand, UserCreateDto>(unitOfWork, mapper, logger) {
 
     /// <summary>
-    /// 处理用户创建命令
+    /// 在事务内执行用户创建业务逻辑（包含邮箱唯一性验证和密码哈希处理）
     /// </summary>
-    /// <param name="request">创建命令</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>是否成功</returns>
-    /// <exception cref="ArgumentNullException">当命令或数据为 null 时抛出</exception>
-    /// <exception cref="ArgumentException">当数据集合为空时抛出</exception>
-    /// <exception cref="InvalidOperationException">当邮箱已存在或创建操作失败时抛出</exception>
-    public override async Task<bool> Handle(UserCreateCommand request, CancellationToken cancellationToken) {
-        ValidateRequest(request, cancellationToken);
-        ValidateCreateData(request.Data);
+    protected override async Task<bool> ExecuteInTransactionAsync(UserCreateCommand request, CancellationToken cancellationToken) {
+        var duplicateEmails = new List<string>();
 
-        try {
-            Logger.LogInformation("开始创建用户，数量: {Count}", request.Data.Count);
-
-            var result = await UnitOfWork.ExecuteInTransactionAsync(async () => {
-                var duplicateEmails = new List<string>();
-
-                foreach (var dto in request.Data) {
-                    var emailExists = await Repository.IsEmailExistsAsync(dto.Email, cancellationToken);
-                    if (emailExists) {
-                        duplicateEmails.Add(dto.Email);
-                    }
-                }
-
-                if (duplicateEmails.Count > 0) {
-                    throw new InvalidOperationException(
-                        $"用户创建失败，以下邮箱已存在: {string.Join(", ", duplicateEmails)}。" +
-                        "请使用不同的邮箱地址。");
-                }
-
-                var entities = Mapper.Map<List<User>>(request.Data);
-
-                foreach (var entity in entities) {
-                    var dto = request.Data.First(d => d.Email == entity.Email);
-                    entity.PasswordHash = PasswordUtil.HashPassword(dto.Password);
-                }
-
-                return await Repository.InsertAsync(entities, cancellationToken);
-            }, cancellationToken);
-
-            if (result) {
-                Logger.LogInformation("创建用户成功，数量: {Count}", request.Data.Count);
+        foreach (var dto in request.Data) {
+            var emailExists = await Repository.IsEmailExistsAsync(dto.Email, cancellationToken);
+            if (emailExists) {
+                duplicateEmails.Add(dto.Email);
             }
+        }
 
-            return result;
+        if (duplicateEmails.Count > 0) {
+            throw new InvalidOperationException(
+                $"用户创建失败，以下邮箱已存在: {string.Join(", ", duplicateEmails)}。" +
+                "请使用不同的邮箱地址。");
         }
-        catch (OperationCanceledException) {
-            Logger.LogWarning("创建用户操作被取消");
-            throw;
+
+        var entities = Mapper.Map<List<User>>(request.Data);
+
+        foreach (var entity in entities) {
+            var dto = request.Data.First(d => d.Email == entity.Email);
+            entity.PasswordHash = PasswordUtil.HashPassword(dto.Password);
         }
-        catch (InvalidOperationException) {
-            throw;
-        }
-        catch (Exception ex) {
-            LogException(ex, "创建", $"数量: {request.Data.Count}");
-            throw HandleException(ex, "创建", $"数量: {request.Data.Count}");
-        }
+
+        return await Repository.InsertAsync(entities, cancellationToken);
     }
 }
 

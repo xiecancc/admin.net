@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: HybridCacheProvider.cs
  * 功能描述: 基于 HybridCache 的缓存提供者实现
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -7,8 +7,9 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Infrastructure.Shared.Options;
+using Domain.Shared.Utils;
 using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;

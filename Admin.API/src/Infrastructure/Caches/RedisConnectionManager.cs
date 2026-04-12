@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: RedisConnectionManager.cs
  * 功能描述: Redis 连接管理实现，提供 Redis 连接的创建和管理功能
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -9,7 +9,7 @@ using System.Net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using Infrastructure.Shared.Caches;
+using Domain.Shared.Caches;
 using Infrastructure.Shared.Options;
 
 namespace Infrastructure.Caches;

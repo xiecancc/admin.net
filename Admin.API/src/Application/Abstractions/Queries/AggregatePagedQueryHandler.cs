@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 文件名称: AggregatePagedQueryHandler.cs
  * 功能描述: 聚合根分页查询处理器，用于处理聚合根实体的分页获取操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -10,8 +10,8 @@ using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 using Domain.Shared.Dtos;
-using Infrastructure.Shared.Caches;
-using Infrastructure.Shared.Units;
+using Domain.Shared.Caches;
+using Domain.Shared.Units;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;

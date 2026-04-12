@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: ResponseFilter.cs
  * 功能描述: 响应过滤器，统一包装 API 响应和异常处理
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -16,9 +16,9 @@ namespace API.Filters;
 /// 响应过滤器
 /// <para>统一包装 API 响应和异常处理</para>
 /// </summary>
-/// <param name="logger">日志记录器</param>
-public class ResponseFilter(ILogger<ResponseFilter> logger) : IAsyncExceptionFilter, IAsyncResultFilter {
-    private readonly ILogger<ResponseFilter> _logger = logger;
+/// <param name="_logger">日志记录器</param>
+public class ResponseFilter(ILogger<ResponseFilter> _logger) : IAsyncExceptionFilter, IAsyncResultFilter
+{
 
     /// <summary>
     /// 处理异常

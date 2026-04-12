@@ -1,4 +1,4 @@
-// ==================================================================================================
+﻿// ==================================================================================================
 // FileName: PermissionDomainService.cs
 // 功能描述: 权限领域服务实现，处理跨聚合的权限相关业务逻辑
 // 作    者: Admin.NET
@@ -9,7 +9,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
 using Domain.Shared.Enums;
-using Infrastructure.Shared.Services;
+using Domain.Shared.Services;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
 
