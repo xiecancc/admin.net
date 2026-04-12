@@ -193,3 +193,33 @@ public class ApiPermissionPagedDto : PermissionPagedDto {
 /// </summary>
 public class ApiPermissionActionDto : PermissionActionDto {
 }
+
+/// <summary>
+/// API 权限查询参数 DTO
+/// <para>用于 API 权限查询的参数封装</para>
+/// </summary>
+public class ApiPermissionQueryDto : PermissionQueryDto {
+    /// <summary>
+    /// API 路径
+    /// </summary>
+    /// <value>API 的访问路径，支持模糊查询</value>
+    public string? ApiPath { get; set; }
+
+    /// <summary>
+    /// HTTP 方法
+    /// </summary>
+    /// <value>HTTP 请求方法，如 GET、POST、PUT、DELETE 等</value>
+    public string? HttpMethod { get; set; }
+
+    /// <summary>
+    /// 模块名称
+    /// </summary>
+    /// <value>API 所属的模块名称</value>
+    public string? ModuleName { get; set; }
+
+    /// <summary>
+    /// 关联的菜单权限 ID
+    /// </summary>
+    /// <value>关联的菜单权限的 ID</value>
+    public Guid? MenuId { get; set; }
+}

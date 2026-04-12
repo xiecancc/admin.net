@@ -15,6 +15,7 @@ using Domain.Shared.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace API.Controllers;
 
@@ -26,18 +27,20 @@ namespace API.Controllers;
 [Route("api/v{version:apiVersion}/menu-permission")]
 [ApiVersion("1.0")]
 [Authorize]
+[EnableRateLimiting("MenuPermissionPolicy")]
 public class MenuPermissionController(IMediator mediator) : ControllerBase {
     private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取菜单权限列表
     /// </summary>
+    /// <param name="queryDto">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>菜单权限列表</returns>
     [HttpGet]
     [Permission("permission:menu:view")]
-    public async Task<ActionResult<List<MenuPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new MenuPermissionListQuery();
+    public async Task<ActionResult<List<MenuPermissionListDto>>> GetListAsync([FromQuery] MenuPermissionQueryDto queryDto, CancellationToken cancellationToken = default) {
+        var query = new MenuPermissionListQuery(queryDto);
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -49,43 +52,27 @@ public class MenuPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>菜单权限详情</returns>
     [HttpGet("{id:guid}")]
     [Permission("permission:menu:view")]
-    public async Task<ActionResult<MenuPermission?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
-        var query = new MenuPermissionByIdQuery(id);
+    public async Task<ActionResult<MenuPermissionDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
+        var query = new MenuPermissionByIdQuery(new MenuPermissionQueryDto()) { Id = id };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
     /// <summary>
     /// 分页获取菜单权限
     /// </summary>
+    /// <param name="queryDto">查询参数 DTO</param>
     /// <param name="page">页码</param>
     /// <param name="size">每页大小</param>
-    /// <param name="code">权限编码</param>
-    /// <param name="name">权限名称</param>
-    /// <param name="path">菜单路径</param>
-    /// <param name="isVisible">是否可见</param>
-    /// <param name="parentId">父权限ID</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:menu:view")]
-    public async Task<ActionResult<PagedResponse<MenuPermission>>> GetPagedAsync(
+    public async Task<ActionResult<PagedResponse<MenuPermissionPagedDto>>> GetPagedAsync(
+        [FromQuery] MenuPermissionQueryDto queryDto,
         [FromQuery] int page = 1,
         [FromQuery] int size = 10,
-        [FromQuery] string? code = null,
-        [FromQuery] string? name = null,
-        [FromQuery] string? path = null,
-        [FromQuery] bool? isVisible = null,
-        [FromQuery] Guid? parentId = null,
         CancellationToken cancellationToken = default) {
-        var query = new MenuPermissionPagedQuery {
-            Page = page,
-            Size = size,
-            Code = code,
-            Name = name,
-            Path = path,
-            IsVisible = isVisible,
-            ParentId = parentId
-        };
+        var query = new MenuPermissionPagedQuery(queryDto) { Page = page, Size = size };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

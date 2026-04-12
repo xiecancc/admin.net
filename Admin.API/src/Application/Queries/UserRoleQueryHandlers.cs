@@ -2,7 +2,7 @@
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
 using Application.Abstractions.Queries;
@@ -114,8 +114,8 @@ public class UserRoleIdsQueryHandler(
 public class UserRoleListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : ListQueryHandler<UserRoleListQuery, UserRole, IUserRoleRepository, UserRoleListDto>(unitOfWork, mapper, cacheProvider) {
-
+    ICacheProvider cacheProvider,
+    ILogger<UserRoleListQueryHandler> logger) : ListQueryHandler<UserRole, IUserRoleRepository, UserRoleListQuery, UserRoleQueryDto, UserRoleListDto>(unitOfWork, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -125,11 +125,13 @@ public class UserRoleListQueryHandler(
     protected override List<Expression<Func<UserRole, bool>>> BuildPredicates(UserRoleListQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (query.UserId.HasValue) {
-            predicates.Add(t => t.UserId == query.UserId.Value);
-        }
-        if (query.RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == query.RoleId.Value);
+        if (query.QueryDto != null) {
+            if (query.QueryDto.UserId.HasValue) {
+                predicates.Add(t => t.UserId == query.QueryDto.UserId.Value);
+            }
+            if (query.QueryDto.RoleId.HasValue) {
+                predicates.Add(t => t.RoleId == query.QueryDto.RoleId.Value);
+            }
         }
 
         return predicates;
@@ -143,11 +145,13 @@ public class UserRoleListQueryHandler(
     protected override StringBuilder BuildCacheParams(UserRoleListQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (query.UserId.HasValue) {
-            builder.Append($"|UserId={query.UserId.Value}");
-        }
-        if (query.RoleId.HasValue) {
-            builder.Append($"|RoleId={query.RoleId.Value}");
+        if (query.QueryDto != null) {
+            if (query.QueryDto.UserId.HasValue) {
+                builder.Append($"|UserId={query.QueryDto.UserId.Value}");
+            }
+            if (query.QueryDto.RoleId.HasValue) {
+                builder.Append($"|RoleId={query.QueryDto.RoleId.Value}");
+            }
         }
 
         return builder;
@@ -161,8 +165,8 @@ public class UserRoleListQueryHandler(
 public class UserRolePagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : PagedQueryHandler<UserRolePagedQuery, UserRole, IUserRoleRepository, UserRolePagedDto>(unitOfWork, mapper, cacheProvider) {
-
+    ICacheProvider cacheProvider,
+    ILogger<UserRolePagedQueryHandler> logger) : PagedQueryHandler<UserRole, IUserRoleRepository, UserRolePagedQuery, UserRoleQueryDto, UserRolePagedDto>(unitOfWork, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -172,11 +176,13 @@ public class UserRolePagedQueryHandler(
     protected override List<Expression<Func<UserRole, bool>>> BuildPredicates(UserRolePagedQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (query.UserId.HasValue) {
-            predicates.Add(t => t.UserId == query.UserId.Value);
-        }
-        if (query.RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == query.RoleId.Value);
+        if (query.QueryDto != null) {
+            if (query.QueryDto.UserId.HasValue) {
+                predicates.Add(t => t.UserId == query.QueryDto.UserId.Value);
+            }
+            if (query.QueryDto.RoleId.HasValue) {
+                predicates.Add(t => t.RoleId == query.QueryDto.RoleId.Value);
+            }
         }
 
         return predicates;
@@ -190,11 +196,13 @@ public class UserRolePagedQueryHandler(
     protected override StringBuilder BuildCacheParams(UserRolePagedQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (query.UserId.HasValue) {
-            builder.Append($"|UserId={query.UserId.Value}");
-        }
-        if (query.RoleId.HasValue) {
-            builder.Append($"|RoleId={query.RoleId.Value}");
+        if (query.QueryDto != null) {
+            if (query.QueryDto.UserId.HasValue) {
+                builder.Append($"|UserId={query.QueryDto.UserId.Value}");
+            }
+            if (query.QueryDto.RoleId.HasValue) {
+                builder.Append($"|RoleId={query.QueryDto.RoleId.Value}");
+            }
         }
 
         return builder;

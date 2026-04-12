@@ -237,3 +237,27 @@ public class UserPagedDto : AggregatePagedDto {
 /// </summary>
 public class UserActionDto : AggregateActionDto {
 }
+
+/// <summary>
+/// 用户查询参数 DTO
+/// <para>用于用户查询的参数封装</para>
+/// </summary>
+public class UserQueryDto : AggregateQueryDto {
+    /// <summary>
+    /// 邮箱
+    /// </summary>
+    /// <value>用户的邮箱地址，支持模糊查询</value>
+    public string? Email { get; set; }
+
+    /// <summary>
+    /// 昵称
+    /// </summary>
+    /// <value>用户的昵称，支持模糊查询</value>
+    public string? NickName { get; set; }
+
+    /// <summary>
+    /// 手机号
+    /// </summary>
+    /// <value>用户的手机号码，支持模糊查询</value>
+    public string? Phone { get; set; }
+}

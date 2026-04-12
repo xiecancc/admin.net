@@ -64,3 +64,25 @@ public class ButtonPermissionActionDtoValidator : DtoValidatorBase<ButtonPermiss
     public ButtonPermissionActionDtoValidator() {
     }
 }
+
+/// <summary>
+/// 按钮权限查询参数 DTO 验证器
+/// </summary>
+public class ButtonPermissionQueryDtoValidator : DtoValidatorBase<ButtonPermissionQueryDto> {
+    /// <summary>
+    /// 初始化按钮权限查询参数 DTO 验证器
+    /// </summary>
+    public ButtonPermissionQueryDtoValidator() {
+        RuleFor(x => x.Code)
+            .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Code));
+
+        RuleFor(x => x.Name)
+            .MaximumLength(50).WithMessage("权限名称长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Name));
+
+        RuleFor(x => x.ActionType)
+            .MaximumLength(50).WithMessage("操作类型长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.ActionType));
+    }
+}

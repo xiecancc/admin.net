@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRoleDtos.cs
  * 功能描述: 用户角色关联关系DTO类，用于用户角色关系的数据传输
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -125,4 +125,22 @@ public class UserRolePagedDto : PagedDto {
     public string? RoleName {
         get; set;
     }
+}
+
+/// <summary>
+/// 用户角色关联查询参数 DTO
+/// <para>用于用户角色关联查询的参数封装</para>
+/// </summary>
+public class UserRoleQueryDto : QueryDto {
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    /// <value>用户的唯一标识符</value>
+    public Guid? UserId { get; set; }
+
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符</value>
+    public Guid? RoleId { get; set; }
 }

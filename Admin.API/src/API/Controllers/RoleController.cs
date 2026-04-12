@@ -2,7 +2,7 @@
  * 文件名称: RoleController.cs
  * 功能描述: 角色控制器，处理角色相关的CRUD操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
 using API.Filters;
@@ -28,18 +28,21 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [EnableRateLimiting("RolePolicy")]
-public class RoleController(IMediator mediator) : ControllerBase {
+public class RoleController(IMediator mediator) : ControllerBase
+{
     private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取角色列表
     /// </summary>
+    /// <param name="queryDto">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>角色列表</returns>
     [HttpGet]
     [Permission("role:view")]
-    public async Task<ActionResult<List<RoleListDto>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new RoleListQuery();
+    public async Task<ActionResult<List<RoleListDto>>> GetListAsync([FromQuery] RoleQueryDto queryDto, CancellationToken cancellationToken = default)
+    {
+        var query = new RoleListQuery(queryDto);
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -51,20 +54,25 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>角色详情</returns>
     [HttpGet("{id:guid}")]
     [Permission("role:view")]
-    public async Task<ActionResult<RoleDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
-        var query = new RoleByIdQuery(id);
+    public async Task<ActionResult<RoleDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var query = new RoleByIdQuery(new RoleQueryDto()) { Id = id };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
     /// <summary>
     /// 分页获取角色
     /// </summary>
-    /// <param name="query">查询参数</param>
+    /// <param name="queryDto">查询参数</param>
+    /// <param name="page">当前页面</param>
+    /// <param name="size">分页大小</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("role:view")]
-    public async Task<ActionResult<PagedResponse<RolePagedDto>>> GetPagedAsync([FromQuery] RolePagedQuery query, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<PagedResponse<RolePagedDto>>> GetPagedAsync([FromQuery] RoleQueryDto queryDto, [FromQuery] int page = 1, [FromQuery] int size = 10, CancellationToken cancellationToken = default)
+    {
+        var query = new RolePagedQuery(queryDto) { Page = page, Size = size };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -76,7 +84,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost]
     [Permission("role:create")]
-    public async Task<ActionResult<bool>> CreateAsync([FromBody] RoleCreateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> CreateAsync([FromBody] RoleCreateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new RoleCreateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -89,7 +98,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPut]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> UpdateAsync([FromBody] RoleUpdateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> UpdateAsync([FromBody] RoleUpdateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new RoleUpdateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -102,7 +112,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpDelete]
     [Permission("role:delete")]
-    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new RoleDeleteCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -115,7 +126,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost("restore")]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new RoleRestoreCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -131,7 +143,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost("{roleId:guid}/permissions")]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> AssignPermissionsAsync(Guid roleId, [FromBody] List<Guid> permissionIds, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> AssignPermissionsAsync(Guid roleId, [FromBody] List<Guid> permissionIds, CancellationToken cancellationToken = default)
+    {
         var command = new AssignPermissionsToRoleCommand { RoleId = roleId, PermissionIds = permissionIds };
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -145,7 +158,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpDelete("{roleId:guid}/permissions")]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> RemovePermissionsAsync(Guid roleId, [FromBody] List<Guid> permissionIds, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> RemovePermissionsAsync(Guid roleId, [FromBody] List<Guid> permissionIds, CancellationToken cancellationToken = default)
+    {
         var command = new RemovePermissionsFromRoleCommand { RoleId = roleId, PermissionIds = permissionIds };
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -158,8 +172,9 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>权限列表</returns>
     [HttpGet("{roleId:guid}/permissions")]
     [Permission("role:view")]
-    public async Task<ActionResult<List<Permission>>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default) {
-        var query = new RolePermissionsQuery(roleId);
+    public async Task<ActionResult<List<PermissionListDto>>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default)
+    {
+        var query = new RolePermissionsQuery(new RolePermissionQueryDto()) { RoleId = roleId };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -171,8 +186,9 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>权限ID列表</returns>
     [HttpGet("{roleId:guid}/permission-ids")]
     [Permission("role:view")]
-    public async Task<ActionResult<List<Guid>>> GetRolePermissionIdsAsync(Guid roleId, CancellationToken cancellationToken = default) {
-        var query = new RolePermissionIdsQuery(roleId);
+    public async Task<ActionResult<List<Guid>>> GetRolePermissionIdsAsync(Guid roleId, CancellationToken cancellationToken = default)
+    {
+        var query = new RolePermissionIdsQuery(new RolePermissionQueryDto()) { RoleId = roleId };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -189,7 +205,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost("{roleId:guid}/users")]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> AssignUsersAsync(Guid roleId, [FromBody] List<Guid> userIds, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> AssignUsersAsync(Guid roleId, [FromBody] List<Guid> userIds, CancellationToken cancellationToken = default)
+    {
         var command = new AssignUsersToRoleCommand { RoleId = roleId, UserIds = userIds };
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -203,7 +220,8 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpDelete("{roleId:guid}/users")]
     [Permission("role:update")]
-    public async Task<ActionResult<bool>> RemoveUsersAsync(Guid roleId, [FromBody] List<Guid> userIds, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> RemoveUsersAsync(Guid roleId, [FromBody] List<Guid> userIds, CancellationToken cancellationToken = default)
+    {
         var command = new RemoveUsersFromRoleCommand { RoleId = roleId, UserIds = userIds };
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -216,8 +234,9 @@ public class RoleController(IMediator mediator) : ControllerBase {
     /// <returns>用户列表</returns>
     [HttpGet("{roleId:guid}/users")]
     [Permission("role:view")]
-    public async Task<ActionResult<List<User>>> GetRoleUsersAsync(Guid roleId, CancellationToken cancellationToken = default) {
-        var query = new RoleUsersQuery(roleId);
+    public async Task<ActionResult<List<UserListDto>>> GetRoleUsersAsync(Guid roleId, CancellationToken cancellationToken = default)
+    {
+        var query = new RoleUsersQuery(new UserRoleQueryDto()) { RoleId = roleId };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

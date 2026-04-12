@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: IRoleRepository.cs
  * 功能描述: 角色仓储接口，定义角色相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -46,6 +46,7 @@ namespace Domain.Repositories;
 /// }
 /// </code>
 /// </example>
+/// <inheritdoc/>
 public interface IRoleRepository : IAggregateTreeRepository<Role> {
     /// <summary>
     /// 根据编码查找角色
@@ -62,4 +63,22 @@ public interface IRoleRepository : IAggregateTreeRepository<Role> {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>是否存在</returns>
     Task<bool> IsCodeExistsAsync(string code, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 检测角色继承是否存在循环引用
+    /// </summary>
+    /// <param name="roleId">角色ID</param>
+    /// <param name="parentId">要设置的父角色ID</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>是否存在循环引用</returns>
+    /// <exception cref="ArgumentException">当 roleId 或 parentId 为空时抛出</exception>
+    /// <remarks>
+    /// <para>循环引用检测算法：</para>
+    /// <list type="number">
+    ///   <item>检查角色ID是否与父角色ID相同</item>
+    ///   <item>遍历父角色的继承链，检查是否包含当前角色</item>
+    ///   <item>如果找到当前角色，则存在循环引用</item>
+    /// </list>
+    /// </remarks>
+    Task<bool> HasInheritanceCycleAsync(Guid roleId, Guid parentId, CancellationToken cancellationToken = default);
 }

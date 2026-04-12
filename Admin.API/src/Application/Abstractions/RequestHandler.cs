@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RequestHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -17,14 +17,14 @@ namespace Application.Abstractions;
 /// 领域请求处理器基类
 /// 所有领域相关请求处理器的基础类，包含工作单元、仓储和映射器属性
 /// </summary>
-/// <typeparam name="TRequest">请求类型</typeparam>
 /// <typeparam name="TDomain">领域模型类型</typeparam>
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
+/// <typeparam name="TRequest">请求类型</typeparam>
 /// <typeparam name="TResponse">响应类型</typeparam>
-public abstract class RequestHandler<TRequest, TDomain, TRepository, TResponse> : IRequestHandler<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public abstract class RequestHandler<TDomain, TRepository, TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
     where TDomain : DomainBase, new()
-    where TRepository : IDomainRepository<TDomain> {
+    where TRepository : IDomainRepository<TDomain>
+    where TRequest : IRequest<TResponse> {
     /// <summary>
     /// 工作单元
     /// </summary>

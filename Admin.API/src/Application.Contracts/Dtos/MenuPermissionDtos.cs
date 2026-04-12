@@ -309,3 +309,21 @@ public class MenuPermissionPagedDto : PermissionPagedDto {
 /// </summary>
 public class MenuPermissionActionDto : PermissionActionDto {
 }
+
+/// <summary>
+/// 菜单权限查询参数 DTO
+/// <para>用于菜单权限查询的参数封装</para>
+/// </summary>
+public class MenuPermissionQueryDto : PermissionQueryDto {
+    /// <summary>
+    /// 菜单路径
+    /// </summary>
+    /// <value>菜单的访问路径，支持模糊查询</value>
+    public string? Path { get; set; }
+
+    /// <summary>
+    /// 是否可见
+    /// </summary>
+    /// <value>菜单是否在前端显示</value>
+    public bool? IsVisible { get; set; }
+}

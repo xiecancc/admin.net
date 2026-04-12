@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RolePermissionDtos.cs
  * 功能描述: 角色权限关联关系DTO类，用于角色权限关系的数据传输
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -141,4 +141,22 @@ public class RolePermissionPagedDto : PagedDto {
     public string? PermissionType {
         get; set;
     }
+}
+
+/// <summary>
+/// 角色权限关联查询参数 DTO
+/// <para>用于角色权限关联查询的参数封装</para>
+/// </summary>
+public class RolePermissionQueryDto : QueryDto {
+    /// <summary>
+    /// 角色 ID
+    /// </summary>
+    /// <value>角色的唯一标识符</value>
+    public Guid? RoleId { get; set; }
+
+    /// <summary>
+    /// 权限 ID
+    /// </summary>
+    /// <value>权限的唯一标识符</value>
+    public Guid? PermissionId { get; set; }
 }

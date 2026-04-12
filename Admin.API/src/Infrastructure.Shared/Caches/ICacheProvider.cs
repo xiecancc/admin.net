@@ -1,8 +1,8 @@
-﻿namespace Infrastructure.Shared.Caches;
+namespace Infrastructure.Shared.Caches;
 
 /// <summary>
 /// 缓存提供者接口
-/// 统一的缓存操作接口，支持通配符删除
+/// <para>统一的缓存操作接口，支持通配符删除和统计功能</para>
 /// </summary>
 public interface ICacheProvider {
     /// <summary>
@@ -79,4 +79,25 @@ public interface ICacheProvider {
     /// <para>同一时刻只有一个请求能加载数据，其他请求等待</para>
     /// </remarks>
     Task<T?> GetOrSetAsync<T>(string key, Func<Task<T?>> factory, TimeSpan? expiration = null);
+
+    /// <summary>
+    /// 获取缓存统计数据
+    /// <para>返回包含命中率、响应时间等统计信息的快照</para>
+    /// </summary>
+    /// <returns>缓存统计数据快照</returns>
+    /// <remarks>
+    /// <para>统计信息包括：命中次数、未命中次数、命中率、平均响应时间等</para>
+    /// <para>如果统计功能未启用，返回空的统计数据</para>
+    /// </remarks>
+    CacheStatisticsSnapshot GetStatistics();
+
+    /// <summary>
+    /// 重置缓存统计数据
+    /// <para>将所有统计指标重置为初始值</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>用于定期重置统计数据，便于监控特定时间段的缓存性能</para>
+    /// <para>如果统计功能未启用，此方法不执行任何操作</para>
+    /// </remarks>
+    void ResetStatistics();
 }

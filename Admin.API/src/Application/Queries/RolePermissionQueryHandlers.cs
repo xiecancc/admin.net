@@ -11,6 +11,7 @@ using Application.Contracts.Queries;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Repositories;
+using Domain.Services;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using MediatR;
@@ -28,7 +29,7 @@ public class RolePermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermissionPagedQuery, RolePermission, IRolePermissionRepository, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
+    ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionPagedQuery, RolePermissionQueryDto, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider, logger) {
     private readonly ILogger<RolePermissionPagedQueryHandler> _logger = logger;
 
 
@@ -41,15 +42,17 @@ public class RolePermissionPagedQueryHandler(
     protected override List<Expression<Func<RolePermission, bool>>> BuildPredicates(RolePermissionPagedQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (query.RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == query.RoleId.Value);
-        }
-        if (query.PermissionId.HasValue) {
-            predicates.Add(t => t.PermissionId == query.PermissionId.Value);
+        if (query.QueryDto != null) {
+            if (query.QueryDto.RoleId.HasValue) {
+                predicates.Add(t => t.RoleId == query.QueryDto.RoleId.Value);
+            }
+            if (query.QueryDto.PermissionId.HasValue) {
+                predicates.Add(t => t.PermissionId == query.QueryDto.PermissionId.Value);
+            }
         }
 
         _logger.LogDebug("构建角色权限分页查询条件 | RoleId: {RoleId} | PermissionId: {PermissionId} | PredicateCount: {Count}",
-            query.RoleId, query.PermissionId, predicates.Count);
+            query.QueryDto?.RoleId, query.QueryDto?.PermissionId, predicates.Count);
 
         return predicates;
     }
@@ -73,11 +76,13 @@ public class RolePermissionPagedQueryHandler(
     protected override StringBuilder BuildCacheParams(RolePermissionPagedQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (query.RoleId.HasValue) {
-            builder.Append($"|RoleId={query.RoleId.Value}");
-        }
-        if (query.PermissionId.HasValue) {
-            builder.Append($"|PermissionId={query.PermissionId.Value}");
+        if (query.QueryDto != null) {
+            if (query.QueryDto.RoleId.HasValue) {
+                builder.Append($"|RoleId={query.QueryDto.RoleId.Value}");
+            }
+            if (query.QueryDto.PermissionId.HasValue) {
+                builder.Append($"|PermissionId={query.QueryDto.PermissionId.Value}");
+            }
         }
 
         return builder;
@@ -92,7 +97,7 @@ public class RolePermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermissionListQuery, RolePermission, IRolePermissionRepository, RolePermissionListDto>(unitOfWork, mapper, cacheProvider) {
+    ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionListQuery, RolePermissionQueryDto, RolePermissionListDto>(unitOfWork, mapper, cacheProvider, logger) {
     private readonly ILogger<RolePermissionListQueryHandler> _logger = logger;
 
 
@@ -105,15 +110,17 @@ public class RolePermissionListQueryHandler(
     protected override List<Expression<Func<RolePermission, bool>>> BuildPredicates(RolePermissionListQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (query.RoleId.HasValue) {
-            predicates.Add(t => t.RoleId == query.RoleId.Value);
-        }
-        if (query.PermissionId.HasValue) {
-            predicates.Add(t => t.PermissionId == query.PermissionId.Value);
+        if (query.QueryDto != null) {
+            if (query.QueryDto.RoleId.HasValue) {
+                predicates.Add(t => t.RoleId == query.QueryDto.RoleId.Value);
+            }
+            if (query.QueryDto.PermissionId.HasValue) {
+                predicates.Add(t => t.PermissionId == query.QueryDto.PermissionId.Value);
+            }
         }
 
         _logger.LogDebug("构建角色权限列表查询条件 | RoleId: {RoleId} | PermissionId: {PermissionId} | PredicateCount: {Count}",
-            query.RoleId, query.PermissionId, predicates.Count);
+            query.QueryDto?.RoleId, query.QueryDto?.PermissionId, predicates.Count);
 
         return predicates;
     }
@@ -137,11 +144,13 @@ public class RolePermissionListQueryHandler(
     protected override StringBuilder BuildCacheParams(RolePermissionListQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (query.RoleId.HasValue) {
-            builder.Append($"|RoleId={query.RoleId.Value}");
-        }
-        if (query.PermissionId.HasValue) {
-            builder.Append($"|PermissionId={query.PermissionId.Value}");
+        if (query.QueryDto != null) {
+            if (query.QueryDto.RoleId.HasValue) {
+                builder.Append($"|RoleId={query.QueryDto.RoleId.Value}");
+            }
+            if (query.QueryDto.PermissionId.HasValue) {
+                builder.Append($"|PermissionId={query.QueryDto.PermissionId.Value}");
+            }
         }
 
         return builder;
@@ -152,10 +161,10 @@ public class RolePermissionListQueryHandler(
 /// 角色权限列表查询处理器
 /// </summary>
 public class RolePermissionsQueryHandler(
-    IUnitOfWork unitOfWork,
+    IPermissionDomainService permissionDomainService,
     IMapper mapper,
     ILogger<RolePermissionsQueryHandler> logger) : IRequestHandler<RolePermissionsQuery, List<PermissionListDto>> {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IPermissionDomainService _permissionDomainService = permissionDomainService;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<RolePermissionsQueryHandler> _logger = logger;
 
@@ -163,8 +172,7 @@ public class RolePermissionsQueryHandler(
     /// 处理角色权限列表查询
     /// </summary>
     public async Task<List<PermissionListDto>> Handle(RolePermissionsQuery request, CancellationToken cancellationToken) {
-        var rolePermissionRepository = _unitOfWork.GetRepository<IRolePermissionRepository, RolePermission>();
-        var permissions = await rolePermissionRepository.GetPermissionsByRoleIdAsync(request.RoleId, cancellationToken);
+        var permissions = await _permissionDomainService.GetRolePermissionsAsync(request.RoleId, cancellationToken);
 
         _logger.LogDebug("查询角色权限列表 | RoleId: {RoleId} | PermissionCount: {Count}", 
             request.RoleId, permissions.Count);

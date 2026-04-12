@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称：MenuPermissionDtosValidator.cs
  * 功能描述：菜单权限相关 DTO 验证器，包含菜单权限创建、更新等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
@@ -94,5 +94,27 @@ public class MenuPermissionActionDtoValidator : DtoValidatorBase<MenuPermissionA
     /// 初始化菜单权限操作 DTO 验证器
     /// </summary>
     public MenuPermissionActionDtoValidator() {
+    }
+}
+
+/// <summary>
+/// 菜单权限查询参数 DTO 验证器
+/// </summary>
+public class MenuPermissionQueryDtoValidator : DtoValidatorBase<MenuPermissionQueryDto> {
+    /// <summary>
+    /// 初始化菜单权限查询参数 DTO 验证器
+    /// </summary>
+    public MenuPermissionQueryDtoValidator() {
+        RuleFor(x => x.Code)
+            .MaximumLength(100).WithMessage("权限编码长度不能超过 100 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Code));
+
+        RuleFor(x => x.Name)
+            .MaximumLength(50).WithMessage("权限名称长度不能超过 50 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Name));
+
+        RuleFor(x => x.Path)
+            .MaximumLength(300).WithMessage("菜单路径长度不能超过 300 个字符")
+            .When(x => !string.IsNullOrEmpty(x.Path));
     }
 }

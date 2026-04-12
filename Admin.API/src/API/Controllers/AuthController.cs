@@ -94,7 +94,7 @@ public class AuthController(ILogger<AuthController> logger, IMediator mediator) 
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? throw new ArgumentException("用户信息不完整");
 
         var userId = Guid.Parse(userIdClaim.Value);
-        var query = new GetCurrentUserQuery(userId);
+        var query = new GetProfileQuery { UserId = userId };
         var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }

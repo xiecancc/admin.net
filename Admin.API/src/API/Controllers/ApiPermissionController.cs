@@ -2,7 +2,7 @@
  * 文件名称: ApiPermissionController.cs
  * 功能描述: API权限控制器，处理API权限相关的 CRUD 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
 using API.Filters;
@@ -15,6 +15,7 @@ using Domain.Shared.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace API.Controllers;
 
@@ -26,18 +27,22 @@ namespace API.Controllers;
 [Route("api/v{version:apiVersion}/api-permission")]
 [ApiVersion("1.0")]
 [Authorize]
-public class ApiPermissionController(IMediator mediator) : ControllerBase {
+[EnableRateLimiting("ApiPermissionPolicy")]
+public class ApiPermissionController(IMediator mediator) : ControllerBase
+{
     private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取API权限列表
     /// </summary>
+    /// <param name="queryDto">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>API权限列表</returns>
     [HttpGet]
     [Permission("permission:api:view")]
-    public async Task<ActionResult<List<ApiPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new ApiPermissionListQuery();
+    public async Task<ActionResult<List<ApiPermissionListDto>>> GetListAsync([FromQuery] ApiPermissionQueryDto queryDto, CancellationToken cancellationToken = default)
+    {
+        var query = new ApiPermissionListQuery(queryDto);
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -49,20 +54,25 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>API权限详情</returns>
     [HttpGet("{id:guid}")]
     [Permission("permission:api:view")]
-    public async Task<ActionResult<ApiPermission?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
-        var query = new ApiPermissionByIdQuery(id);
+    public async Task<ActionResult<ApiPermissionDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var query = new ApiPermissionByIdQuery(new ApiPermissionQueryDto()) { Id = id };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
     /// <summary>
     /// 分页获取API权限
     /// </summary>
-    /// <param name="query">查询参数</param>
+    /// <param name="queryDto">查询参数</param>
+    /// <param name="page">当前页面</param>
+    /// <param name="size">分页大小</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:api:view")]
-    public async Task<ActionResult<PagedResponse<ApiPermission>>> GetPagedAsync([FromQuery] ApiPermissionPagedQuery query, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<PagedResponse<ApiPermissionPagedDto>>> GetPagedAsync([FromQuery] ApiPermissionQueryDto queryDto, [FromQuery] int page = 1, [FromQuery] int size = 10, CancellationToken cancellationToken = default)
+    {
+        var query = new ApiPermissionPagedQuery(queryDto) { Page = page, Size = size };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -74,7 +84,8 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost]
     [Permission("permission:api:create")]
-    public async Task<ActionResult<bool>> CreateAsync([FromBody] ApiPermissionCreateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> CreateAsync([FromBody] ApiPermissionCreateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new ApiPermissionCreateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -87,7 +98,8 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPut]
     [Permission("permission:api:update")]
-    public async Task<ActionResult<bool>> UpdateAsync([FromBody] ApiPermissionUpdateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> UpdateAsync([FromBody] ApiPermissionUpdateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new ApiPermissionUpdateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -100,7 +112,8 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpDelete]
     [Permission("permission:api:delete")]
-    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new ApiPermissionDeleteCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -113,7 +126,8 @@ public class ApiPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost("restore")]
     [Permission("permission:api:update")]
-    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new ApiPermissionRestoreCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }

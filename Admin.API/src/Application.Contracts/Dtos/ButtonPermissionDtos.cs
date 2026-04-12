@@ -113,3 +113,21 @@ public class ButtonPermissionPagedDto : PermissionPagedDto {
 /// </summary>
 public class ButtonPermissionActionDto : PermissionActionDto {
 }
+
+/// <summary>
+/// 按钮权限查询参数 DTO
+/// <para>用于按钮权限查询的参数封装</para>
+/// </summary>
+public class ButtonPermissionQueryDto : PermissionQueryDto {
+    /// <summary>
+    /// 操作类型
+    /// </summary>
+    /// <value>按钮的操作类型</value>
+    public string? ActionType { get; set; }
+
+    /// <summary>
+    /// 关联的菜单权限 ID
+    /// </summary>
+    /// <value>关联的菜单权限的 ID</value>
+    public Guid? MenuId { get; set; }
+}

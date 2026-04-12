@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称：UserDtosValidator.cs
  * 功能描述：用户相关 DTO 验证器，包含用户创建、更新等验证规则
  * 作者信息：谢灿软件 <492384481@qq.com>
@@ -150,18 +150,18 @@ public class UserListQueryValidator : DtoValidatorBase<UserListQuery> {
     /// 初始化用户列表查询验证器
     /// </summary>
     public UserListQueryValidator() {
-        RuleFor(x => x.Email)
+        RuleFor(x => x.QueryDto.Email)
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")
-            .When(x => !string.IsNullOrEmpty(x.Email));
+            .When(x => x.QueryDto != null && !string.IsNullOrEmpty(x.QueryDto.Email));
 
-        RuleFor(x => x.NickName)
+        RuleFor(x => x.QueryDto.NickName)
             .MaximumLength(50).WithMessage("昵称长度不能超过 50 个字符")
-            .When(x => !string.IsNullOrEmpty(x.NickName));
+            .When(x => x.QueryDto != null && !string.IsNullOrEmpty(x.QueryDto.NickName));
 
-        RuleFor(x => x.Phone)
+        RuleFor(x => x.QueryDto.Phone)
             .MaximumLength(20).WithMessage("手机号长度不能超过 20 个字符")
-            .When(x => !string.IsNullOrEmpty(x.Phone));
+            .When(x => x.QueryDto != null && !string.IsNullOrEmpty(x.QueryDto.Phone));
     }
 }
 
@@ -179,7 +179,17 @@ public class UserPagedQueryValidator : DtoValidatorBase<UserPagedQuery> {
         RuleFor(x => x.Size)
             .GreaterThanOrEqualTo(1).WithMessage("每页大小必须大于等于 1")
             .LessThanOrEqualTo(100).WithMessage("每页大小不能超过 100");
+    }
+}
 
+/// <summary>
+/// 用户查询参数 DTO 验证器
+/// </summary>
+public class UserQueryDtoValidator : DtoValidatorBase<UserQueryDto> {
+    /// <summary>
+    /// 初始化用户查询参数 DTO 验证器
+    /// </summary>
+    public UserQueryDtoValidator() {
         RuleFor(x => x.Email)
             .EmailAddress().WithMessage("邮箱格式无效")
             .MaximumLength(100).WithMessage("邮箱长度不能超过 100 个字符")

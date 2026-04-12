@@ -55,6 +55,12 @@ public class RoleUpdateDto : AggregateUpdateDto {
     public required string Code { get; set; } = string.Empty;
 
     /// <summary>
+    /// 父角色 ID
+    /// </summary>
+    /// <value>父角色的 ID，为空表示顶级角色</value>
+    public Guid? ParentId { get; set; }
+
+    /// <summary>
     /// 排序
     /// </summary>
     /// <value>角色的排序值</value>
@@ -184,4 +190,28 @@ public class RolePagedDto : AggregatePagedDto {
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
 public class RoleActionDto : AggregateActionDto {
+}
+
+/// <summary>
+/// 角色查询参数 DTO
+/// <para>用于角色查询的参数封装</para>
+/// </summary>
+public class RoleQueryDto : AggregateQueryDto {
+    /// <summary>
+    /// 角色代码
+    /// </summary>
+    /// <value>角色的代码，支持模糊查询</value>
+    public string? Code { get; set; }
+
+    /// <summary>
+    /// 角色名称
+    /// </summary>
+    /// <value>角色的名称，支持模糊查询</value>
+    public string? Name { get; set; }
+
+    /// <summary>
+    /// 父角色 ID
+    /// </summary>
+    /// <value>父角色的 ID</value>
+    public Guid? ParentId { get; set; }
 }

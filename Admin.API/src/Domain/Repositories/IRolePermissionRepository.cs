@@ -2,7 +2,7 @@
  * 文件名称: IRolePermissionRepository.cs
  * 功能描述: 角色权限关联仓储接口，用于处理角色和权限之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-03-30
+ * 最近修订: 2026-04-11
  */
 
 using Domain.Entities;
@@ -14,6 +14,18 @@ namespace Domain.Repositories;
 /// 角色权限关联仓储接口
 /// <para>用于处理角色和权限之间的多对多关联关系</para>
 /// </summary>
+/// <remarks>
+/// <para>职责：</para>
+/// <list type="bullet">
+///   <item>管理角色权限关联关系（分配、移除）</item>
+///   <item>查询角色权限关联 ID 列表</item>
+///   <item>检查角色是否拥有指定权限</item>
+/// </list>
+/// <para>不包含的职责（已迁移到领域服务）：</para>
+/// <list type="bullet">
+///   <item>获取角色的完整权限实体列表 → IPermissionDomainService.GetRolePermissionsAsync</item>
+/// </list>
+/// </remarks>
 /// <example>
 /// <code>
 /// // 在应用服务中使用
@@ -46,14 +58,6 @@ public interface IRolePermissionRepository : IDomainRepository<RolePermission> {
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>权限 ID 列表</returns>
     Task<List<Guid>> GetPermissionIdsByRoleIdAsync(Guid roleId, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// 根据角色 ID 获取权限列表
-    /// </summary>
-    /// <param name="roleId">角色 ID</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>权限列表</returns>
-    Task<List<Permission>> GetPermissionsByRoleIdAsync(Guid roleId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据权限 ID 获取角色 ID 列表

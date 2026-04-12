@@ -19,13 +19,13 @@ namespace Application.Queries;
 /// <para>处理获取当前用户信息的请求</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元</param>
-public class GetCurrentUserQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCurrentUserQuery, LoginUserInfoDto> {
+public class GetProfileQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetProfileQuery, LoginUserInfoDto> {
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
     /// <summary>
     /// 处理获取当前用户信息查询
     /// </summary>
-    public async Task<LoginUserInfoDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken) {
+    public async Task<LoginUserInfoDto> Handle(GetProfileQuery request, CancellationToken cancellationToken) {
         var userRepository = _unitOfWork.GetRepository<IUserRepository, User>();
         var user = await userRepository.GetAsync(request.UserId, cancellationToken) ?? throw new ArgumentException("用户不存在");
 

@@ -2,7 +2,7 @@
  * 文件名称: ButtonPermissionController.cs
  * 功能描述: 按钮权限控制器，处理按钮权限相关的 CRUD 操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
 using API.Filters;
@@ -15,6 +15,7 @@ using Domain.Shared.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace API.Controllers;
 
@@ -26,18 +27,22 @@ namespace API.Controllers;
 [Route("api/v{version:apiVersion}/button-permission")]
 [ApiVersion("1.0")]
 [Authorize]
-public class ButtonPermissionController(IMediator mediator) : ControllerBase {
+[EnableRateLimiting("ButtonPermissionPolicy")]
+public class ButtonPermissionController(IMediator mediator) : ControllerBase
+{
     private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// 获取按钮权限列表
     /// </summary>
+    /// <param name="queryDto">查询参数</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>按钮权限列表</returns>
     [HttpGet]
     [Permission("permission:button:view")]
-    public async Task<ActionResult<List<ButtonPermission>>> GetListAsync(CancellationToken cancellationToken = default) {
-        var query = new ButtonPermissionListQuery();
+    public async Task<ActionResult<List<ButtonPermissionListDto>>> GetListAsync([FromQuery] ButtonPermissionQueryDto queryDto, CancellationToken cancellationToken = default)
+    {
+        var query = new ButtonPermissionListQuery(queryDto);
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -49,20 +54,25 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>按钮权限详情</returns>
     [HttpGet("{id:guid}")]
     [Permission("permission:button:view")]
-    public async Task<ActionResult<ButtonPermission?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) {
-        var query = new ButtonPermissionByIdQuery(id);
+    public async Task<ActionResult<ButtonPermissionDetailDto?>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var query = new ButtonPermissionByIdQuery(new ButtonPermissionQueryDto()) { Id = id };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
     /// <summary>
     /// 分页获取按钮权限
     /// </summary>
-    /// <param name="query">查询参数</param>
+    /// <param name="queryDto">查询参数</param>
+    /// <param name="page">当前页面</param>
+    /// <param name="size">分页大小</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>分页结果</returns>
     [HttpGet("paged")]
     [Permission("permission:button:view")]
-    public async Task<ActionResult<PagedResponse<ButtonPermission>>> GetPagedAsync([FromQuery] ButtonPermissionPagedQuery query, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<PagedResponse<ButtonPermissionPagedDto>>> GetPagedAsync([FromQuery] ButtonPermissionQueryDto queryDto, [FromQuery] int page = 1, [FromQuery] int size = 10, CancellationToken cancellationToken = default)
+    {
+        var query = new ButtonPermissionPagedQuery(queryDto) { Page = page, Size = size };
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 
@@ -74,7 +84,8 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost]
     [Permission("permission:button:create")]
-    public async Task<ActionResult<bool>> CreateAsync([FromBody] ButtonPermissionCreateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> CreateAsync([FromBody] ButtonPermissionCreateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new ButtonPermissionCreateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -87,7 +98,8 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPut]
     [Permission("permission:button:update")]
-    public async Task<ActionResult<bool>> UpdateAsync([FromBody] ButtonPermissionUpdateDto dto, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> UpdateAsync([FromBody] ButtonPermissionUpdateDto dto, CancellationToken cancellationToken = default)
+    {
         var command = new ButtonPermissionUpdateCommand([dto]);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -100,7 +112,8 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpDelete]
     [Permission("permission:button:delete")]
-    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> DeleteAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new ButtonPermissionDeleteCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }
@@ -113,7 +126,8 @@ public class ButtonPermissionController(IMediator mediator) : ControllerBase {
     /// <returns>操作结果</returns>
     [HttpPost("restore")]
     [Permission("permission:button:update")]
-    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default) {
+    public async Task<ActionResult<bool>> RestoreAsync([FromBody] List<Guid> ids, CancellationToken cancellationToken = default)
+    {
         var command = new ButtonPermissionRestoreCommand(ids);
         return Ok(await _mediator.Send(command, cancellationToken));
     }

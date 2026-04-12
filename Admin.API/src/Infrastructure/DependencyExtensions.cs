@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: DependencyExtensions.cs
  * 功能描述: Infrastructure 层依赖注入扩展类，注册基础设施层所有服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-11
  */
 
 using Infrastructure.Contexts;
@@ -18,6 +18,7 @@ using Infrastructure.Shared.Utils;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Domain.Shared.Events;
@@ -52,6 +53,7 @@ public static class DependencyExtensions {
         services.AddDomainServices();
         services.AddUnitOfWorkServices();
         services.AddCachingServices(configuration);
+        services.AddCacheWarmupServices();
 
         return services;
     }
@@ -59,31 +61,24 @@ public static class DependencyExtensions {
     private static IServiceCollection RegisterOptions(
         this IServiceCollection services,
         IConfiguration configuration) {
-        // 数据库配置
         services.AddOption<DatabaseOption>(configuration, "Database");
 
-        // Redis 配置
         services.AddOption<RedisOption>(configuration, "Redis");
 
-        // 内存缓存配置
         services.AddOption<MemoryCacheOption>(configuration, "MemoryCache");
 
-        // JWT 配置
+        services.AddOption<HybridCacheOption>(configuration, "HybridCache");
+
         services.AddOption<JwtOption>(configuration, "Jwt");
 
-        // 限流配置
         services.AddOption<RateLimitOption>(configuration, "RateLimit");
 
-        // 跨域配置
         services.AddOption<CorsOption>(configuration, "Cors");
 
-        // 请求超时配置
         services.AddOption<RequestTimeoutOption>(configuration, "RequestTimeout");
 
-        // 请求体大小限制配置
         services.AddOption<RequestSizeLimitOption>(configuration, "RequestSizeLimit");
 
-        // 遥测配置
         services.AddOption<TelemetryOption>(configuration, "Telemetry");
 
         return services;
@@ -136,6 +131,7 @@ public static class DependencyExtensions {
 
     private static IServiceCollection AddDomainServices(this IServiceCollection services) {
         services.AddScoped<IPermissionDomainService, PermissionDomainService>();
+        services.AddScoped<IPermissionCacheService, PermissionCacheService>();
         return services;
     }
 
@@ -147,6 +143,7 @@ public static class DependencyExtensions {
     private static IServiceCollection AddCachingServices(this IServiceCollection services, IConfiguration configuration) {
         var memoryOptions = ConfigurationUtil.GetOption<MemoryCacheOption>(configuration, "MemoryCache");
         var redisOptions = ConfigurationUtil.GetOption<RedisOption>(configuration, "Redis");
+        var hybridOptions = ConfigurationUtil.GetOption<HybridCacheOption>(configuration, "HybridCache");
 
         services.AddMemoryCache(options => {
             if (memoryOptions.SizeLimit.HasValue) {
@@ -160,7 +157,7 @@ public static class DependencyExtensions {
 
         services.AddHybridCache(options => {
             options.DefaultEntryOptions = new HybridCacheEntryOptions {
-                Expiration = TimeSpan.FromMinutes(memoryOptions.DefaultExpirationMinutes),
+                Expiration = TimeSpan.FromMinutes(hybridOptions.DefaultExpirationMinutes),
                 LocalCacheExpiration = TimeSpan.FromMinutes(2)
             };
             options.MaximumPayloadBytes = 1024 * 1024;
@@ -175,6 +172,16 @@ public static class DependencyExtensions {
 
         services.AddSingleton<ICacheProvider, HybridCacheProvider>();
 
+        return services;
+    }
+
+    /// <summary>
+    /// 添加缓存预热服务
+    /// </summary>
+    /// <param name="services">服务集合</param>
+    /// <returns>服务集合</returns>
+    private static IServiceCollection AddCacheWarmupServices(this IServiceCollection services) {
+        services.AddHostedService<PermissionCacheWarmupService>();
         return services;
     }
 }

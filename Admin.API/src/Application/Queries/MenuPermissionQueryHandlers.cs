@@ -2,7 +2,7 @@
  * 文件名称: MenuPermissionQueryHandlers.cs
  * 功能描述: 菜单权限相关查询处理器，包含菜单权限的所有查询处理逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
 using Application.Abstractions.Queries;
@@ -14,6 +14,7 @@ using Domain.Shared.Constants;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -26,10 +27,12 @@ namespace Application.Queries;
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class MenuPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregateByIdQueryHandler<MenuPermissionByIdQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionDetailDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider,
+    ILogger<MenuPermissionByIdQueryHandler> logger) : AggregateByIdQueryHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionByIdQuery, MenuPermissionQueryDto, MenuPermissionDetailDto>(unitOfWork, mapper, cacheProvider, logger) {
 
 }
 
@@ -40,11 +43,12 @@ public class MenuPermissionByIdQueryHandler(
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class MenuPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregateListQueryHandler<MenuPermissionListQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionListDto>(unitOfWork, mapper, cacheProvider) {
-
+    ICacheProvider cacheProvider,
+    ILogger<MenuPermissionListQueryHandler> logger) : AggregateListQueryHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionListQuery, MenuPermissionQueryDto, MenuPermissionListDto>(unitOfWork, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -54,24 +58,26 @@ public class MenuPermissionListQueryHandler(
     protected override List<Expression<Func<MenuPermission, bool>>> BuildPredicates(MenuPermissionListQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            predicates.Add(p => p.Code.Contains(query.Code));
-        }
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                predicates.Add(p => p.Code.Contains(query.QueryDto.Code));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            predicates.Add(p => p.Name.Contains(query.Name));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                predicates.Add(p => p.Name.Contains(query.QueryDto.Name));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Path)) {
-            predicates.Add(p => p.Path != null && p.Path.Contains(query.Path));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Path)) {
+                predicates.Add(p => p.Path != null && p.Path.Contains(query.QueryDto.Path));
+            }
 
-        if (query.IsVisible.HasValue) {
-            predicates.Add(p => p.IsVisible == query.IsVisible.Value);
-        }
+            if (query.QueryDto.IsVisible.HasValue) {
+                predicates.Add(p => p.IsVisible == query.QueryDto.IsVisible.Value);
+            }
 
-        if (query.ParentId.HasValue) {
-            predicates.Add(p => p.ParentId == query.ParentId.Value);
+            if (query.QueryDto.ParentId.HasValue) {
+                predicates.Add(p => p.ParentId == query.QueryDto.ParentId.Value);
+            }
         }
 
         return predicates;
@@ -85,20 +91,22 @@ public class MenuPermissionListQueryHandler(
     protected override StringBuilder BuildCacheParams(MenuPermissionListQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            builder.Append($"|Code={query.Code}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            builder.Append($"|Name={query.Name}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Path)) {
-            builder.Append($"|Path={query.Path}");
-        }
-        if (query.IsVisible.HasValue) {
-            builder.Append($"|IsVisible={query.IsVisible.Value}");
-        }
-        if (query.ParentId.HasValue) {
-            builder.Append($"|ParentId={query.ParentId.Value}");
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                builder.Append($"|Code={query.QueryDto.Code}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                builder.Append($"|Name={query.QueryDto.Name}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Path)) {
+                builder.Append($"|Path={query.QueryDto.Path}");
+            }
+            if (query.QueryDto.IsVisible.HasValue) {
+                builder.Append($"|IsVisible={query.QueryDto.IsVisible.Value}");
+            }
+            if (query.QueryDto.ParentId.HasValue) {
+                builder.Append($"|ParentId={query.QueryDto.ParentId.Value}");
+            }
         }
 
         return builder;
@@ -112,11 +120,12 @@ public class MenuPermissionListQueryHandler(
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class MenuPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregatePagedQueryHandler<MenuPermissionPagedQuery, MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
-
+    ICacheProvider cacheProvider,
+    ILogger<MenuPermissionPagedQueryHandler> logger) : AggregatePagedQueryHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionPagedQuery, MenuPermissionQueryDto, MenuPermissionPagedDto>(unitOfWork, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -126,24 +135,26 @@ public class MenuPermissionPagedQueryHandler(
     protected override List<Expression<Func<MenuPermission, bool>>> BuildPredicates(MenuPermissionPagedQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            predicates.Add(p => p.Code.Contains(query.Code));
-        }
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                predicates.Add(p => p.Code.Contains(query.QueryDto.Code));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            predicates.Add(p => p.Name.Contains(query.Name));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                predicates.Add(p => p.Name.Contains(query.QueryDto.Name));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Path)) {
-            predicates.Add(p => p.Path != null && p.Path.Contains(query.Path));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Path)) {
+                predicates.Add(p => p.Path != null && p.Path.Contains(query.QueryDto.Path));
+            }
 
-        if (query.IsVisible.HasValue) {
-            predicates.Add(p => p.IsVisible == query.IsVisible.Value);
-        }
+            if (query.QueryDto.IsVisible.HasValue) {
+                predicates.Add(p => p.IsVisible == query.QueryDto.IsVisible.Value);
+            }
 
-        if (query.ParentId.HasValue) {
-            predicates.Add(p => p.ParentId == query.ParentId.Value);
+            if (query.QueryDto.ParentId.HasValue) {
+                predicates.Add(p => p.ParentId == query.QueryDto.ParentId.Value);
+            }
         }
 
         return predicates;
@@ -157,20 +168,22 @@ public class MenuPermissionPagedQueryHandler(
     protected override StringBuilder BuildCacheParams(MenuPermissionPagedQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            builder.Append($"|Code={query.Code}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            builder.Append($"|Name={query.Name}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Path)) {
-            builder.Append($"|Path={query.Path}");
-        }
-        if (query.IsVisible.HasValue) {
-            builder.Append($"|IsVisible={query.IsVisible.Value}");
-        }
-        if (query.ParentId.HasValue) {
-            builder.Append($"|ParentId={query.ParentId.Value}");
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                builder.Append($"|Code={query.QueryDto.Code}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                builder.Append($"|Name={query.QueryDto.Name}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Path)) {
+                builder.Append($"|Path={query.QueryDto.Path}");
+            }
+            if (query.QueryDto.IsVisible.HasValue) {
+                builder.Append($"|IsVisible={query.QueryDto.IsVisible.Value}");
+            }
+            if (query.QueryDto.ParentId.HasValue) {
+                builder.Append($"|ParentId={query.QueryDto.ParentId.Value}");
+            }
         }
 
         return builder;

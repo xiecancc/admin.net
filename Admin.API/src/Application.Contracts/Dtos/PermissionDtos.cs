@@ -259,3 +259,27 @@ public class PermissionPagedDto : AggregatePagedDto {
 /// </summary>
 public class PermissionActionDto : AggregateActionDto {
 }
+
+/// <summary>
+/// 权限查询参数 DTO 基类
+/// <para>用于权限查询的参数封装</para>
+/// </summary>
+public class PermissionQueryDto : AggregateQueryDto {
+    /// <summary>
+    /// 权限编码
+    /// </summary>
+    /// <value>权限的唯一编码，支持模糊查询</value>
+    public string? Code { get; set; }
+
+    /// <summary>
+    /// 权限名称
+    /// </summary>
+    /// <value>权限的名称，支持模糊查询</value>
+    public string? Name { get; set; }
+
+    /// <summary>
+    /// 父级权限 ID
+    /// </summary>
+    /// <value>父级权限的 ID</value>
+    public Guid? ParentId { get; set; }
+}

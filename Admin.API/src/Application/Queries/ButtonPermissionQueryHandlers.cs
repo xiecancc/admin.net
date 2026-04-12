@@ -13,6 +13,7 @@ using Domain.Repositories;
 using Domain.Shared.Constants;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using AutoMapper;
 using System.Text;
@@ -26,10 +27,12 @@ namespace Application.Queries;
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class ButtonPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregateByIdQueryHandler<ButtonPermissionByIdQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionDetailDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider,
+    ILogger<ButtonPermissionByIdQueryHandler> logger) : AggregateByIdQueryHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionByIdQuery, ButtonPermissionQueryDto, ButtonPermissionDetailDto>(unitOfWork, mapper, cacheProvider, logger) {
 
 }
 
@@ -40,10 +43,12 @@ public class ButtonPermissionByIdQueryHandler(
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class ButtonPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregateListQueryHandler<ButtonPermissionListQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionListDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider,
+    ILogger<ButtonPermissionListQueryHandler> logger) : AggregateListQueryHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionListQuery, ButtonPermissionQueryDto, ButtonPermissionListDto>(unitOfWork, mapper, cacheProvider, logger) {
 
 
     /// <summary>
@@ -54,20 +59,22 @@ public class ButtonPermissionListQueryHandler(
     protected override List<Expression<Func<ButtonPermission, bool>>> BuildPredicates(ButtonPermissionListQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            predicates.Add(p => p.Code.Contains(query.Code));
-        }
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                predicates.Add(p => p.Code.Contains(query.QueryDto.Code));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            predicates.Add(p => p.Name.Contains(query.Name));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                predicates.Add(p => p.Name.Contains(query.QueryDto.Name));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            predicates.Add(p => p.ActionType.Contains(query.ActionType));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.ActionType)) {
+                predicates.Add(p => p.ActionType.Contains(query.QueryDto.ActionType));
+            }
 
-        if (query.MenuId.HasValue) {
-            predicates.Add(p => p.MenuId == query.MenuId.Value);
+            if (query.QueryDto.MenuId.HasValue) {
+                predicates.Add(p => p.MenuId == query.QueryDto.MenuId.Value);
+            }
         }
 
         return predicates;
@@ -81,17 +88,19 @@ public class ButtonPermissionListQueryHandler(
     protected override StringBuilder BuildCacheParams(ButtonPermissionListQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            builder.Append($"|Code={query.Code}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            builder.Append($"|Name={query.Name}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            builder.Append($"|ActionType={query.ActionType}");
-        }
-        if (query.MenuId.HasValue) {
-            builder.Append($"|MenuId={query.MenuId.Value}");
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                builder.Append($"|Code={query.QueryDto.Code}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                builder.Append($"|Name={query.QueryDto.Name}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.ActionType)) {
+                builder.Append($"|ActionType={query.QueryDto.ActionType}");
+            }
+            if (query.QueryDto.MenuId.HasValue) {
+                builder.Append($"|MenuId={query.QueryDto.MenuId.Value}");
+            }
         }
 
         return builder;
@@ -105,10 +114,12 @@ public class ButtonPermissionListQueryHandler(
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
+/// <param name="logger">日志记录器，不能为空</param>
 public class ButtonPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : AggregatePagedQueryHandler<ButtonPermissionPagedQuery, ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionPagedDto>(unitOfWork, mapper, cacheProvider) {
+    ICacheProvider cacheProvider,
+    ILogger<ButtonPermissionPagedQueryHandler> logger) : AggregatePagedQueryHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionPagedQuery, ButtonPermissionQueryDto, ButtonPermissionPagedDto>(unitOfWork, mapper, cacheProvider, logger) {
 
 
     /// <summary>
@@ -119,20 +130,22 @@ public class ButtonPermissionPagedQueryHandler(
     protected override List<Expression<Func<ButtonPermission, bool>>> BuildPredicates(ButtonPermissionPagedQuery query) {
         var predicates = base.BuildPredicates(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            predicates.Add(p => p.Code.Contains(query.Code));
-        }
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                predicates.Add(p => p.Code.Contains(query.QueryDto.Code));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            predicates.Add(p => p.Name.Contains(query.Name));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                predicates.Add(p => p.Name.Contains(query.QueryDto.Name));
+            }
 
-        if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            predicates.Add(p => p.ActionType.Contains(query.ActionType));
-        }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.ActionType)) {
+                predicates.Add(p => p.ActionType.Contains(query.QueryDto.ActionType));
+            }
 
-        if (query.MenuId.HasValue) {
-            predicates.Add(p => p.MenuId == query.MenuId.Value);
+            if (query.QueryDto.MenuId.HasValue) {
+                predicates.Add(p => p.MenuId == query.QueryDto.MenuId.Value);
+            }
         }
 
         return predicates;
@@ -146,17 +159,19 @@ public class ButtonPermissionPagedQueryHandler(
     protected override StringBuilder BuildCacheParams(ButtonPermissionPagedQuery query) {
         var builder = base.BuildCacheParams(query);
 
-        if (!string.IsNullOrWhiteSpace(query.Code)) {
-            builder.Append($"|Code={query.Code}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
-            builder.Append($"|Name={query.Name}");
-        }
-        if (!string.IsNullOrWhiteSpace(query.ActionType)) {
-            builder.Append($"|ActionType={query.ActionType}");
-        }
-        if (query.MenuId.HasValue) {
-            builder.Append($"|MenuId={query.MenuId.Value}");
+        if (query.QueryDto != null) {
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Code)) {
+                builder.Append($"|Code={query.QueryDto.Code}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.Name)) {
+                builder.Append($"|Name={query.QueryDto.Name}");
+            }
+            if (!string.IsNullOrWhiteSpace(query.QueryDto.ActionType)) {
+                builder.Append($"|ActionType={query.QueryDto.ActionType}");
+            }
+            if (query.QueryDto.MenuId.HasValue) {
+                builder.Append($"|MenuId={query.QueryDto.MenuId.Value}");
+            }
         }
 
         return builder;

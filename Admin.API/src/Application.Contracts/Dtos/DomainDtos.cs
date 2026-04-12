@@ -42,3 +42,9 @@ public abstract class PagedDto;
 /// <para>用于简单操作的数据传输对象</para>
 /// </summary>
 public abstract class ActionDto;
+
+/// <summary>
+/// 查询参数 DTO 基类
+/// <para>用于非聚合根实体的查询参数封装</para>
+/// </summary>
+public abstract class QueryDto;

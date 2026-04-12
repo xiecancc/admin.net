@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateDtos.cs
  * 功能描述: 聚合根数据传输对象基类，包含基础模型
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -227,4 +227,77 @@ public abstract class AggregateActionDto : ActionDto {
     /// </summary>
     /// <value>实体的唯一标识符</value>
     public Guid Id { get; set; } = Guid.Empty;
+}
+
+/// <summary>
+/// 聚合根查询参数 DTO 基类
+/// <para>用于聚合根实体的查询参数封装，包含通用查询属性</para>
+/// </summary>
+public abstract class AggregateQueryDto : QueryDto
+{
+    /// <summary>
+    /// 描述
+    /// </summary>
+    /// <value>描述信息，支持模糊查询</value>
+    public string? Description { get; set; }
+
+    /// <summary>
+    /// 是否已删除（软删除标记）
+    /// </summary>
+    /// <value>是否已删除，用于筛选已删除或未删除的记录</value>
+    public bool? IsDeleted { get; set; }
+
+    /// <summary>
+    /// 创建时间开始
+    /// </summary>
+    /// <value>创建时间范围的起始时间</value>
+    public DateTime? CreatedAtStart { get; set; }
+
+    /// <summary>
+    /// 创建时间结束
+    /// </summary>
+    /// <value>创建时间范围的结束时间</value>
+    public DateTime? CreatedAtEnd { get; set; }
+
+    /// <summary>
+    /// 更新时间开始
+    /// </summary>
+    /// <value>更新时间范围的起始时间</value>
+    public DateTime? UpdatedAtStart { get; set; }
+
+    /// <summary>
+    /// 更新时间结束
+    /// </summary>
+    /// <value>更新时间范围的结束时间</value>
+    public DateTime? UpdatedAtEnd { get; set; }
+
+    /// <summary>
+    /// 删除时间开始
+    /// </summary>
+    /// <value>删除时间范围的起始时间</value>
+    public DateTime? DeletedAtStart { get; set; }
+
+    /// <summary>
+    /// 删除时间结束
+    /// </summary>
+    /// <value>删除时间范围的结束时间</value>
+    public DateTime? DeletedAtEnd { get; set; }
+
+    /// <summary>
+    /// 创建人 ID
+    /// </summary>
+    /// <value>创建人的 ID</value>
+    public string? CreatedBy { get; set; }
+
+    /// <summary>
+    /// 更新人 ID
+    /// </summary>
+    /// <value>更新人的 ID</value>
+    public string? UpdatedBy { get; set; }
+
+    /// <summary>
+    /// 删除人 ID
+    /// </summary>
+    /// <value>删除人的 ID</value>
+    public string? DeletedBy { get; set; }
 }

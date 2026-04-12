@@ -1,15 +1,16 @@
-﻿/*
+/*
  * 文件名称: QueryHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-12
  */
 
+using Application.Contracts.Abstractions.Queries;
+using Application.Contracts.Dtos;
 using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 using Infrastructure.Shared.Caches;
 using Infrastructure.Shared.Units;
-using MediatR;
 using AutoMapper;
 using System.Linq.Expressions;
 using System.Text;
@@ -20,10 +21,11 @@ namespace Application.Abstractions.Queries;
 /// 领域查询处理器基类
 /// 用于处理所有领域实体的查询操作，包括聚合根和关系表
 /// </summary>
-/// <typeparam name="TQuery">查询类型</typeparam>
 /// <typeparam name="TDomain">领域模型类型</typeparam>
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
-/// <typeparam name="TResponse">响应类型</typeparam>
+/// <typeparam name="TQuery">查询类型</typeparam>
+/// <typeparam name="TQueryDto">查询参数 DTO 类型</typeparam>
+/// <typeparam name="TResponseDto">响应类型</typeparam>
 /// <remarks>
 /// <para>职责：提供查询处理和缓存功能</para>
 /// <para>依赖：IUnitOfWork, IMapper, ICacheProvider</para>
@@ -31,17 +33,19 @@ namespace Application.Abstractions.Queries;
 /// <param name="unitOfWork">工作单元，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
-public abstract class QueryHandler<TQuery, TDomain, TRepository, TResponse>(
+/// <exception cref="ArgumentNullException">当工作单元、映射器或缓存提供者为 null 时抛出</exception>
+public abstract class QueryHandler<TDomain, TRepository, TQuery, TQueryDto, TResponseDto>(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICacheProvider cacheProvider) : RequestHandler<TQuery, TDomain, TRepository, TResponse>(unitOfWork, mapper)
-    where TQuery : IRequest<TResponse>
+    ICacheProvider cacheProvider) : RequestHandler<TDomain, TRepository, TQuery, TResponseDto>(unitOfWork, mapper)
     where TDomain : DomainBase, new()
-    where TRepository : IDomainRepository<TDomain> {
+    where TRepository : IDomainRepository<TDomain>
+    where TQuery : Query<TQueryDto, TResponseDto>
+    where TQueryDto : QueryDto {
     /// <summary>
     /// 缓存提供者
     /// </summary>
-    protected readonly ICacheProvider CacheProvider = cacheProvider;
+    protected readonly ICacheProvider CacheProvider = cacheProvider ?? throw new ArgumentNullException(nameof(cacheProvider));
 
     /// <summary>
     /// 缓存键前缀
