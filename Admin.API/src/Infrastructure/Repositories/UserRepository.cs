@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRepository.cs
  * 功能描述: 用户仓储实现类，实现用户相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -53,7 +53,7 @@ public class UserRepository(
 
         try {
             _logger.LogDebug("开始根据邮箱查询用户: {Email}", email);
-            var result = await GetAsync(u => u.Email == email, cancellationToken);
+            var result = await GetAsync([u => u.Email == email], cancellationToken);
 
             if (result != null) {
                 _logger.LogDebug("根据邮箱查询用户成功: {Email}, 用户ID: {UserId}", email, result.Id);
@@ -83,7 +83,7 @@ public class UserRepository(
 
         try {
             _logger.LogDebug("开始检查邮箱是否存在: {Email}", email);
-            var exists = await ExistsAsync(t => t.Email == email, cancellationToken);
+            var exists = await ExistsAsync([t => t.Email == email], cancellationToken);
             _logger.LogDebug("检查邮箱是否存在完成: {Email}, 结果: {Exists}", email, exists);
             return exists;
         }

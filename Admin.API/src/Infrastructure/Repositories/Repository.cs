@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: Repository.cs
  * 功能描述: 泛型仓储实现，提供通用的实体操作和依赖注入
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -117,18 +117,11 @@ public class Repository<TDomain>(
     /// <summary>
     /// 根据条件表达式获取单个实体
     /// </summary>
-    /// <param name="predicates">查询条件表达式列表，不能为 null</param>
+    /// <param name="predicates">查询条件表达式列表，可为 null</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>符合条件的实体，不存在则返回 null</returns>
-    /// <exception cref="ArgumentNullException">当 predicates 为 null 时抛出</exception>
     /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<TDomain?> GetAsync(List<Expression<Func<TDomain, bool>>> predicates, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(predicates, nameof(predicates));
-
-        if (predicates.Count == 0) {
-            throw new ArgumentException("查询条件列表不能为空", nameof(predicates));
-        }
-
+    public virtual async Task<TDomain?> GetAsync(List<Expression<Func<TDomain, bool>>>? predicates = null, CancellationToken cancellationToken = default) {
         try {
             var (queryable, _) = BuildQueryable(predicates);
             return await queryable.FirstAsync(cancellationToken);
@@ -293,123 +286,5 @@ public class Repository<TDomain>(
             throw RepositoryExceptionHelper.HandleException(ex, "获取数量", _entityName);
         }
     }
-
-    /// <summary>
-    /// 根据条件表达式获取单个实体（非集合版本）
-    /// </summary>
-    /// <param name="predicate">查询条件表达式，不能为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>符合条件的实体，不存在则返回 null</returns>
-    /// <exception cref="ArgumentNullException">当 predicate 为 null 时抛出</exception>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<TDomain?> GetAsync(Expression<Func<TDomain, bool>> predicate, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
-        return await GetAsync([predicate], cancellationToken);
-    }
-
-    /// <summary>
-    /// 根据条件表达式获取实体列表（非集合版本）
-    /// </summary>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="orders">排序表达式字典，可为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>符合条件的实体列表</returns>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<List<TDomain>> GetListAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await GetListAsync(predicates, orders, cancellationToken);
-    }
-
-    /// <summary>
-    /// 根据分页参数获取分页实体列表（非集合版本）
-    /// </summary>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="orders">排序表达式字典，可为 null</param>
-    /// <param name="page">页码，必须大于 0，默认值为 1</param>
-    /// <param name="size">每页大小，必须大于 0，默认值为 10</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>分页响应对象，包含数据列表和分页信息</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当页码或每页大小小于等于 0 时抛出</exception>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<PagedResponse<TDomain>> GetPagedAsync(Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await GetPagedAsync(predicates, orders, page, size, cancellationToken);
-    }
-
-    /// <summary>
-    /// 根据条件表达式和投影获取单个 DTO（非集合版本）
-    /// </summary>
-    /// <typeparam name="TResult">投影结果类型</typeparam>
-    /// <param name="selector">投影表达式，用于指定返回的DTO结构，不能为 null</param>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>符合条件的投影结果，不存在则返回 null</returns>
-    /// <exception cref="ArgumentNullException">当 selector 为 null 时抛出</exception>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<TResult?> GetAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await GetAsync(selector, predicates, cancellationToken);
-    }
-
-    /// <summary>
-    /// 根据条件表达式和投影获取 DTO 列表（非集合版本）
-    /// </summary>
-    /// <typeparam name="TResult">投影结果类型</typeparam>
-    /// <param name="selector">投影表达式，用于指定返回的DTO结构，不能为 null</param>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="orders">排序表达式字典，可为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>符合条件的投影结果列表</returns>
-    /// <exception cref="ArgumentNullException">当 selector 为 null 时抛出</exception>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await GetListAsync(selector, predicates, orders, cancellationToken);
-    }
-
-    /// <summary>
-    /// 根据分页参数和投影获取分页 DTO 列表（非集合版本）
-    /// </summary>
-    /// <typeparam name="TResult">投影结果类型</typeparam>
-    /// <param name="selector">投影表达式，用于指定返回的DTO结构，不能为 null</param>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="orders">排序表达式字典，可为 null</param>
-    /// <param name="page">页码，必须大于 0，默认值为 1</param>
-    /// <param name="size">每页大小，必须大于 0，默认值为 10</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>分页响应对象，包含投影结果列表和分页信息</returns>
-    /// <exception cref="ArgumentNullException">当 selector 为 null 时抛出</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当页码或每页大小小于等于 0 时抛出</exception>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<PagedResponse<TResult>> GetPagedAsync<TResult>(Expression<Func<TDomain, TResult>> selector, Expression<Func<TDomain, bool>>? predicate = null, IDictionary<Expression<Func<TDomain, object>>, bool>? orders = null, int page = 1, int size = 10, CancellationToken cancellationToken = default) {
-        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await GetPagedAsync(selector, predicates, orders, page, size, cancellationToken);
-    }
-
-    /// <summary>
-    /// 检查实体是否存在（非集合版本）
-    /// </summary>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>存在返回 true，否则返回 false</returns>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<bool> ExistsAsync(Expression<Func<TDomain, bool>>? predicate = null, CancellationToken cancellationToken = default) {
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await ExistsAsync(predicates, cancellationToken);
-    }
-
-    /// <summary>
-    /// 获取实体数量（非集合版本）
-    /// </summary>
-    /// <param name="predicate">查询条件表达式，可为 null</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>符合条件的实体数量</returns>
-    /// <exception cref="InvalidOperationException">当数据库操作失败时抛出</exception>
-    public virtual async Task<int> CountAsync(Expression<Func<TDomain, bool>>? predicate = null, CancellationToken cancellationToken = default) {
-        List<Expression<Func<TDomain, bool>>>? predicates = predicate != null ? [predicate] : null;
-        return await CountAsync(predicates, cancellationToken);
-    }
 }
+

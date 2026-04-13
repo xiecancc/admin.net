@@ -8,16 +8,6 @@ namespace Domain.Shared.Units;
 /// </summary>
 public interface IUnitOfWork : IDisposable {
     /// <summary>
-    /// 获取指定领域仓储实例
-    /// </summary>
-    /// <typeparam name="TRepository">仓储类型</typeparam>
-    /// <typeparam name="TDomain">领域模型类型</typeparam>
-    /// <returns>仓储实例</returns>
-    TRepository GetRepository<TRepository, TDomain>()
-        where TRepository : IDomainRepository<TDomain>
-        where TDomain : DomainBase, new();
-
-    /// <summary>
     /// 在事务中执行操作（有返回值）
     /// </summary>
     /// <typeparam name="TResult">操作结果类型</typeparam>

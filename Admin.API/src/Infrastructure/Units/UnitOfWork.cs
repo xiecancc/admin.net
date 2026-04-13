@@ -1,7 +1,4 @@
-﻿using Domain.Shared.Entities;
-using Domain.Shared.Repositories;
 using Domain.Shared.Units;
-using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
 namespace Infrastructure.Units;
@@ -13,18 +10,8 @@ namespace Infrastructure.Units;
 /// 构造函数
 /// </remarks>
 /// <param name="client">SqlSugar 客户端</param>
-/// <param name="serviceProvider">服务提供者</param>
-public class UnitOfWork(ISqlSugarClient client, IServiceProvider serviceProvider) : IUnitOfWork {
+public class UnitOfWork(ISqlSugarClient client) : IUnitOfWork {
     private bool _disposed;
-
-    /// <summary>
-    /// 获取指定领域仓储实例
-    /// </summary>
-    public TRepository GetRepository<TRepository, TDomain>()
-        where TRepository : IDomainRepository<TDomain>
-        where TDomain : DomainBase, new() {
-        return serviceProvider.GetRequiredService<TRepository>();
-    }
 
     /// <summary>
     /// 在事务中执行操作（有返回值）

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateRepository.cs
  * 功能描述: 聚合根仓储实现，继承 DomainRepository 并添加软删除支持
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -242,7 +242,7 @@ public class AggregateRepository<TAggregate>(
         }
 
         try {
-            return await GetAsync(t => t.Id == id, cancellationToken);
+            return await GetAsync([t => t.Id == id], cancellationToken);
         }
         catch (Exception ex) when (ex is not ArgumentException) {
             _logger.LogError(ex, "根据ID获取实体失败: {EntityName}, ID: {Id}", _entityName, id);

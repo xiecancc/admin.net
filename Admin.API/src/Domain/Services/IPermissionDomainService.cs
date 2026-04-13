@@ -108,7 +108,7 @@ public interface IPermissionDomainService : IDomainService {
     /// <para>跨聚合查询：Role → RolePermission → Permission</para>
     /// <para>返回完整的 Permission 聚合对象，包含所有属性</para>
     /// </remarks>
-    Task<List<Permission>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default);
+    Task<List<PermissionBase>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 获取指定类型的权限编码列表

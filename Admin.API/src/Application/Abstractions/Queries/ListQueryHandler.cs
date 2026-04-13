@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: DomainListQueryHandler.cs
  * 功能描述: 通用列表查询处理器，用于处理所有领域实体的列表查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -25,17 +25,19 @@ namespace Application.Abstractions.Queries;
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TQuery">查询命令类型</typeparam>
 /// <typeparam name="TQueryDto">查询参数 DTO 类型</typeparam>
-/// <typeparam name="TListDto">列表DTO类型</typeparam>
+/// <typeparam name="TListDto">列表 DTO 类型</typeparam>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">仓储接口，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-/// <exception cref="ArgumentNullException">当工作单元、映射器、缓存提供者或日志记录器为 null 时抛出</exception>
+/// <exception cref="ArgumentNullException">当参数为 null 时抛出</exception>
 public abstract class ListQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TListDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<ListQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TListDto>> logger) : QueryHandler<TDomain, TRepository, TQuery, TQueryDto, List<TListDto>>(unitOfWork, mapper, cacheProvider)
+    ILogger<ListQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TListDto>> logger) : QueryHandler<TDomain, TRepository, TQuery, TQueryDto, List<TListDto>>(unitOfWork, repository, mapper, cacheProvider)
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TQuery : ListQuery<TQueryDto, TListDto>

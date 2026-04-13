@@ -1,16 +1,14 @@
-﻿/*
+/*
  * 文件名称: JwtAuthenticationExtensions.cs
  * 功能描述: JWT 认证扩展方法，配置 JWT 认证服务
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-06
+ * 最近修订: 2026-04-13
  */
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Shared.Options;
-using Domain.Shared.Units;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -101,8 +99,7 @@ public sealed class ConfigureJwtBearerOptions(IOptions<JwtOption> jwtOption) : I
                     return;
                 }
 
-                var unitOfWork = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
-                var userRepository = unitOfWork.GetRepository<IUserRepository, User>();
+                var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
                 var user = await userRepository.GetAsync(userId);
                 if (user == null) {
                     context.Fail("用户不存在");

@@ -26,9 +26,10 @@ namespace Application.Abstractions.Commands;
 /// <typeparam name="TDeleteDto">删除DTO类型</typeparam>
 public abstract class AggregateDeleteCommandHandler<TDomain, TRepository, TCommand, TDeleteDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
     ILogger logger)
-    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, mapper, logger)
+    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, repository, mapper, logger)
     where TDomain : AggregateBase, new()
     where TRepository : IAggregateRepository<TDomain>
     where TCommand : AggregateDeleteCommand<TDeleteDto>, IRequest<bool>

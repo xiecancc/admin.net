@@ -32,7 +32,7 @@ public class TableCreator(ISqlSugarClient client) : Creator(client) {
                 .InitTables(
                     typeof(User),
                     typeof(Role),
-                    typeof(Permission),
+                    typeof(PermissionBase),
                     typeof(ApiPermission),
                     typeof(MenuPermission),
                     typeof(ButtonPermission),

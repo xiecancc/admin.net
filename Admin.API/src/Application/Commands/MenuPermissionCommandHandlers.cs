@@ -2,7 +2,7 @@
  * 文件名称: MenuPermissionCommandHandlers.cs
  * 功能描述: 菜单权限命令处理器，处理菜单权限相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -20,8 +20,8 @@ namespace Application.Commands;
 /// <summary>
 /// 菜单权限创建命令处理器（Template Method 模式）
 /// </summary>
-public class MenuPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<MenuPermissionCreateCommandHandler> logger)
-    : DomainCreateCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionCreateCommand, MenuPermissionCreateDto>(unitOfWork, mapper, logger) {
+public class MenuPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<MenuPermission> repository, IMapper mapper, ILogger<MenuPermissionCreateCommandHandler> logger)
+    : DomainCreateCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionCreateCommand, MenuPermissionCreateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行菜单权限创建业务逻辑（包含编码唯一性和父级权限验证）
@@ -38,7 +38,7 @@ public class MenuPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper 
             }
 
             if (dto.ParentId.HasValue && dto.ParentId.Value != Guid.Empty) {
-                var parentExists = await Repository.ExistsAsync(p => p.Id == dto.ParentId.Value, cancellationToken);
+                var parentExists = await Repository.ExistsAsync([p => p.Id == dto.ParentId.Value], cancellationToken);
                 if (!parentExists) {
                     notFoundParentIds.Add(dto.ParentId.Value);
                 }
@@ -65,8 +65,8 @@ public class MenuPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper 
 /// <summary>
 /// 菜单权限更新命令处理器（Template Method 模式）
 /// </summary>
-public class MenuPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<MenuPermissionUpdateCommandHandler> logger)
-    : AggregateUpdateCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionUpdateCommand, MenuPermissionUpdateDto>(unitOfWork, mapper, logger) {
+public class MenuPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<MenuPermission> repository, IMapper mapper, ILogger<MenuPermissionUpdateCommandHandler> logger)
+    : AggregateUpdateCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionUpdateCommand, MenuPermissionUpdateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行菜单权限更新业务逻辑（包含编码唯一性、实体存在性和父级权限验证）
@@ -100,7 +100,7 @@ public class MenuPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper 
                         "请选择其他权限作为父级权限。");
                 }
 
-                var parentExists = await Repository.ExistsAsync(p => p.Id == dto.ParentId.Value, cancellationToken);
+                var parentExists = await Repository.ExistsAsync([p => p.Id == dto.ParentId.Value], cancellationToken);
                 if (!parentExists) {
                     notFoundParentIds.Add(dto.ParentId.Value);
                     continue;
@@ -136,11 +136,11 @@ public class MenuPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper 
 /// <summary>
 /// 菜单权限删除命令处理器
 /// </summary>
-public class MenuPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<MenuPermissionDeleteCommandHandler> logger)
-    : AggregateDeleteCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionDeleteCommand, MenuPermissionActionDto>(unitOfWork, mapper, logger);
+public class MenuPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<MenuPermission> repository, IMapper mapper, ILogger<MenuPermissionDeleteCommandHandler> logger)
+    : AggregateDeleteCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionDeleteCommand, MenuPermissionActionDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// 菜单权限恢复命令处理器
 /// </summary>
-public class MenuPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<MenuPermissionRestoreCommandHandler> logger)
-    : AggregateRestoreCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionRestoreCommand, MenuPermissionActionDto>(unitOfWork, mapper, logger);
+public class MenuPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<MenuPermission> repository, IMapper mapper, ILogger<MenuPermissionRestoreCommandHandler> logger)
+    : AggregateRestoreCommandHandler<MenuPermission, IPermissionRepository<MenuPermission>, MenuPermissionRestoreCommand, MenuPermissionActionDto>(unitOfWork, repository, mapper, logger);

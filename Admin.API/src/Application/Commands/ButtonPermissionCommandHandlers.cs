@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: ButtonPermissionCommandHandlers.cs
  * 功能描述: 按钮权限命令处理器，处理按钮权限相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -20,10 +20,13 @@ namespace Application.Commands;
 /// <summary>
 /// 按钮权限创建命令处理器（Template Method 模式）
 /// </summary>
-public class ButtonPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ButtonPermissionCreateCommandHandler> logger)
-    : DomainCreateCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionCreateCommand, ButtonPermissionCreateDto>(unitOfWork, mapper, logger) {
-
-    private readonly IMenuPermissionRepository _menuPermissionRepository = unitOfWork.GetRepository<IMenuPermissionRepository, MenuPermission>();
+public class ButtonPermissionCreateCommandHandler(
+    IUnitOfWork unitOfWork,
+    IPermissionRepository<ButtonPermission> repository,
+    IMenuPermissionRepository menuPermissionRepository,
+    IMapper mapper,
+    ILogger<ButtonPermissionCreateCommandHandler> logger)
+    : DomainCreateCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionCreateCommand, ButtonPermissionCreateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行按钮权限创建业务逻辑（包含编码唯一性和关联菜单验证）
@@ -40,7 +43,7 @@ public class ButtonPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMappe
             }
 
             if (dto.MenuId.HasValue && dto.MenuId.Value != Guid.Empty) {
-                var menuExists = await _menuPermissionRepository.ExistsAsync(m => m.Id == dto.MenuId.Value, cancellationToken);
+                var menuExists = await menuPermissionRepository.ExistsAsync([m => m.Id == dto.MenuId.Value], cancellationToken);
                 if (!menuExists) {
                     notFoundMenuIds.Add(dto.MenuId.Value);
                 }
@@ -67,10 +70,13 @@ public class ButtonPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMappe
 /// <summary>
 /// 按钮权限更新命令处理器（Template Method 模式）
 /// </summary>
-public class ButtonPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ButtonPermissionUpdateCommandHandler> logger)
-    : AggregateUpdateCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionUpdateCommand, ButtonPermissionUpdateDto>(unitOfWork, mapper, logger) {
-
-    private readonly IMenuPermissionRepository _menuPermissionRepository = unitOfWork.GetRepository<IMenuPermissionRepository, MenuPermission>();
+public class ButtonPermissionUpdateCommandHandler(
+    IUnitOfWork unitOfWork,
+    IPermissionRepository<ButtonPermission> repository,
+    IMenuPermissionRepository menuPermissionRepository,
+    IMapper mapper,
+    ILogger<ButtonPermissionUpdateCommandHandler> logger)
+    : AggregateUpdateCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionUpdateCommand, ButtonPermissionUpdateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行按钮权限更新业务逻辑（包含编码唯一性、实体存在性和关联菜单验证）
@@ -98,7 +104,7 @@ public class ButtonPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMappe
             }
 
             if (dto.MenuId.HasValue && dto.MenuId.Value != Guid.Empty) {
-                var menuExists = await _menuPermissionRepository.ExistsAsync(m => m.Id == dto.MenuId.Value, cancellationToken);
+                var menuExists = await menuPermissionRepository.ExistsAsync([m => m.Id == dto.MenuId.Value], cancellationToken);
                 if (!menuExists) {
                     notFoundMenuIds.Add(dto.MenuId.Value);
                     continue;
@@ -134,11 +140,11 @@ public class ButtonPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMappe
 /// <summary>
 /// 按钮权限删除命令处理器
 /// </summary>
-public class ButtonPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ButtonPermissionDeleteCommandHandler> logger)
-    : AggregateDeleteCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionDeleteCommand, ButtonPermissionActionDto>(unitOfWork, mapper, logger);
+public class ButtonPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<ButtonPermission> repository, IMapper mapper, ILogger<ButtonPermissionDeleteCommandHandler> logger)
+    : AggregateDeleteCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionDeleteCommand, ButtonPermissionActionDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// 按钮权限恢复命令处理器
 /// </summary>
-public class ButtonPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ButtonPermissionRestoreCommandHandler> logger)
-    : AggregateRestoreCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionRestoreCommand, ButtonPermissionActionDto>(unitOfWork, mapper, logger);
+public class ButtonPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<ButtonPermission> repository, IMapper mapper, ILogger<ButtonPermissionRestoreCommandHandler> logger)
+    : AggregateRestoreCommandHandler<ButtonPermission, IPermissionRepository<ButtonPermission>, ButtonPermissionRestoreCommand, ButtonPermissionActionDto>(unitOfWork, repository, mapper, logger);

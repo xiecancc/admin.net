@@ -95,5 +95,5 @@ public class Role : AggregateBase, IAggregateTree<Role> {
     /// </summary>
     /// <value>当前角色拥有的权限列表</value>
     [Navigate(typeof(RolePermission), nameof(RolePermission.RoleId), nameof(RolePermission.PermissionId))]
-    public List<Permission> Permissions { get; set; } = [];
+    public List<PermissionBase> Permissions { get; set; } = [];
 }

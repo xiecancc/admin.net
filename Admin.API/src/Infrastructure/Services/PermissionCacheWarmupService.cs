@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionCacheWarmupService.cs
  * 功能描述: 权限缓存预热服务，在应用启动时预热权限缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -68,7 +68,7 @@ public class PermissionCacheWarmupService(
     }
 
     private async Task WarmupRoleInheritedPermissionsAsync(CancellationToken cancellationToken) {
-        var roles = await _roleRepository.GetListAsync(predicate: null, cancellationToken: cancellationToken);
+        var roles = await _roleRepository.GetListAsync(cancellationToken: cancellationToken);
         if (roles.Count == 0) {
             _logger.LogDebug("没有角色需要预热");
             return;
@@ -89,7 +89,7 @@ public class PermissionCacheWarmupService(
 
     private async Task WarmupActiveUserPermissionsAsync(CancellationToken cancellationToken) {
         var activeUsers = await _userRepository.GetListAsync(
-            predicate: u => !u.IsDeleted,
+            [u => !u.IsDeleted],
             cancellationToken: cancellationToken);
 
         if (activeUsers.Count == 0) {

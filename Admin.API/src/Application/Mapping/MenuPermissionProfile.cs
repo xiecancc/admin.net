@@ -1,8 +1,8 @@
-﻿/*
- * 文件名称：MenuPermissionProfile.cs
- * 功能描述：菜单权限映射配置
- * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-01
+/*
+ * 文件名称: MenuPermissionProfile.cs
+ * 功能描述: 菜单权限映射配置
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-13
  */
 
 using Application.Contracts.Dtos;
@@ -22,15 +22,15 @@ public class MenuPermissionProfile : Profile {
     public MenuPermissionProfile() {
         // 菜单权限实体到菜单权限列表 DTO 的映射
         CreateMap<MenuPermission, MenuPermissionListDto>()
-            .IncludeBase<Permission, PermissionListDto>();
+            .IncludeBase<PermissionBase, PermissionListDto>();
 
         // 菜单权限实体到菜单权限详情 DTO 的映射
         CreateMap<MenuPermission, MenuPermissionDetailDto>()
-            .IncludeBase<Permission, PermissionDetailDto>();
+            .IncludeBase<PermissionBase, PermissionDetailDto>();
 
         // 菜单权限实体到菜单权限分页 DTO 的映射
         CreateMap<MenuPermission, MenuPermissionPagedDto>()
-            .IncludeBase<Permission, PermissionPagedDto>();
+            .IncludeBase<PermissionBase, PermissionPagedDto>();
 
         // 菜单权限创建 DTO 到菜单权限实体的映射
         CreateMap<MenuPermissionCreateDto, MenuPermission>()

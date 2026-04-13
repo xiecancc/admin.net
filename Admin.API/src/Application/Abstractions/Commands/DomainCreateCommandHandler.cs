@@ -26,9 +26,10 @@ namespace Application.Abstractions.Commands;
 /// <typeparam name="TCreateDto">创建DTO类型</typeparam>
 public abstract class DomainCreateCommandHandler<TDomain, TRepository, TCommand, TCreateDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
     ILogger logger)
-    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, mapper, logger)
+    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, repository, mapper, logger)
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TCommand : CreateCommand<TCreateDto>, IRequest<bool>

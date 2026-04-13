@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: ApiPermissionQueryHandlers.cs
  * 功能描述: API权限查询处理器，处理API权限相关的查询
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Queries;
@@ -24,15 +24,12 @@ namespace Application.Queries;
 /// API权限根据ID查询处理器
 /// <para>处理API权限的根据ID查询操作，支持缓存</para>
 /// </summary>
-/// <param name="unitOfWork">工作单元，不能为空</param>
-/// <param name="mapper">映射器，不能为空</param>
-/// <param name="cacheProvider">缓存提供者，不能为空</param>
-/// <param name="logger">日志记录器，不能为空</param>
 public class ApiPermissionByIdQueryHandler(
     IUnitOfWork unitOfWork,
+    IPermissionRepository<ApiPermission> repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<ApiPermissionByIdQueryHandler> logger) : AggregateByIdQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionByIdQuery, ApiPermissionQueryDto, ApiPermissionDetailDto>(unitOfWork, mapper, cacheProvider, logger) {
+    ILogger<ApiPermissionByIdQueryHandler> logger) : AggregateByIdQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionByIdQuery, ApiPermissionQueryDto, ApiPermissionDetailDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
 }
 
@@ -40,22 +37,16 @@ public class ApiPermissionByIdQueryHandler(
 /// API权限列表查询处理器
 /// <para>处理API权限的列表查询操作，支持缓存</para>
 /// </summary>
-/// <param name="unitOfWork">工作单元，不能为空</param>
-/// <param name="mapper">映射器，不能为空</param>
-/// <param name="cacheProvider">缓存提供者，不能为空</param>
-/// <param name="logger">日志记录器，不能为空</param>
 public class ApiPermissionListQueryHandler(
     IUnitOfWork unitOfWork,
+    IPermissionRepository<ApiPermission> repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<ApiPermissionListQueryHandler> logger) : AggregateListQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionListQuery, ApiPermissionQueryDto, ApiPermissionListDto>(unitOfWork, mapper, cacheProvider, logger) {
-
+    ILogger<ApiPermissionListQueryHandler> logger) : AggregateListQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionListQuery, ApiPermissionQueryDto, ApiPermissionListDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
     /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>查询条件列表</returns>
     protected override List<Expression<Func<ApiPermission, bool>>> BuildPredicates(ApiPermissionListQuery query) {
         var predicates = base.BuildPredicates(query);
 
@@ -91,8 +82,6 @@ public class ApiPermissionListQueryHandler(
     /// <summary>
     /// 构建缓存键参数部分
     /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>缓存键参数部分</returns>
     protected override StringBuilder BuildCacheParams(ApiPermissionListQuery query) {
         var builder = base.BuildCacheParams(query);
 
@@ -125,22 +114,16 @@ public class ApiPermissionListQueryHandler(
 /// API权限分页查询处理器
 /// <para>用于处理API权限分页获取操作，支持缓存</para>
 /// </summary>
-/// <param name="unitOfWork">工作单元，不能为空</param>
-/// <param name="mapper">映射器，不能为空</param>
-/// <param name="cacheProvider">缓存提供者，不能为空</param>
-/// <param name="logger">日志记录器，不能为空</param>
 public class ApiPermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
+    IPermissionRepository<ApiPermission> repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<ApiPermissionPagedQueryHandler> logger) : AggregatePagedQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionPagedQuery, ApiPermissionQueryDto, ApiPermissionPagedDto>(unitOfWork, mapper, cacheProvider, logger) {
-
+    ILogger<ApiPermissionPagedQueryHandler> logger) : AggregatePagedQueryHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionPagedQuery, ApiPermissionQueryDto, ApiPermissionPagedDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
     /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>查询条件列表</returns>
     protected override List<Expression<Func<ApiPermission, bool>>> BuildPredicates(ApiPermissionPagedQuery query) {
         var predicates = base.BuildPredicates(query);
 
@@ -176,8 +159,6 @@ public class ApiPermissionPagedQueryHandler(
     /// <summary>
     /// 构建缓存键参数部分
     /// </summary>
-    /// <param name="query">查询请求</param>
-    /// <returns>缓存键参数部分</returns>
     protected override StringBuilder BuildCacheParams(ApiPermissionPagedQuery query) {
         var builder = base.BuildCacheParams(query);
 

@@ -1,4 +1,4 @@
-﻿// ==================================================================================================
+// ==================================================================================================
 // FileName: PermissionDomainService.cs
 // 功能描述: 权限领域服务实现，处理跨聚合的权限相关业务逻辑
 // 作    者: Admin.NET
@@ -50,7 +50,7 @@ public class PermissionDomainService(
         }
 
         var hasPermissionDb = await client.Queryable<RolePermission>()
-            .InnerJoin<Permission>((rp, p) => rp.PermissionId == p.Id)
+            .InnerJoin<PermissionBase>((rp, p) => rp.PermissionId == p.Id)
             .Where((rp, p) => roleIds.Contains(rp.RoleId) && p.Code == permissionCode)
             .AnyAsync(cancellationToken);
 
@@ -124,7 +124,7 @@ public class PermissionDomainService(
     /// <inheritdoc/>
     public async Task<List<string>> GetRolePermissionCodesAsync(Guid roleId, CancellationToken cancellationToken = default) {
         var permissionCodes = await client.Queryable<RolePermission>()
-            .InnerJoin<Permission>((rp, p) => rp.PermissionId == p.Id)
+            .InnerJoin<PermissionBase>((rp, p) => rp.PermissionId == p.Id)
             .Where((rp, p) => rp.RoleId == roleId)
             .Select((rp, p) => p.Code)
             .ToListAsync(cancellationToken);
@@ -133,14 +133,14 @@ public class PermissionDomainService(
     }
 
     /// <inheritdoc/>
-    public async Task<List<Permission>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default) {
+    public async Task<List<PermissionBase>> GetRolePermissionsAsync(Guid roleId, CancellationToken cancellationToken = default) {
         var permissionIds = await rolePermissionRepository.GetPermissionIdsByRoleIdAsync(roleId, cancellationToken);
 
         if (permissionIds.Count == 0) {
             return [];
         }
 
-        var permissions = await client.Queryable<Permission>()
+        var permissions = await client.Queryable<PermissionBase>()
             .Where(p => permissionIds.Contains(p.Id))
             .ToListAsync(cancellationToken);
 
@@ -152,7 +152,7 @@ public class PermissionDomainService(
 
     /// <inheritdoc/>
     public async Task<List<string>> GetPermissionCodesByTypeAsync(PermissionType permissionType, CancellationToken cancellationToken = default) {
-        var permissionCodes = await client.Queryable<Permission>()
+        var permissionCodes = await client.Queryable<PermissionBase>()
             .Where(p => p.Type == permissionType)
             .Select(p => p.Code)
             .ToListAsync(cancellationToken);

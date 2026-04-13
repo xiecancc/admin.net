@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: ApiPermissionCommandHandlers.cs
  * 功能描述: API权限命令处理器，处理API权限相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -20,10 +20,13 @@ namespace Application.Commands;
 /// <summary>
 /// API权限创建命令处理器（Template Method 模式）
 /// </summary>
-public class ApiPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ApiPermissionCreateCommandHandler> logger)
-    : DomainCreateCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionCreateCommand, ApiPermissionCreateDto>(unitOfWork, mapper, logger) {
-
-    private readonly IMenuPermissionRepository _menuPermissionRepository = unitOfWork.GetRepository<IMenuPermissionRepository, MenuPermission>();
+public class ApiPermissionCreateCommandHandler(
+    IUnitOfWork unitOfWork,
+    IPermissionRepository<ApiPermission> repository,
+    IMenuPermissionRepository menuPermissionRepository,
+    IMapper mapper,
+    ILogger<ApiPermissionCreateCommandHandler> logger)
+    : DomainCreateCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionCreateCommand, ApiPermissionCreateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行API权限创建业务逻辑（包含编码唯一性和关联菜单验证）
@@ -40,7 +43,7 @@ public class ApiPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper m
             }
 
             if (dto.MenuId.HasValue && dto.MenuId.Value != Guid.Empty) {
-                var menuExists = await _menuPermissionRepository.ExistsAsync(m => m.Id == dto.MenuId.Value, cancellationToken);
+                var menuExists = await menuPermissionRepository.ExistsAsync([m => m.Id == dto.MenuId.Value], cancellationToken);
                 if (!menuExists) {
                     notFoundMenuIds.Add(dto.MenuId.Value);
                 }
@@ -67,10 +70,13 @@ public class ApiPermissionCreateCommandHandler(IUnitOfWork unitOfWork, IMapper m
 /// <summary>
 /// API权限更新命令处理器（Template Method 模式）
 /// </summary>
-public class ApiPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ApiPermissionUpdateCommandHandler> logger)
-    : AggregateUpdateCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionUpdateCommand, ApiPermissionUpdateDto>(unitOfWork, mapper, logger) {
-
-    private readonly IMenuPermissionRepository _menuPermissionRepository = unitOfWork.GetRepository<IMenuPermissionRepository, MenuPermission>();
+public class ApiPermissionUpdateCommandHandler(
+    IUnitOfWork unitOfWork,
+    IPermissionRepository<ApiPermission> repository,
+    IMenuPermissionRepository menuPermissionRepository,
+    IMapper mapper,
+    ILogger<ApiPermissionUpdateCommandHandler> logger)
+    : AggregateUpdateCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionUpdateCommand, ApiPermissionUpdateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行API权限更新业务逻辑（包含编码唯一性、实体存在性和关联菜单验证）
@@ -98,7 +104,7 @@ public class ApiPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper m
             }
 
             if (dto.MenuId.HasValue && dto.MenuId.Value != Guid.Empty) {
-                var menuExists = await _menuPermissionRepository.ExistsAsync(m => m.Id == dto.MenuId.Value, cancellationToken);
+                var menuExists = await menuPermissionRepository.ExistsAsync([m => m.Id == dto.MenuId.Value], cancellationToken);
                 if (!menuExists) {
                     notFoundMenuIds.Add(dto.MenuId.Value);
                     continue;
@@ -134,11 +140,11 @@ public class ApiPermissionUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper m
 /// <summary>
 /// API权限删除命令处理器
 /// </summary>
-public class ApiPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ApiPermissionDeleteCommandHandler> logger)
-    : AggregateDeleteCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionDeleteCommand, ApiPermissionActionDto>(unitOfWork, mapper, logger);
+public class ApiPermissionDeleteCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<ApiPermission> repository, IMapper mapper, ILogger<ApiPermissionDeleteCommandHandler> logger)
+    : AggregateDeleteCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionDeleteCommand, ApiPermissionActionDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// API权限恢复命令处理器
 /// </summary>
-public class ApiPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ApiPermissionRestoreCommandHandler> logger)
-    : AggregateRestoreCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionRestoreCommand, ApiPermissionActionDto>(unitOfWork, mapper, logger);
+public class ApiPermissionRestoreCommandHandler(IUnitOfWork unitOfWork, IPermissionRepository<ApiPermission> repository, IMapper mapper, ILogger<ApiPermissionRestoreCommandHandler> logger)
+    : AggregateRestoreCommandHandler<ApiPermission, IPermissionRepository<ApiPermission>, ApiPermissionRestoreCommand, ApiPermissionActionDto>(unitOfWork, repository, mapper, logger);

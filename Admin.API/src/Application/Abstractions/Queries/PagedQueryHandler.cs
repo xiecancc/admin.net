@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: DomainPagedQueryHandler.cs
  * 功能描述: 通用分页查询处理器，用于处理所有领域实体的分页获取操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -26,17 +26,19 @@ namespace Application.Abstractions.Queries;
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TQuery">查询类型</typeparam>
 /// <typeparam name="TQueryDto">查询参数 DTO 类型</typeparam>
-/// <typeparam name="TResponseDto">响应DTO类型</typeparam>
+/// <typeparam name="TResponseDto">响应 DTO 类型</typeparam>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">仓储接口，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-/// <exception cref="ArgumentNullException">当工作单元、映射器、缓存提供者或日志记录器为 null 时抛出</exception>
+/// <exception cref="ArgumentNullException">当参数为 null 时抛出</exception>
 public abstract class PagedQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TResponseDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<PagedQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TResponseDto>> logger) : QueryHandler<TDomain, TRepository, TQuery, TQueryDto, PagedResponse<TResponseDto>>(unitOfWork, mapper, cacheProvider)
+    ILogger<PagedQueryHandler<TDomain, TRepository, TQuery, TQueryDto, TResponseDto>> logger) : QueryHandler<TDomain, TRepository, TQuery, TQueryDto, PagedResponse<TResponseDto>>(unitOfWork, repository, mapper, cacheProvider)
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TQuery : PagedQuery<TQueryDto, TResponseDto>

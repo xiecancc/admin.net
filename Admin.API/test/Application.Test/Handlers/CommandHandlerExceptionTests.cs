@@ -2,7 +2,7 @@
  * 文件名称: CommandHandlerExceptionTests.cs
  * 功能描述: 命令处理器异常处理测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -10,7 +10,6 @@ using Application.Contracts.Abstractions.Commands;
 using Application.Contracts.Dtos;
 using AutoMapper;
 using Domain.Shared.Entities;
-using Domain.Shared.Events;
 using Domain.Shared.Repositories;
 using Domain.Shared.Units;
 using MediatR;
@@ -25,11 +24,13 @@ namespace Application.Test.Handlers;
 /// </summary>
 public class CommandHandlerExceptionTests {
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IDomainRepository<TestDomain>> _mockRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<TestCommandHandler>> _mockLogger;
 
     public CommandHandlerExceptionTests() {
         _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockRepository = new Mock<IDomainRepository<TestDomain>>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<TestCommandHandler>>();
     }
@@ -208,12 +209,8 @@ public class CommandHandlerExceptionTests {
         var command = CreateCommand();
         var repositoryException = new InvalidOperationException("Database error");
 
-        var mockRepository = new Mock<IDomainRepository<TestDomain>>();
-        mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(repositoryException);
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IDomainRepository<TestDomain>, TestDomain>())
-            .Returns(mockRepository.Object);
 
         _mockUnitOfWork.Setup(x => x.ExecuteInTransactionAsync(It.IsAny<Func<Task<bool>>>(), It.IsAny<CancellationToken>()))
             .Returns(async (Func<Task<bool>> action, CancellationToken _) => await action());
@@ -238,12 +235,8 @@ public class CommandHandlerExceptionTests {
         var command = CreateCommand();
         var cts = new CancellationTokenSource();
 
-        var mockRepository = new Mock<IDomainRepository<TestDomain>>();
-        mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new OperationCanceledException());
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IDomainRepository<TestDomain>, TestDomain>())
-            .Returns(mockRepository.Object);
 
         _mockUnitOfWork.Setup(x => x.ExecuteInTransactionAsync(It.IsAny<Func<Task<bool>>>(), It.IsAny<CancellationToken>()))
             .Returns(async (Func<Task<bool>> action, CancellationToken _) => await action());
@@ -265,12 +258,8 @@ public class CommandHandlerExceptionTests {
     public async Task Handle_WhenSuccessful_ShouldReturnTrue() {
         var command = CreateCommand();
 
-        var mockRepository = new Mock<IDomainRepository<TestDomain>>();
-        mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.InsertAsync(It.IsAny<List<TestDomain>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IDomainRepository<TestDomain>, TestDomain>())
-            .Returns(mockRepository.Object);
 
         _mockUnitOfWork.Setup(x => x.ExecuteInTransactionAsync(It.IsAny<Func<Task<bool>>>(), It.IsAny<CancellationToken>()))
             .Returns(async (Func<Task<bool>> action, CancellationToken _) => await action());
@@ -295,6 +284,7 @@ public class CommandHandlerExceptionTests {
     private TestCommandHandler CreateHandler() {
         return new TestCommandHandler(
             _mockUnitOfWork.Object,
+            _mockRepository.Object,
             _mockMapper.Object,
             _mockLogger.Object
         );
@@ -339,9 +329,10 @@ internal class TestCommand : CreateCommand<TestCreateDto> {
 /// </summary>
 internal class TestCommandHandler(
     IUnitOfWork unitOfWork,
+    IDomainRepository<TestDomain> repository,
     IMapper mapper,
     ILogger<TestCommandHandler> logger)
-    : CommandHandler<TestDomain, IDomainRepository<TestDomain>, TestCommand>(unitOfWork, mapper, logger) {
+    : CommandHandler<TestDomain, IDomainRepository<TestDomain>, TestCommand>(unitOfWork, repository, mapper, logger) {
 
     /// <inheritdoc/>
     protected override Task<bool> ExecuteInTransactionAsync(TestCommand request, CancellationToken cancellationToken) {

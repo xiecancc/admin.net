@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionCacheEventHandler.cs
  * 功能描述: 权限缓存事件处理器,处理权限变更时清除缓存
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -233,8 +233,8 @@ public class PermissionCacheEventHandler(
     IRolePermissionRepository rolePermissionRepository,
     IUserRoleRepository userRoleRepository,
     ILogger<PermissionCacheEventHandler> logger) :
-    IDomainEventHandler<DomainUpdatedEvent<Permission>>,
-    IDomainEventHandler<DomainDeletedEvent<Permission>> {
+    IDomainEventHandler<DomainUpdatedEvent<PermissionBase>>,
+    IDomainEventHandler<DomainDeletedEvent<PermissionBase>> {
 
     private readonly IPermissionCacheService _permissionCacheService = permissionCacheService;
     private readonly IRolePermissionRepository _rolePermissionRepository = rolePermissionRepository;
@@ -244,7 +244,7 @@ public class PermissionCacheEventHandler(
     /// <summary>
     /// 处理权限更新事件
     /// </summary>
-    public async Task HandleAsync(DomainUpdatedEvent<Permission> @event, CancellationToken cancellationToken = default) {
+    public async Task HandleAsync(DomainUpdatedEvent<PermissionBase> @event, CancellationToken cancellationToken = default) {
         foreach (var permission in @event.Domains) {
             await ClearPermissionRelatedCacheAsync(permission.Id, cancellationToken);
         }
@@ -253,7 +253,7 @@ public class PermissionCacheEventHandler(
     /// <summary>
     /// 处理权限删除事件
     /// </summary>
-    public async Task HandleAsync(DomainDeletedEvent<Permission> @event, CancellationToken cancellationToken = default) {
+    public async Task HandleAsync(DomainDeletedEvent<PermissionBase> @event, CancellationToken cancellationToken = default) {
         foreach (var permission in @event.Domains) {
             await ClearPermissionRelatedCacheAsync(permission.Id, cancellationToken);
         }

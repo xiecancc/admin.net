@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RoleRepository.cs
  * 功能描述: 角色仓储实现类，实现角色相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -54,7 +54,7 @@ public class RoleRepository(
 
         try {
             _logger.LogDebug("开始根据编码查询角色: {Code}", code);
-            var result = await GetAsync(t => t.Code == code, cancellationToken);
+            var result = await GetAsync([t => t.Code == code], cancellationToken);
 
             if (result != null) {
                 _logger.LogDebug("根据编码查询角色成功: {Code}, 角色ID: {RoleId}", code, result.Id);
@@ -84,7 +84,7 @@ public class RoleRepository(
 
         try {
             _logger.LogDebug("开始检查角色编码是否存在: {Code}", code);
-            var exists = await ExistsAsync(t => t.Code == code, cancellationToken);
+            var exists = await ExistsAsync([t => t.Code == code], cancellationToken);
             _logger.LogDebug("检查角色编码是否存在完成: {Code}, 结果: {Exists}", code, exists);
             return exists;
         }

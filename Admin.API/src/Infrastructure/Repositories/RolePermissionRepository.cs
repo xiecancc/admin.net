@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: RolePermissionRepository.cs
  * 功能描述: 角色权限关联仓储实现，用于处理角色和权限之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -291,7 +291,7 @@ public class RolePermissionRepository(
 
         try {
             _logger.LogDebug("开始检查角色权限: 角色ID: {RoleId}, 权限ID: {PermissionId}", roleId, permissionId);
-            var result = await ExistsAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId, cancellationToken);
+            var result = await ExistsAsync([rp => rp.RoleId == roleId && rp.PermissionId == permissionId], cancellationToken);
             _logger.LogDebug("检查角色权限完成: 角色ID: {RoleId}, 权限ID: {PermissionId}, 结果: {Result}", roleId, permissionId, result);
             return result;
         }

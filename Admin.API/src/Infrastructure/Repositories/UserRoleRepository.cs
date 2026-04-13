@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: UserRoleRepository.cs
  * 功能描述: 用户角色关联仓储实现，用于处理用户和角色之间的关联关系
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -292,7 +292,7 @@ public class UserRoleRepository(
 
         try {
             _logger.LogDebug("开始检查用户角色: 用户ID: {UserId}, 角色ID: {RoleId}", userId, roleId);
-            var result = await ExistsAsync(ur => ur.UserId == userId && ur.RoleId == roleId, cancellationToken);
+            var result = await ExistsAsync([ur => ur.UserId == userId && ur.RoleId == roleId], cancellationToken);
             _logger.LogDebug("检查用户角色完成: 用户ID: {UserId}, 角色ID: {RoleId}, 结果: {Result}", userId, roleId, result);
             return result;
         }

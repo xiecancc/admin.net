@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: RequestHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Domain.Shared.Entities;
@@ -21,6 +21,10 @@ namespace Application.Abstractions;
 /// <typeparam name="TRepository">仓储接口类型</typeparam>
 /// <typeparam name="TRequest">请求类型</typeparam>
 /// <typeparam name="TResponse">响应类型</typeparam>
+/// <remarks>
+/// <para>依赖注入说明：</para>
+/// <para>- 仓储通过构造函数直接注入，遵循显式依赖原则</para>
+/// </remarks>
 public abstract class RequestHandler<TDomain, TRepository, TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
@@ -44,13 +48,15 @@ public abstract class RequestHandler<TDomain, TRepository, TRequest, TResponse> 
     /// 构造函数
     /// </summary>
     /// <param name="unitOfWork">工作单元，不能为空</param>
+    /// <param name="repository">仓储接口，不能为空</param>
     /// <param name="mapper">对象映射器，不能为空</param>
-    /// <exception cref="ArgumentNullException">当工作单元或映射器为 null 时抛出</exception>
-    protected RequestHandler(IUnitOfWork unitOfWork, IMapper mapper) {
+    /// <exception cref="ArgumentNullException">当参数为 null 时抛出</exception>
+    protected RequestHandler(IUnitOfWork unitOfWork, TRepository repository, IMapper mapper) {
         ArgumentNullException.ThrowIfNull(unitOfWork, nameof(unitOfWork));
+        ArgumentNullException.ThrowIfNull(repository, nameof(repository));
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         UnitOfWork = unitOfWork;
-        Repository = unitOfWork.GetRepository<TRepository, TDomain>();
+        Repository = repository;
         Mapper = mapper;
     }
 

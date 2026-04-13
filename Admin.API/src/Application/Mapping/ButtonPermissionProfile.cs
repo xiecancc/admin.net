@@ -1,8 +1,8 @@
-﻿/*
- * 文件名称：ButtonPermissionProfile.cs
- * 功能描述：按钮权限映射配置
- * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-01
+/*
+ * 文件名称: ButtonPermissionProfile.cs
+ * 功能描述: 按钮权限映射配置
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-13
  */
 
 using Application.Contracts.Dtos;
@@ -22,15 +22,15 @@ public class ButtonPermissionProfile : Profile {
     public ButtonPermissionProfile() {
         // 按钮权限实体到按钮权限列表 DTO 的映射
         CreateMap<ButtonPermission, ButtonPermissionListDto>()
-            .IncludeBase<Permission, PermissionListDto>();
+            .IncludeBase<PermissionBase, PermissionListDto>();
 
         // 按钮权限实体到按钮权限详情 DTO 的映射
         CreateMap<ButtonPermission, ButtonPermissionDetailDto>()
-            .IncludeBase<Permission, PermissionDetailDto>();
+            .IncludeBase<PermissionBase, PermissionDetailDto>();
 
         // 按钮权限实体到按钮权限分页 DTO 的映射
         CreateMap<ButtonPermission, ButtonPermissionPagedDto>()
-            .IncludeBase<Permission, PermissionPagedDto>();
+            .IncludeBase<PermissionBase, PermissionPagedDto>();
 
         // 按钮权限创建 DTO 到按钮权限实体的映射
         CreateMap<ButtonPermissionCreateDto, ButtonPermission>()

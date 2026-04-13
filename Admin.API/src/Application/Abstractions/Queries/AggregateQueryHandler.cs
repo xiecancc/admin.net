@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateQueryHandler.cs
  * 功能描述: 聚合根查询处理器基类，包含通用查询条件构建逻辑
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -27,13 +27,15 @@ namespace Application.Abstractions.Queries;
 /// <typeparam name="TQueryDto">查询参数 DTO 类型</typeparam>
 /// <typeparam name="TResponseDto">响应类型</typeparam>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">仓储接口，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
-/// <exception cref="ArgumentNullException">当工作单元、映射器或缓存提供者为 null 时抛出</exception>
+/// <exception cref="ArgumentNullException">当参数为 null 时抛出</exception>
 public abstract class AggregateQueryHandler<TAggregate, TRepository, TQuery, TQueryDto, TResponseDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
-    ICacheProvider cacheProvider) : QueryHandler<TAggregate, TRepository, TQuery, TQueryDto, TResponseDto>(unitOfWork, mapper, cacheProvider)
+    ICacheProvider cacheProvider) : QueryHandler<TAggregate, TRepository, TQuery, TQueryDto, TResponseDto>(unitOfWork, repository, mapper, cacheProvider)
     where TAggregate : AggregateBase, new()
     where TRepository : IAggregateRepository<TAggregate>
     where TQuery : AggregateQuery<TQueryDto, TResponseDto>

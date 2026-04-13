@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: PermissionRepository.cs
  * 功能描述: 权限仓储实现类，实现权限相关的数据访问操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -44,7 +44,7 @@ public class PermissionRepository<TPermission>(
     string entityName,
     ILogger<PermissionRepository<TPermission>> logger)
     : AggregateTreeRepository<TPermission>(client, eventBus, userContextProvider, entityName, logger), IPermissionRepository<TPermission>
-    where TPermission : Permission, IAggregateTree<TPermission>, new() {
+    where TPermission : PermissionBase, IAggregateTree<TPermission>, new() {
     /// <summary>
     /// 根据编码查找权限
     /// </summary>
@@ -58,7 +58,7 @@ public class PermissionRepository<TPermission>(
 
         try {
             _logger.LogDebug("开始根据编码查询权限: {Code}", code);
-            var result = await GetAsync(t => t.Code == code, cancellationToken);
+            var result = await GetAsync([t => t.Code == code], cancellationToken);
 
             if (result != null) {
                 _logger.LogDebug("根据编码查询权限成功: {Code}, 权限ID: {PermissionId}", code, result.Id);
@@ -88,7 +88,7 @@ public class PermissionRepository<TPermission>(
 
         try {
             _logger.LogDebug("开始检查权限编码是否存在: {Code}", code);
-            var exists = await ExistsAsync(t => t.Code == code, cancellationToken);
+            var exists = await ExistsAsync([t => t.Code == code], cancellationToken);
             _logger.LogDebug("检查权限编码是否存在完成: {Code}, 结果: {Exists}", code, exists);
             return exists;
         }

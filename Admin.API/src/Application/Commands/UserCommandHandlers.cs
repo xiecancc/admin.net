@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: UserCommandHandlers.cs
  * 功能描述: 用户命令处理器，处理用户相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -23,10 +23,11 @@ namespace Application.Commands;
 /// <para>处理用户的创建操作，包含邮箱唯一性验证和密码哈希处理</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">用户仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class UserCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserCreateCommandHandler> logger)
-    : DomainCreateCommandHandler<User, IUserRepository, UserCreateCommand, UserCreateDto>(unitOfWork, mapper, logger) {
+public class UserCreateCommandHandler(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, ILogger<UserCreateCommandHandler> logger)
+    : DomainCreateCommandHandler<User, IUserRepository, UserCreateCommand, UserCreateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行用户创建业务逻辑（包含邮箱唯一性验证和密码哈希处理）
@@ -63,27 +64,30 @@ public class UserCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IL
 /// <para>处理用户的更新操作</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">用户仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class UserUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserUpdateCommandHandler> logger)
-    : AggregateUpdateCommandHandler<User, IUserRepository, UserUpdateCommand, UserUpdateDto>(unitOfWork, mapper, logger);
+public class UserUpdateCommandHandler(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, ILogger<UserUpdateCommandHandler> logger)
+    : AggregateUpdateCommandHandler<User, IUserRepository, UserUpdateCommand, UserUpdateDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// 用户删除命令处理器
 /// <para>处理用户的删除操作</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">用户仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class UserDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserDeleteCommandHandler> logger)
-    : AggregateDeleteCommandHandler<User, IUserRepository, UserDeleteCommand, UserActionDto>(unitOfWork, mapper, logger);
+public class UserDeleteCommandHandler(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, ILogger<UserDeleteCommandHandler> logger)
+    : AggregateDeleteCommandHandler<User, IUserRepository, UserDeleteCommand, UserActionDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// 用户恢复命令处理器
 /// <para>处理用户的恢复操作</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">用户仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class UserRestoreCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserRestoreCommandHandler> logger)
-    : AggregateRestoreCommandHandler<User, IUserRepository, UserRestoreCommand, UserActionDto>(unitOfWork, mapper, logger);
+public class UserRestoreCommandHandler(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, ILogger<UserRestoreCommandHandler> logger)
+    : AggregateRestoreCommandHandler<User, IUserRepository, UserRestoreCommand, UserActionDto>(unitOfWork, repository, mapper, logger);

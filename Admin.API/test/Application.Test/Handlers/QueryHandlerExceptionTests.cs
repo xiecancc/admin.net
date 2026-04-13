@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: QueryHandlerExceptionTests.cs
  * 功能描述: 查询处理器异常处理测试类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Queries;
@@ -25,12 +25,14 @@ namespace Application.Test.Handlers;
 /// </summary>
 public class QueryHandlerExceptionTests {
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IAggregateRepository<TestAggregate>> _mockRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ICacheProvider> _mockCacheProvider;
     private readonly Mock<ILogger<TestQueryHandler>> _mockLogger;
 
     public QueryHandlerExceptionTests() {
         _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
         _mockMapper = new Mock<IMapper>();
         _mockCacheProvider = new Mock<ICacheProvider>();
         _mockLogger = new Mock<ILogger<TestQueryHandler>>();
@@ -72,12 +74,8 @@ public class QueryHandlerExceptionTests {
     public async Task Handle_WithNonExistentEntity_ShouldThrowKeyNotFoundException() {
         var query = new TestByIdQuery(new TestQueryDto()) { Id = Guid.NewGuid() };
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-        mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((TestAggregate?)null);
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
 
         _mockCacheProvider.Setup(x => x.GetOrSetAsync(It.IsAny<string>(), It.IsAny<Func<Task<TestDetailDto?>>>(), It.IsAny<TimeSpan?>()))
             .Returns(async (string _, Func<Task<TestDetailDto?>> factory, TimeSpan? _) => await factory());
@@ -99,12 +97,8 @@ public class QueryHandlerExceptionTests {
         var entity = new TestAggregate { Id = entityId };
         var expectedDto = new TestDetailDto { Id = entityId };
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-        mockRepository.Setup(x => x.GetAsync(entityId, It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.GetAsync(entityId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(entity);
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
 
         _mockMapper.Setup(x => x.Map<TestDetailDto>(entity))
             .Returns(expectedDto);
@@ -131,12 +125,8 @@ public class QueryHandlerExceptionTests {
         var cts = new CancellationTokenSource();
         cts.Cancel();
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-        mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new OperationCanceledException());
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
 
         _mockCacheProvider.Setup(x => x.GetOrSetAsync(It.IsAny<string>(), It.IsAny<Func<Task<TestDetailDto?>>>(), It.IsAny<TimeSpan?>()))
             .Returns(async (string _, Func<Task<TestDetailDto?>> factory, TimeSpan? _) => await factory());
@@ -157,11 +147,6 @@ public class QueryHandlerExceptionTests {
         var query = new TestByIdQuery(new TestQueryDto()) { Id = entityId };
         var cachedDto = new TestDetailDto { Id = entityId };
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
-
         _mockCacheProvider.Setup(x => x.GetOrSetAsync(It.IsAny<string>(), It.IsAny<Func<Task<TestDetailDto?>>>(), It.IsAny<TimeSpan?>()))
             .ReturnsAsync(cachedDto);
 
@@ -171,7 +156,7 @@ public class QueryHandlerExceptionTests {
 
         Assert.NotNull(result);
         Assert.Equal(entityId, result.Id);
-        mockRepository.Verify(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mockRepository.Verify(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     /// <summary>
@@ -183,12 +168,8 @@ public class QueryHandlerExceptionTests {
     public async Task Handle_WhenRepositoryThrows_ShouldThrowInvalidOperationException() {
         var query = new TestByIdQuery(new TestQueryDto()) { Id = Guid.NewGuid() };
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-        mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Database error"));
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
 
         _mockCacheProvider.Setup(x => x.GetOrSetAsync(It.IsAny<string>(), It.IsAny<Func<Task<TestDetailDto?>>>(), It.IsAny<TimeSpan?>()))
             .Returns(async (string _, Func<Task<TestDetailDto?>> factory, TimeSpan? _) => await factory());
@@ -215,12 +196,8 @@ public class QueryHandlerExceptionTests {
         var query = new TestByIdQuery(new TestQueryDto()) { Id = entityId };
         string? capturedCacheKey = null;
 
-        var mockRepository = new Mock<IAggregateRepository<TestAggregate>>();
-        mockRepository.Setup(x => x.GetAsync(entityId, It.IsAny<CancellationToken>()))
+        _mockRepository.Setup(x => x.GetAsync(entityId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new TestAggregate { Id = entityId });
-
-        _mockUnitOfWork.Setup(x => x.GetRepository<IAggregateRepository<TestAggregate>, TestAggregate>())
-            .Returns(mockRepository.Object);
 
         _mockMapper.Setup(x => x.Map<TestDetailDto>(It.IsAny<TestAggregate>()))
             .Returns(new TestDetailDto { Id = entityId });
@@ -248,6 +225,7 @@ public class QueryHandlerExceptionTests {
     private TestQueryHandler CreateHandler() {
         return new TestQueryHandler(
             _mockUnitOfWork.Object,
+            _mockRepository.Object,
             _mockMapper.Object,
             _mockCacheProvider.Object,
             _mockLogger.Object
@@ -284,9 +262,10 @@ internal class TestByIdQuery(TestQueryDto QueryDto) : AggregateByIdQuery<TestQue
 /// </summary>
 internal class TestQueryHandler(
     IUnitOfWork unitOfWork,
+    IAggregateRepository<TestAggregate> repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<TestQueryHandler> logger) : AggregateByIdQueryHandler<TestAggregate, IAggregateRepository<TestAggregate>, TestByIdQuery, TestQueryDto, TestDetailDto>(unitOfWork, mapper, cacheProvider, logger) {
+    ILogger<TestQueryHandler> logger) : AggregateByIdQueryHandler<TestAggregate, IAggregateRepository<TestAggregate>, TestByIdQuery, TestQueryDto, TestDetailDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     public async Task<TestDetailDto> HandleTest(TestByIdQuery request, CancellationToken cancellationToken = default) {
         return await Handle(request, cancellationToken);

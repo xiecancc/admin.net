@@ -1,8 +1,8 @@
-﻿/*
- * 文件名称：ApiPermissionProfile.cs
- * 功能描述：API 权限映射配置
- * 作者信息：谢灿软件 <492384481@qq.com>
- * 最近修订：2026-04-01
+/*
+ * 文件名称: ApiPermissionProfile.cs
+ * 功能描述: API 权限映射配置
+ * 作者信息: 谢灿软件 <492384481@qq.com>
+ * 最近修订: 2026-04-13
  */
 
 using Application.Contracts.Dtos;
@@ -22,15 +22,15 @@ public class ApiPermissionProfile : Profile {
     public ApiPermissionProfile() {
         // API 权限实体到 API 权限列表 DTO 的映射
         CreateMap<ApiPermission, ApiPermissionListDto>()
-            .IncludeBase<Permission, PermissionListDto>();
+            .IncludeBase<PermissionBase, PermissionListDto>();
 
         // API 权限实体到 API 权限详情 DTO 的映射
         CreateMap<ApiPermission, ApiPermissionDetailDto>()
-            .IncludeBase<Permission, PermissionDetailDto>();
+            .IncludeBase<PermissionBase, PermissionDetailDto>();
 
         // API 权限实体到 API 权限分页 DTO 的映射
         CreateMap<ApiPermission, ApiPermissionPagedDto>()
-            .IncludeBase<Permission, PermissionPagedDto>();
+            .IncludeBase<PermissionBase, PermissionPagedDto>();
 
         // API 权限创建 DTO 到 API 权限实体的映射
         CreateMap<ApiPermissionCreateDto, ApiPermission>()

@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: UserRoleQueryHandlers.cs
  * 功能描述: 用户角色关联查询处理器，处理用户角色查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-12
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Queries;
@@ -24,10 +24,12 @@ namespace Application.Queries;
 /// 用户角色列表查询处理器
 /// </summary>
 public class UserRolesQueryHandler(
-    IUnitOfWork unitOfWork,
+    IUserRoleRepository userRoleRepository,
+    IRoleRepository roleRepository,
     IMapper mapper,
     ILogger<UserRolesQueryHandler> logger) : IRequestHandler<UserRolesQuery, List<RoleListDto>> {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IUserRoleRepository _userRoleRepository = userRoleRepository;
+    private readonly IRoleRepository _roleRepository = roleRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<UserRolesQueryHandler> _logger = logger;
 
@@ -35,15 +37,13 @@ public class UserRolesQueryHandler(
     /// 处理用户角色列表查询
     /// </summary>
     public async Task<List<RoleListDto>> Handle(UserRolesQuery request, CancellationToken cancellationToken) {
-        var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
-        var roleIds = await userRoleRepository.GetRoleIdsByUserIdAsync(request.UserId, cancellationToken);
+        var roleIds = await _userRoleRepository.GetRoleIdsByUserIdAsync(request.UserId, cancellationToken);
 
         if (roleIds.Count == 0) {
             return [];
         }
 
-        var roleRepository = _unitOfWork.GetRepository<IRoleRepository, Role>();
-        var roles = await roleRepository.GetListAsync(predicates: [r => roleIds.Contains(r.Id)], cancellationToken: cancellationToken);
+        var roles = await _roleRepository.GetListAsync(predicates: [r => roleIds.Contains(r.Id)], cancellationToken: cancellationToken);
 
         _logger.LogDebug("查询用户角色列表 | UserId: {UserId} | RoleCount: {Count}", 
             request.UserId, roles.Count);
@@ -56,10 +56,12 @@ public class UserRolesQueryHandler(
 /// 角色用户列表查询处理器
 /// </summary>
 public class RoleUsersQueryHandler(
-    IUnitOfWork unitOfWork,
+    IUserRoleRepository userRoleRepository,
+    IUserRepository userRepository,
     IMapper mapper,
     ILogger<RoleUsersQueryHandler> logger) : IRequestHandler<RoleUsersQuery, List<UserListDto>> {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IUserRoleRepository _userRoleRepository = userRoleRepository;
+    private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<RoleUsersQueryHandler> _logger = logger;
 
@@ -67,15 +69,13 @@ public class RoleUsersQueryHandler(
     /// 处理角色用户列表查询
     /// </summary>
     public async Task<List<UserListDto>> Handle(RoleUsersQuery request, CancellationToken cancellationToken) {
-        var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
-        var userIds = await userRoleRepository.GetUserIdsByRoleIdAsync(request.RoleId, cancellationToken);
+        var userIds = await _userRoleRepository.GetUserIdsByRoleIdAsync(request.RoleId, cancellationToken);
 
         if (userIds.Count == 0) {
             return [];
         }
 
-        var userRepository = _unitOfWork.GetRepository<IUserRepository, User>();
-        var users = await userRepository.GetListAsync(predicates: [u => userIds.Contains(u.Id)], cancellationToken: cancellationToken);
+        var users = await _userRepository.GetListAsync(predicates: [u => userIds.Contains(u.Id)], cancellationToken: cancellationToken);
 
         _logger.LogDebug("查询角色用户列表 | RoleId: {RoleId} | UserCount: {Count}", 
             request.RoleId, users.Count);
@@ -88,17 +88,16 @@ public class RoleUsersQueryHandler(
 /// 用户角色ID列表查询处理器
 /// </summary>
 public class UserRoleIdsQueryHandler(
-    IUnitOfWork unitOfWork,
+    IUserRoleRepository userRoleRepository,
     ILogger<UserRoleIdsQueryHandler> logger) : IRequestHandler<UserRoleIdsQuery, List<Guid>> {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IUserRoleRepository _userRoleRepository = userRoleRepository;
     private readonly ILogger<UserRoleIdsQueryHandler> _logger = logger;
 
     /// <summary>
     /// 处理用户角色ID列表查询
     /// </summary>
     public async Task<List<Guid>> Handle(UserRoleIdsQuery request, CancellationToken cancellationToken) {
-        var userRoleRepository = _unitOfWork.GetRepository<IUserRoleRepository, UserRole>();
-        var roleIds = await userRoleRepository.GetRoleIdsByUserIdAsync(request.UserId, cancellationToken);
+        var roleIds = await _userRoleRepository.GetRoleIdsByUserIdAsync(request.UserId, cancellationToken);
 
         _logger.LogDebug("查询用户角色ID列表 | UserId: {UserId} | RoleCount: {Count}", 
             request.UserId, roleIds.Count);
@@ -113,9 +112,10 @@ public class UserRoleIdsQueryHandler(
 /// </summary>
 public class UserRoleListQueryHandler(
     IUnitOfWork unitOfWork,
+    IUserRoleRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<UserRoleListQueryHandler> logger) : ListQueryHandler<UserRole, IUserRoleRepository, UserRoleListQuery, UserRoleQueryDto, UserRoleListDto>(unitOfWork, mapper, cacheProvider, logger) {
+    ILogger<UserRoleListQueryHandler> logger) : ListQueryHandler<UserRole, IUserRoleRepository, UserRoleListQuery, UserRoleQueryDto, UserRoleListDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -164,9 +164,10 @@ public class UserRoleListQueryHandler(
 /// </summary>
 public class UserRolePagedQueryHandler(
     IUnitOfWork unitOfWork,
+    IUserRoleRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<UserRolePagedQueryHandler> logger) : PagedQueryHandler<UserRole, IUserRoleRepository, UserRolePagedQuery, UserRoleQueryDto, UserRolePagedDto>(unitOfWork, mapper, cacheProvider, logger) {
+    ILogger<UserRolePagedQueryHandler> logger) : PagedQueryHandler<UserRole, IUserRoleRepository, UserRolePagedQuery, UserRoleQueryDto, UserRolePagedDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件

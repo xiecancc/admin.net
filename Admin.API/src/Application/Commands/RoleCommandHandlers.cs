@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: RoleCommandHandlers.cs
  * 功能描述: 角色命令处理器，处理角色相关的命令
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Commands;
@@ -22,10 +22,11 @@ namespace Application.Commands;
 /// <para>处理角色的创建操作，包含角色编码唯一性验证</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">角色仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class RoleCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleCreateCommandHandler> logger)
-    : DomainCreateCommandHandler<Role, IRoleRepository, RoleCreateCommand, RoleCreateDto>(unitOfWork, mapper, logger) {
+public class RoleCreateCommandHandler(IUnitOfWork unitOfWork, IRoleRepository repository, IMapper mapper, ILogger<RoleCreateCommandHandler> logger)
+    : DomainCreateCommandHandler<Role, IRoleRepository, RoleCreateCommand, RoleCreateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行角色创建业务逻辑（包含角色编码唯一性验证）
@@ -56,10 +57,11 @@ public class RoleCreateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IL
 /// <para>处理角色的更新操作，包含角色编码唯一性验证和循环继承检测</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">角色仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class RoleUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleUpdateCommandHandler> logger)
-    : AggregateUpdateCommandHandler<Role, IRoleRepository, RoleUpdateCommand, RoleUpdateDto>(unitOfWork, mapper, logger) {
+public class RoleUpdateCommandHandler(IUnitOfWork unitOfWork, IRoleRepository repository, IMapper mapper, ILogger<RoleUpdateCommandHandler> logger)
+    : AggregateUpdateCommandHandler<Role, IRoleRepository, RoleUpdateCommand, RoleUpdateDto>(unitOfWork, repository, mapper, logger) {
 
     /// <summary>
     /// 在事务内执行角色更新业务逻辑（包含角色编码唯一性验证和循环继承检测）
@@ -92,7 +94,7 @@ public class RoleUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IL
                         "请选择其他角色作为父角色。");
                 }
 
-                var parentExists = await Repository.ExistsAsync(r => r.Id == dto.ParentId.Value, cancellationToken);
+                var parentExists = await Repository.ExistsAsync([r => r.Id == dto.ParentId.Value], cancellationToken);
                 if (!parentExists) {
                     throw new KeyNotFoundException(
                         $"角色更新失败：父角色不存在。父角色ID: {dto.ParentId.Value}。" +
@@ -133,17 +135,19 @@ public class RoleUpdateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IL
 /// <para>处理角色的删除操作</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">角色仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class RoleDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleDeleteCommandHandler> logger)
-    : AggregateDeleteCommandHandler<Role, IRoleRepository, RoleDeleteCommand, RoleActionDto>(unitOfWork, mapper, logger);
+public class RoleDeleteCommandHandler(IUnitOfWork unitOfWork, IRoleRepository repository, IMapper mapper, ILogger<RoleDeleteCommandHandler> logger)
+    : AggregateDeleteCommandHandler<Role, IRoleRepository, RoleDeleteCommand, RoleActionDto>(unitOfWork, repository, mapper, logger);
 
 /// <summary>
 /// 角色恢复命令处理器
 /// <para>处理角色的恢复操作</para>
 /// </summary>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">角色仓储，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="logger">日志记录器，不能为空</param>
-public class RoleRestoreCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleRestoreCommandHandler> logger)
-    : AggregateRestoreCommandHandler<Role, IRoleRepository, RoleRestoreCommand, RoleActionDto>(unitOfWork, mapper, logger);
+public class RoleRestoreCommandHandler(IUnitOfWork unitOfWork, IRoleRepository repository, IMapper mapper, ILogger<RoleRestoreCommandHandler> logger)
+    : AggregateRestoreCommandHandler<Role, IRoleRepository, RoleRestoreCommand, RoleActionDto>(unitOfWork, repository, mapper, logger);

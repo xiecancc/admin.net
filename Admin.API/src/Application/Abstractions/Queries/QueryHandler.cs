@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: QueryHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-12
+ * 最近修订: 2026-04-13
  */
 
 using Application.Contracts.Abstractions.Queries;
@@ -11,6 +11,7 @@ using Domain.Shared.Entities;
 using Domain.Shared.Repositories;
 using Domain.Shared.Caches;
 using Domain.Shared.Units;
+using Application.Caching;
 using AutoMapper;
 using System.Linq.Expressions;
 using System.Text;
@@ -31,13 +32,15 @@ namespace Application.Abstractions.Queries;
 /// <para>依赖：IUnitOfWork, IMapper, ICacheProvider</para>
 /// </remarks>
 /// <param name="unitOfWork">工作单元，不能为空</param>
+/// <param name="repository">仓储接口，不能为空</param>
 /// <param name="mapper">对象映射器，不能为空</param>
 /// <param name="cacheProvider">缓存提供者，不能为空</param>
-/// <exception cref="ArgumentNullException">当工作单元、映射器或缓存提供者为 null 时抛出</exception>
+/// <exception cref="ArgumentNullException">当参数为 null 时抛出</exception>
 public abstract class QueryHandler<TDomain, TRepository, TQuery, TQueryDto, TResponseDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
-    ICacheProvider cacheProvider) : RequestHandler<TDomain, TRepository, TQuery, TResponseDto>(unitOfWork, mapper)
+    ICacheProvider cacheProvider) : RequestHandler<TDomain, TRepository, TQuery, TResponseDto>(unitOfWork, repository, mapper)
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TQuery : Query<TQueryDto, TResponseDto>
@@ -85,10 +88,28 @@ public abstract class QueryHandler<TDomain, TRepository, TQuery, TQueryDto, TRes
 
     /// <summary>
     /// 构建缓存键参数部分
+    /// <para>子类应重写此方法添加特定查询参数到缓存键</para>
     /// </summary>
     /// <param name="query">查询请求</param>
     /// <returns>缓存键参数部分</returns>
     protected virtual StringBuilder BuildCacheParams(TQuery query) => new();
+
+    /// <summary>
+    /// 创建缓存键构建器
+    /// <para>提供流式 API 构建缓存键，替代手动 StringBuilder 拼接</para>
+    /// </summary>
+    /// <returns>缓存键构建器实例</returns>
+    /// <example>
+    /// <code>
+    /// protected override string BuildCacheKey(TQuery query) {
+    ///     return CreateCacheKeyBuilder()
+    ///         .AppendIfNotEmpty("code", query.QueryDto?.Code)
+    ///         .AppendIfNotEmpty("name", query.QueryDto?.Name)
+    ///         .Build();
+    /// }
+    /// </code>
+    /// </example>
+    protected CacheKeyBuilder CreateCacheKeyBuilder() => CacheKeyBuilder.Create(CacheKeyPrefix);
 
 
 }

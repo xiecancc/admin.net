@@ -1,4 +1,4 @@
-﻿/*
+/*
  * 文件名称: AggregateUpdateCommandHandler.cs
  * 功能描述: 通用更新命令处理器（Template Method 模式）
  * 作者信息: 谢灿软件 <492384481@qq.com>
@@ -26,9 +26,10 @@ namespace Application.Abstractions.Commands;
 /// <typeparam name="TUpdateDto">更新DTO类型</typeparam>
 public abstract class AggregateUpdateCommandHandler<TDomain, TRepository, TCommand, TUpdateDto>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
     ILogger logger)
-    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, mapper, logger)
+    : CommandHandler<TDomain, TRepository, TCommand>(unitOfWork, repository, mapper, logger)
     where TDomain : AggregateBase, new()
     where TRepository : IAggregateRepository<TDomain>
     where TCommand : AggregateUpdateCommand<TUpdateDto>, IRequest<bool>

@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: RolePermissionQueryHandlers.cs
  * 功能描述: 角色权限关联查询处理器，处理角色权限查询操作
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Application.Abstractions.Queries;
@@ -27,12 +27,10 @@ namespace Application.Queries;
 /// </summary>
 public class RolePermissionPagedQueryHandler(
     IUnitOfWork unitOfWork,
+    IRolePermissionRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionPagedQuery, RolePermissionQueryDto, RolePermissionPagedDto>(unitOfWork, mapper, cacheProvider, logger) {
-    private readonly ILogger<RolePermissionPagedQueryHandler> _logger = logger;
-
-
+    ILogger<RolePermissionPagedQueryHandler> logger) : PagedQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionPagedQuery, RolePermissionQueryDto, RolePermissionPagedDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -51,9 +49,6 @@ public class RolePermissionPagedQueryHandler(
             }
         }
 
-        _logger.LogDebug("构建角色权限分页查询条件 | RoleId: {RoleId} | PermissionId: {PermissionId} | PredicateCount: {Count}",
-            query.QueryDto?.RoleId, query.QueryDto?.PermissionId, predicates.Count);
-
         return predicates;
     }
 
@@ -64,7 +59,7 @@ public class RolePermissionPagedQueryHandler(
     /// <returns>排序条件字典</returns>
     protected override IDictionary<Expression<Func<RolePermission, object>>, bool> BuildOrders(RolePermissionPagedQuery query) {
         var orders = base.BuildOrders(query);
-        orders.Add(t => t.RoleId, false); // false 代表正序
+        orders.Add(t => t.RoleId, false);
         return orders;
     }
 
@@ -95,12 +90,10 @@ public class RolePermissionPagedQueryHandler(
 /// </summary>
 public class RolePermissionListQueryHandler(
     IUnitOfWork unitOfWork,
+    IRolePermissionRepository repository,
     IMapper mapper,
     ICacheProvider cacheProvider,
-    ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionListQuery, RolePermissionQueryDto, RolePermissionListDto>(unitOfWork, mapper, cacheProvider, logger) {
-    private readonly ILogger<RolePermissionListQueryHandler> _logger = logger;
-
-
+    ILogger<RolePermissionListQueryHandler> logger) : ListQueryHandler<RolePermission, IRolePermissionRepository, RolePermissionListQuery, RolePermissionQueryDto, RolePermissionListDto>(unitOfWork, repository, mapper, cacheProvider, logger) {
 
     /// <summary>
     /// 构建查询条件
@@ -119,9 +112,6 @@ public class RolePermissionListQueryHandler(
             }
         }
 
-        _logger.LogDebug("构建角色权限列表查询条件 | RoleId: {RoleId} | PermissionId: {PermissionId} | PredicateCount: {Count}",
-            query.QueryDto?.RoleId, query.QueryDto?.PermissionId, predicates.Count);
-
         return predicates;
     }
 
@@ -132,7 +122,7 @@ public class RolePermissionListQueryHandler(
     /// <returns>排序条件字典</returns>
     protected override IDictionary<Expression<Func<RolePermission, object>>, bool> BuildOrders(RolePermissionListQuery query) {
         var orders = base.BuildOrders(query);
-        orders.Add(t => t.RoleId, false); // false 代表正序
+        orders.Add(t => t.RoleId, false);
         return orders;
     }
 
@@ -185,17 +175,16 @@ public class RolePermissionsQueryHandler(
 /// 角色权限ID列表查询处理器
 /// </summary>
 public class RolePermissionIdsQueryHandler(
-    IUnitOfWork unitOfWork,
+    IRolePermissionRepository rolePermissionRepository,
     ILogger<RolePermissionIdsQueryHandler> logger) : IRequestHandler<RolePermissionIdsQuery, List<Guid>> {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IRolePermissionRepository _rolePermissionRepository = rolePermissionRepository;
     private readonly ILogger<RolePermissionIdsQueryHandler> _logger = logger;
 
     /// <summary>
     /// 处理角色权限ID列表查询
     /// </summary>
     public async Task<List<Guid>> Handle(RolePermissionIdsQuery request, CancellationToken cancellationToken) {
-        var rolePermissionRepository = _unitOfWork.GetRepository<IRolePermissionRepository, RolePermission>();
-        var permissionIds = await rolePermissionRepository.GetPermissionIdsByRoleIdAsync(request.RoleId, cancellationToken);
+        var permissionIds = await _rolePermissionRepository.GetPermissionIdsByRoleIdAsync(request.RoleId, cancellationToken);
 
         _logger.LogDebug("查询角色权限ID列表 | RoleId: {RoleId} | PermissionCount: {Count}", 
             request.RoleId, permissionIds.Count);

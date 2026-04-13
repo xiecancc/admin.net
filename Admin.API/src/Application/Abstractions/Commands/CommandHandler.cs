@@ -1,8 +1,8 @@
-﻿/*
+/*
  * 文件名称: CommandHandler.cs
  * 功能描述: 请求处理器基类，所有命令和查询处理器的基础类
  * 作者信息: 谢灿软件 <492384481@qq.com>
- * 最近修订: 2026-04-11
+ * 最近修订: 2026-04-13
  */
 
 using Domain.Shared.Entities;
@@ -15,21 +15,27 @@ using Microsoft.Extensions.Logging;
 namespace Application.Abstractions.Commands;
 
 /// <summary>
-    /// 领域命令处理器基类（Template Method 模式）
-    /// 用于处理所有领域实体的命令操作，包括聚合根和关系表
-    /// </summary>
-    /// <typeparam name="TDomain">领域模型类型</typeparam>
-    /// <typeparam name="TRepository">仓储接口类型</typeparam>
-    /// <typeparam name="TCommand">命令类型</typeparam>
-    /// <remarks>
-    /// 使用 Template Method 模式：
-    /// - Handle() 实现公共框架（验证、事务、异常处理）
-    /// - ExecuteInTransactionAsync() 为抽象方法，由子类实现具体业务逻辑
-    /// </remarks>
+/// 领域命令处理器基类（Template Method 模式）
+/// 用于处理所有领域实体的命令操作，包括聚合根和关系表
+/// </summary>
+/// <typeparam name="TDomain">领域模型类型</typeparam>
+/// <typeparam name="TRepository">仓储接口类型</typeparam>
+/// <typeparam name="TCommand">命令类型</typeparam>
+/// <remarks>
+/// <para>使用 Template Method 模式：</para>
+/// <para>- Handle() 实现公共框架（验证、事务、异常处理）</para>
+/// <para>- ExecuteInTransactionAsync() 为抽象方法，由子类实现具体业务逻辑</para>
+/// <para></para>
+/// <para>验证职责边界：</para>
+/// <para>1. FluentValidation（ValidationBehavior 管道）：数据格式验证（字段非空、长度限制、正则匹配等）</para>
+/// <para>2. ValidateRequest 方法：请求参数基本验证（数据列表非空等轻量级验证，无需数据库查询）</para>
+/// <para>3. ExecuteInTransactionAsync 方法：业务规则验证（编码唯一性、循环继承检测等需要数据库查询的验证）</para>
+/// </remarks>
 public abstract class CommandHandler<TDomain, TRepository, TCommand>(
     IUnitOfWork unitOfWork,
+    TRepository repository,
     IMapper mapper,
-    ILogger logger) : RequestHandler<TDomain, TRepository, TCommand, bool>(unitOfWork, mapper)
+    ILogger logger) : RequestHandler<TDomain, TRepository, TCommand, bool>(unitOfWork, repository, mapper)
     where TDomain : DomainBase, new()
     where TRepository : IDomainRepository<TDomain>
     where TCommand : IRequest<bool> {
@@ -78,13 +84,20 @@ public abstract class CommandHandler<TDomain, TRepository, TCommand>(
             var errorMessage = $"{typeof(TDomain).Name} 操作失败";
             Logger.LogError(ex, "{ErrorMessage}", errorMessage);
 
-            throw ex switch {
-                ArgumentNullException or ArgumentException or InvalidOperationException
-                    or KeyNotFoundException => ex,
-                OperationCanceledException => new OperationCanceledException($"操作被取消: {errorMessage}", ex),
-                TimeoutException => new InvalidOperationException($"{errorMessage}，操作超时", ex),
-                _ => new InvalidOperationException(errorMessage, ex)
-            };
+            switch (ex) {
+                case ArgumentNullException:
+                case ArgumentException:
+                case InvalidOperationException:
+                case KeyNotFoundException:
+                    System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex).Throw();
+                    throw;
+                case OperationCanceledException:
+                    throw new OperationCanceledException($"操作被取消: {errorMessage}", ex);
+                case TimeoutException:
+                    throw new InvalidOperationException($"{errorMessage}，操作超时", ex);
+                default:
+                    throw new InvalidOperationException(errorMessage, ex);
+            }
         }
     }
 }
